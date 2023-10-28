@@ -28,6 +28,28 @@ public class RgbImage implements ImageInterface {
     this.channels = new ArrayList<>(channels);
   }
 
+  /**
+   * Constructs a RGB image object with the given height, width and channels.
+   *
+   * @param red   the red channel of the image
+   * @param green the green channel of the image
+   * @param blue  the blue channel of the image
+   * @throws IllegalArgumentException if the number of channels is not 3
+   */
+  public RgbImage(int[][] red, int[][] green, int[][] blue) throws IllegalArgumentException {
+    if (red.length != green.length || red.length != blue.length
+            || red[0].length != green[0].length
+            || red[0].length != blue[0].length) {
+      throw new IllegalArgumentException("Number of rows and columns must be the same");
+    }
+    this.channels = new ArrayList<>();
+    this.height = red.length;
+    this.width = red[0].length;
+    this.channels.add(red);
+    this.channels.add(green);
+    this.channels.add(blue);
+  }
+
   @Override
   public List<int[][]> getChannel() {
     return new ArrayList<>(channels);

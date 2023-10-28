@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * This class represents a grey scale image. A grey scale image is an image with only one channel.
  */
-public class GreyScaleImage implements ImageInterface {
+public class GreyscaleImage implements ImageInterface {
   private final int height;
   private final int width;
   private final List<int[][]> channels;
@@ -19,13 +19,26 @@ public class GreyScaleImage implements ImageInterface {
    * @param channels the channels of the image
    * @throws IllegalArgumentException if the number of channels is not 1
    */
-  public GreyScaleImage(int height, int width, List<int[][]> channels) throws IllegalArgumentException {
+  public GreyscaleImage(int height, int width, List<int[][]> channels) throws IllegalArgumentException {
     if (channels.size() != 1) {
       throw new IllegalArgumentException("Number of channels must be 1");
     }
     this.height = height;
     this.width = width;
     this.channels = new ArrayList<>(channels);
+  }
+
+  /**
+   * Constructs a grey scale image object with the given height, width and channels.
+   *
+   * @param grey the grey channel of the image
+   * @throws IllegalArgumentException if the number of channels is not 1
+   */
+  public GreyscaleImage(int[][] grey) {
+    this.channels = new ArrayList<>();
+    this.height = grey.length;
+    this.width = grey[0].length;
+    this.channels.add(grey);
   }
 
   @Override

@@ -1,0 +1,123 @@
+package imageio;
+
+import java.io.IOException;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+
+import commonlabels.ImageFormats;
+import image.GreyscaleImage;
+import image.ImageInterface;
+import image.RgbImage;
+
+
+/**
+ * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
+ * as required.
+ */
+public class PPMFileAdapter implements IOFileByFormat {
+
+  /**
+   * This method encodes and saves the image in the given filename.
+   *
+   * @param filename the filename to save the image
+   * @param image    the image to be saved
+   * @throws IOException if the file cannot be saved
+   */
+  @Override
+  public void encodeAndSaveImage(String filename, ImageInterface image,
+                                 ImageFormats format) throws IOException {
+    int height = image.getHeight();
+    int width = image.getWidth();
+    int[][] redPixels;
+    int[][] greenPixels;
+    int[][] bluePixels;
+    if (image.getChannel().size() == 3) {
+      redPixels = image.getChannel().get(0);
+      greenPixels = image.getChannel().get(1);
+      bluePixels = image.getChannel().get(2);
+    } else {
+      redPixels = image.getChannel().get(0);
+      greenPixels = image.getChannel().get(0);
+      bluePixels = image.getChannel().get(0);
+    }
+    int maxValue = 255;
+    StringBuilder builder = new StringBuilder();
+    builder.append("P3" + System.lineSeparator());
+    builder.append(width + " " + height + System.lineSeparator());
+    builder.append(maxValue + System.lineSeparator());
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        builder.append(redPixels[i][j] + " " + greenPixels[i][j] + " " + bluePixels[i][j] + " ");
+      }
+      builder.append(System.lineSeparator());
+    }
+    java.io.FileWriter fw = new java.io.FileWriter(filename);
+    fw.write(builder.toString());
+    fw.close();
+  }
+
+  /**
+   * This method decodes the image from the given filename.
+   *
+   * @param filename the filename to read the image
+   * @return the image read from the file
+   * @throws FileNotFoundException if the file cannot be read
+   */
+  @Override
+  public ImageInterface decodeImage(String filename) throws FileNotFoundException {
+    Scanner sc;
+
+    sc = new Scanner(new FileInputStream(filename));
+
+    StringBuilder builder = new StringBuilder();
+    //read the file line by line, and populate a string. This will throw away any comment lines
+    while (sc.hasNextLine()) {
+      String s = sc.nextLine();
+      if (s.charAt(0) != '#') {
+        builder.append(s + System.lineSeparator());
+      }
+    }
+
+    //now set up the scanner to read from the string we just built
+    sc = new Scanner(builder.toString());
+
+    String token;
+
+    token = sc.next();
+    if (!token.equals("P3")) {
+      System.out.println("Invalid PPM file: plain RAW file should begin with P3");
+    }
+    int width = sc.nextInt();
+    int height = sc.nextInt();
+    int maxValue = sc.nextInt();
+
+    int[][] redPixels = new int[height][width];
+    int[][] greenPixels = new int[height][width];
+    int[][] bluePixels = new int[height][width];
+    boolean isGrayscale = true;
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        int r = sc.nextInt();
+        int g = sc.nextInt();
+        int b = sc.nextInt();
+
+        redPixels[i][j] = r;
+        greenPixels[i][j] = g;
+        bluePixels[i][j] = b;
+        if (r == g && g == b && isGrayscale) {
+          continue;
+        } else {
+          isGrayscale = false;
+        }
+      }
+    }
+
+    if (isGrayscale) {
+      return new GreyscaleImage(redPixels);
+    } else {
+      return new RgbImage(redPixels, greenPixels, bluePixels);
+    }
+  }
+}
+
