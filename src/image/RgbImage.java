@@ -14,23 +14,6 @@ public class RgbImage implements ImageInterface {
   /**
    * Constructs a RGB image object with the given height, width and channels.
    *
-   * @param height   the height of the image
-   * @param width    the width of the image
-   * @param channels the channels of the image
-   * @throws IllegalArgumentException if the number of channels is not 3
-   */
-  public RgbImage(int height, int width, List<int[][]> channels) throws IllegalArgumentException {
-    if (channels.size() != 3) {
-      throw new IllegalArgumentException("Number of channels must be 3");
-    }
-    this.height = height;
-    this.width = width;
-    this.channels = new ArrayList<>(channels);
-  }
-
-  /**
-   * Constructs a RGB image object with the given height, width and channels.
-   *
    * @param red   the red channel of the image
    * @param green the green channel of the image
    * @param blue  the blue channel of the image

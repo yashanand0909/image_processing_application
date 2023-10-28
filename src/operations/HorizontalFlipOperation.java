@@ -25,7 +25,7 @@ public class HorizontalFlipOperation implements Operation{
       flippedChannel.add(flippedPixels);
     }
 
-    return ImageFactory.createImage(height, width, flippedChannel);
+    return ImageFactory.createImage(flippedChannel);
   }
 
 

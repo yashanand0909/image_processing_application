@@ -41,6 +41,6 @@ public class FilterOperation implements Operation{
       filteredChannel.add(filteredPixels);
     }
 
-    return ImageFactory.createImage(height, width, filteredChannel);
+    return ImageFactory.createImage(filteredChannel);
   }
 }

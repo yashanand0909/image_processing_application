@@ -25,6 +25,6 @@ public class BrightnessOperation implements Operation {
       }
       newChannel.add(newPixels);
     }
-    return ImageFactory.createImage(height, width, newChannel);
+    return ImageFactory.createImage(newChannel);
   }
 }
