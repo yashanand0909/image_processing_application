@@ -1,7 +1,6 @@
 package images;
 
 import java.util.List;
-import operations.Operation;
 
 public class GreyScaleImage implements ImageInterface{
   private final int height;
@@ -20,7 +19,12 @@ public class GreyScaleImage implements ImageInterface{
   }
 
   @Override
-  public ImageInterface applyOperation(Operation operation, Object operator) {
-    return operation.apply(this,operator);
+  public int getHeight() {
+    return 0;
+  }
+
+  @Override
+  public int getWidth() {
+    return 0;
   }
 }
