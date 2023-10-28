@@ -1,6 +1,6 @@
 package operations;
 
-import images.ImageInterface;
+import image.ImageInterface;
 
 public class BrightnessOperation implements Operation {
 
