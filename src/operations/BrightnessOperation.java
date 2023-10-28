@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrightnessOperation implements Operation {
+  int maxValue = 255;
 
   @Override
   public ImageInterface apply(ImageInterface image, Object operator) throws IllegalArgumentException{
@@ -19,7 +20,7 @@ public class BrightnessOperation implements Operation {
       int[][] newPixels = new int[height][width];
       for (int i=0;i<height;i++){
         for(int j=0;j<width;j++){
-          newPixels[i][j] = channel[i][j] + factor;
+          newPixels[i][j] = Math.min(channel[i][j] + factor,maxValue);
         }
       }
       newChannel.add(newPixels);
