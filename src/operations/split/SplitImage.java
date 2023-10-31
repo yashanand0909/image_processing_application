@@ -5,34 +5,36 @@ import java.util.List;
 
 import image.ImageFactory;
 import image.ImageInterface;
-import operations.operationfactory.SingleToMutipleImageProcessor;
+import operations.operationfactory.SingleImageProcessorWithOffset;
 
 /**
  * This class represents a split image operation.
  */
-public class SplitImage implements SingleToMutipleImageProcessor {
-
+public class SplitImage implements SingleImageProcessorWithOffset {
   /**
-   * This method applies the split image operation on the given image.
+   * This method splits the image on the given channel (all other channels are zero)
+   * and returns the processed image.
    *
-   * @param image the image to be split
-   * @return the split image
-   * @throws IllegalArgumentException if the image has 1 channel
+   * @param image    the image to be processed
+   * @param operator the operator to be applied
+   * @return new processed image
+   * @throws IllegalArgumentException if the process not possible
    */
   @Override
-  public List<ImageInterface> apply(ImageInterface image) throws IllegalArgumentException {
-
+  public ImageInterface apply(ImageInterface image, Object operator) throws IllegalArgumentException {
     List<int[][]> imageChannel = image.getChannel();
+    int imageComponentNumber = (int) operator;
     if (imageChannel.size() == 1) {
       throw new IllegalArgumentException("Image must have more than 1 channel");
     }
-    List<ImageInterface> newGreyscaleImage = new ArrayList<>();
-
-    for (int[][] channel : imageChannel) {
-      List<int[][]> channelList = new ArrayList<>();
-      channelList.add(channel);
-      newGreyscaleImage.add(ImageFactory.createImage(channelList));
+    List<int[][]> channelList = new ArrayList<>();
+    for (int i = 0; i < imageChannel.size(); i++) {
+      if (i == imageComponentNumber) {
+        channelList.add(imageChannel.get(i));
+      } else {
+        channelList.add(new int[image.getHeight()][image.getWidth()]);
+      }
     }
-    return newGreyscaleImage;
+    return ImageFactory.createImage(channelList);
   }
 }
