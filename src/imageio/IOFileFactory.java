@@ -20,22 +20,21 @@ public class IOFileFactory {
           IllegalArgumentException {
     String fileExtension = getFileExtension(filename);
     if (fileExtension == null) {
-      throw new IllegalArgumentException("Invalid file extension");
+      throw new IllegalArgumentException("Invalid file");
     }
-    else if  (fileExtension.equals("ppm")) {
+    switch (fileExtension) {
+      case "ppm":
         IOFileByFormat ppmFileAdapter = new PPMFileAdapter();
         ppmFileAdapter.encodeAndSaveImage(filename, image, ImageFormats.PPM);
-      }
-    else if  (fileExtension.equals("png")) {
+        break;
+      case "png":
+      case "jpg":
+      case "jpeg":
         IOFileByFormat commonFormatsFileAdapter = new CommonFormatsFileAdapter();
         commonFormatsFileAdapter.encodeAndSaveImage(filename, image, ImageFormats.PNG);
-      }
-    else if  (fileExtension.equals("jpg") || fileExtension.equals("jpeg")) {
-        IOFileByFormat commonFormatsFileAdapter = new CommonFormatsFileAdapter();
-        commonFormatsFileAdapter.encodeAndSaveImage(filename, image, ImageFormats.JPEG);
-      }
-    else {
-      throw new IllegalArgumentException("Invalid file extension");
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid file extension");
     }
   }
 
@@ -50,17 +49,18 @@ public class IOFileFactory {
           IllegalArgumentException {
     String fileExtension = getFileExtension(filename);
     if (fileExtension == null) {
-      throw new IllegalArgumentException("Invalid file extension");
+      throw new IllegalArgumentException("Invalid file");
     }
-    else if  (fileExtension.equals("ppm")) {
+    switch (fileExtension) {
+      case "ppm":
         IOFileByFormat ppmFileAdapter = new PPMFileAdapter();
         return ppmFileAdapter.decodeImage(filename);
-    }
-    else if (fileExtension.equals("png") || fileExtension.equals("jpg") || fileExtension.equals("jpeg")){
+      case "png":
+      case "jpg":
+      case "jpeg":
         IOFileByFormat commonFormatsFileAdapter = new CommonFormatsFileAdapter();
         return commonFormatsFileAdapter.decodeImage(filename);
-      }
-    else {
+      default:
         throw new IllegalArgumentException("Invalid file extension");
     }
   }
