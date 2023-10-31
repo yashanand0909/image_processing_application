@@ -37,7 +37,7 @@ public class CommonFormatsFileAdapter implements IOFileByFormat {
       for (int j = 0; j < width; j++) {
 
         int rgb = (redPixels[i][j] << 16) | (greenPixels[i][j] << 8) | bluePixels[i][j];
-        bufferedImage.setRGB(i, j, rgb);
+        bufferedImage.setRGB(j, i, rgb);
       }
     }
     File outputFile = new File(filename);

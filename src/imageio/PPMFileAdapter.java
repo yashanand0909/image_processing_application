@@ -43,12 +43,13 @@ public class PPMFileAdapter implements IOFileByFormat {
     }
     int maxValue = 255;
     StringBuilder builder = new StringBuilder();
-    builder.append("P3" + System.lineSeparator());
-    builder.append(width + " " + height + System.lineSeparator());
-    builder.append(maxValue + System.lineSeparator());
+    builder.append("P3").append(System.lineSeparator());
+    builder.append(width).append(" ").append(height).append(System.lineSeparator());
+    builder.append(maxValue).append(System.lineSeparator());
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        builder.append(redPixels[i][j] + " " + greenPixels[i][j] + " " + bluePixels[i][j] + " ");
+        builder.append(redPixels[i][j]).append(" ").append(greenPixels[i][j]).append(" ")
+            .append(bluePixels[i][j]).append(" ");
       }
       builder.append(System.lineSeparator());
     }
@@ -75,7 +76,7 @@ public class PPMFileAdapter implements IOFileByFormat {
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
       if (s.charAt(0) != '#') {
-        builder.append(s + System.lineSeparator());
+        builder.append(s).append(System.lineSeparator());
       }
     }
 

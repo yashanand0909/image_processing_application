@@ -14,7 +14,6 @@ public class IOFileFactory {
    * This method creates an IOFileByFormat object based on the file extension.
    *
    * @param filename the filename to read the image
-   * @return the IOFileByFormat object
    * @throws IOException if the file cannot be read
    */
   public void encodeAndSaveImage(String filename, ImageInterface image) throws IOException,
@@ -23,20 +22,20 @@ public class IOFileFactory {
     if (fileExtension == null) {
       throw new IllegalArgumentException("Invalid file extension");
     }
-    switch (fileExtension) {
-      case "ppm" -> {
+    else if  (fileExtension.equals("ppm")) {
         IOFileByFormat ppmFileAdapter = new PPMFileAdapter();
         ppmFileAdapter.encodeAndSaveImage(filename, image, ImageFormats.PPM);
       }
-      case "png" -> {
+    else if  (fileExtension.equals("png")) {
         IOFileByFormat commonFormatsFileAdapter = new CommonFormatsFileAdapter();
         commonFormatsFileAdapter.encodeAndSaveImage(filename, image, ImageFormats.PNG);
       }
-      case "jpg", "jpeg" -> {
+    else if  (fileExtension.equals("jpg") || fileExtension.equals("jpeg")) {
         IOFileByFormat commonFormatsFileAdapter = new CommonFormatsFileAdapter();
         commonFormatsFileAdapter.encodeAndSaveImage(filename, image, ImageFormats.JPEG);
       }
-      default -> throw new IllegalArgumentException("Invalid file extension");
+    else {
+      throw new IllegalArgumentException("Invalid file extension");
     }
   }
 
@@ -53,16 +52,16 @@ public class IOFileFactory {
     if (fileExtension == null) {
       throw new IllegalArgumentException("Invalid file extension");
     }
-    switch (fileExtension) {
-      case "ppm" -> {
+    else if  (fileExtension.equals("ppm")) {
         IOFileByFormat ppmFileAdapter = new PPMFileAdapter();
         return ppmFileAdapter.decodeImage(filename);
-      }
-      case "png", "jpg", "jpeg" -> {
+    }
+    else if (fileExtension.equals("png") || fileExtension.equals("jpg") || fileExtension.equals("jpeg")){
         IOFileByFormat commonFormatsFileAdapter = new CommonFormatsFileAdapter();
         return commonFormatsFileAdapter.decodeImage(filename);
       }
-      default -> throw new IllegalArgumentException("Invalid file extension");
+    else {
+        throw new IllegalArgumentException("Invalid file extension");
     }
   }
 
