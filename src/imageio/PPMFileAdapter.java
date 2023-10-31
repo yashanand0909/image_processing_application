@@ -63,10 +63,10 @@ public class PPMFileAdapter implements IOFileByFormat {
    *
    * @param filename the filename to read the image
    * @return the image read from the file
-   * @throws FileNotFoundException if the file cannot be read
+   * @throws IOException if the file cannot be read
    */
   @Override
-  public ImageInterface decodeImage(String filename) throws FileNotFoundException {
+  public ImageInterface decodeImage(String filename) throws IOException {
     Scanner sc;
 
     sc = new Scanner(new FileInputStream(filename));

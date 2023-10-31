@@ -1,5 +1,6 @@
 package imageio;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import commonlabels.ImageFormats;
@@ -16,7 +17,7 @@ public class IOFileFactory {
    * @param filename the filename to read the image
    * @throws IOException if the file cannot be read
    */
-  public void encodeAndSaveImage(String filename, ImageInterface image) throws IOException,
+  public static void encodeAndSaveImage(String filename, ImageInterface image) throws IOException,
           IllegalArgumentException {
     String fileExtension = getFileExtension(filename);
     if (fileExtension == null) {
@@ -45,7 +46,7 @@ public class IOFileFactory {
    * @return the image read from the file
    * @throws IOException if the file cannot be read
    */
-  public ImageInterface decodeImage(String filename) throws IOException,
+  public static ImageInterface decodeImage(String filename) throws IOException,
           IllegalArgumentException {
     String fileExtension = getFileExtension(filename);
     if (fileExtension == null) {
