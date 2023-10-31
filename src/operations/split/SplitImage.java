@@ -5,7 +5,7 @@ import java.util.List;
 
 import image.ImageFactory;
 import image.ImageInterface;
-import operations.operationfactory.SingleImageProcessorWithOffset;
+import operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 /**
  * This class represents a split image operation.

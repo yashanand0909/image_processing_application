@@ -4,7 +4,7 @@ import java.util.List;
 
 import image.ImageFactory;
 import image.ImageInterface;
-import operations.operationfactory.SingleImageProcessor;
+import operations.operationinterfaces.SingleImageProcessor;
 
 /**
  * This class represents a color representation operation that can be applied to an image.

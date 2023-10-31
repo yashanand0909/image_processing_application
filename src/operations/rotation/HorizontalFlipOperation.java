@@ -2,7 +2,7 @@ package operations.rotation;
 
 import image.ImageFactory;
 import image.ImageInterface;
-import operations.operationfactory.SingleImageProcessor;
+import operations.operationinterfaces.SingleImageProcessor;
 
 import java.util.ArrayList;
 import java.util.List;

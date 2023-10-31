@@ -2,7 +2,7 @@ package operations.pixeloffset;
 
 import image.ImageFactory;
 import image.ImageInterface;
-import operations.operationfactory.SingleImageProcessorWithOffset;
+import operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 import java.util.ArrayList;
 import java.util.List;

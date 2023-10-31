@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import image.ImageInterface;
-import operations.operationfactory.MultipleToSingleImageProcessor;
+import operations.operationinterfaces.MultipleToSingleImageProcessor;
 
 /**
  * This class merges single channel images to a new image.

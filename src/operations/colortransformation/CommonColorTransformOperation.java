@@ -3,9 +3,8 @@ package operations.colortransformation;
 import image.ImageFactory;
 import image.ImageInterface;
 import java.util.Arrays;
-import operations.operationfactory.SingleImageProcessor;
+import operations.operationinterfaces.SingleImageProcessor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
