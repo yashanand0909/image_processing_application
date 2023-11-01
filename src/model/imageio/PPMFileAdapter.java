@@ -1,13 +1,15 @@
 package model.imageio;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 import java.io.FileInputStream;
 
 import commonlabels.ImageFormats;
-import model.image.GreyscaleImage;
+import model.image.ImageFactory;
 import model.image.ImageInterface;
-import model.image.RgbImage;
+import model.image.CommonImage;
 
 
 /**
@@ -106,7 +108,6 @@ public class PPMFileAdapter implements IOFileByFormat {
         greenPixels[i][j] = g;
         bluePixels[i][j] = b;
         if (r == g && g == b && isGrayscale) {
-          continue;
         } else {
           isGrayscale = false;
         }
@@ -114,9 +115,9 @@ public class PPMFileAdapter implements IOFileByFormat {
     }
 
     if (isGrayscale) {
-      return new GreyscaleImage(redPixels);
+      return ImageFactory.createImage(Collections.singletonList(redPixels));
     } else {
-      return new RgbImage(redPixels, greenPixels, bluePixels);
+      return ImageFactory.createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
     }
   }
 }

@@ -52,7 +52,7 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
         newBlueChannel[i][j] = Math.min(newBlue, 255);
       }
     }
-    List<int[][]> newImageChannelList = new ArrayList<>(Collections.singleton(newRedChannel));
+    List<int[][]> newImageChannelList = new ArrayList<>(Arrays.asList(newRedChannel, newGreenChannel, newBlueChannel));
     return ImageFactory.createImage(newImageChannelList);
   }
 

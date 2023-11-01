@@ -30,9 +30,7 @@ public class VerticalFlipOperation implements SingleImageProcessor {
 
       for (int i = 0; i < height; i++) {
         int flippedRow = height - 1 - i;
-        for (int j = 0; j < width; j++) {
-          flippedPixels[i][j] = channel[flippedRow][j];
-        }
+        System.arraycopy(channel[flippedRow], 0, flippedPixels[i], 0, width);
       }
 
       flippedChannel.add(flippedPixels);

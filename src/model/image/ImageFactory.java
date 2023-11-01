@@ -1,6 +1,7 @@
 package model.image;
 
 import java.util.List;
+import model.image.CommonImage.ImageBuilder;
 
 /**
  * This class represents an image factory.
@@ -14,10 +15,12 @@ public class ImageFactory {
    * @throws IllegalArgumentException if the number of channels is not 1 or 3
    */
   public static ImageInterface createImage( List<int[][]> channelList) {
-    if (channelList.size() == 1) {
-      return new GreyscaleImage(channelList.get(0));
-    } else if (channelList.size() == 3) {
-      return new RgbImage(channelList.get(0), channelList.get(1), channelList.get(2));
+    if (channelList.size() == 1 || channelList.size() == 3) {
+      ImageBuilder imageBuilder = new CommonImage.ImageBuilder();
+      for (int[][] ints : channelList) {
+        imageBuilder.addChannel(ints);
+      }
+      return imageBuilder.build();
     } else {
       throw new IllegalArgumentException(channelList.size() + " number of channel is not supported");
     }

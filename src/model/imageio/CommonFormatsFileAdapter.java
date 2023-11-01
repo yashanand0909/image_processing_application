@@ -4,12 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.Arrays;
+import java.util.Collections;
 import javax.imageio.ImageIO;
 
 import commonlabels.ImageFormats;
-import model.image.GreyscaleImage;
+import model.image.ImageFactory;
 import model.image.ImageInterface;
-import model.image.RgbImage;
+import model.image.CommonImage;
 
 /**
  * For JPG and PNG files, we will use the ImageIO class from the Java standard library.
@@ -77,9 +79,9 @@ public class CommonFormatsFileAdapter implements IOFileByFormat {
       }
     }
     if (isGrayscale) {
-      return new GreyscaleImage(redPixels);
+      return  ImageFactory.createImage(Collections.singletonList(redPixels));
     }
-    return new RgbImage(redPixels, greenPixels, bluePixels);
+    return ImageFactory.createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
 
   }
 }
