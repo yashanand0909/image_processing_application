@@ -1,14 +1,14 @@
 import commonlabels.ImageFormats;
-import image.ImageInterface;
-import imageio.CommonFormatsFileAdapter;
+import model.image.ImageInterface;
+import model.imageio.CommonFormatsFileAdapter;
 import java.io.IOException;
 import java.util.List;
-import operations.split.SplitImage;
+import model.operations.split.SplitImage;
 import org.junit.Test;
 
 public class TestingFunctions {
 
-  @Test
+  /*@Test
   public void test() throws IOException {
     CommonFormatsFileAdapter commonFormatsFileAdapter = new CommonFormatsFileAdapter();
     ImageInterface image = commonFormatsFileAdapter.decodeImage("/Users/yashanand/Documents/PDP_assignment_4/manhattan-small.png");
@@ -18,6 +18,6 @@ public class TestingFunctions {
     for ( int i=0;i<flipedImage.size();i++)
       commonFormatsFileAdapter.encodeAndSaveImage("/Users/yashanand/Documents/PDP_assignment_4/manhattan-new-small-dark-"+i+".png",flipedImage.get(i),
         ImageFormats.PNG);
-  }
+  }*/
 
 }
