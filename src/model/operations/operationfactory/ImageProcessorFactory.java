@@ -14,7 +14,7 @@ import model.operations.filters.SharpenFilter;
 import model.operations.merge.MergeSingleChannelImages;
 import model.operations.pixeloffset.BrightnessOperation;
 import model.operations.rotation.VerticalFlipOperation;
-import model.operations.split.SplitImage;
+import model.operations.split.SplitImageOperation;
 
 /**
  * This class represents a factory for image operations.
@@ -51,7 +51,7 @@ public class ImageProcessorFactory {
       case Sepia:
         return new Sepia().apply(images.get(0));
       case SplitImage:
-        return new SplitImage().apply(images.get(0), operator);
+        return new SplitImageOperation().apply(images.get(0), operator);
       case Brightness:
         return new BrightnessOperation().apply(images.get(0), operator);
       case Intensity:

@@ -10,7 +10,7 @@ import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 /**
  * This class represents a split image operation.
  */
-public class SplitImage implements SingleImageProcessorWithOffset {
+public class SplitImageOperation implements SingleImageProcessorWithOffset {
   /**
    * This method splits the image on the given channel (all other channels are zero)
    * and returns the processed image.

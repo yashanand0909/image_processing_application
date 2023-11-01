@@ -1,10 +1,21 @@
 package logger;
 
-import java.io.OutputStream;
+import java.io.IOException;
 
 public class ViewLogger {
-  public static void logException(Exception e){
-    System.out.println(e.getMessage());
+
+  private final Appendable out;
+
+  public ViewLogger(Appendable out) {
+    this.out = out;
+  }
+
+  public void logException(Exception e) {
+    try {
+      this.out.append(e.getMessage());
+    } catch (IOException ex) {
+      System.out.println(ex.getMessage());
+    }
   }
 
 }

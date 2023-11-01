@@ -1,10 +1,9 @@
-import java.util.Scanner;
-
-import controller.ImageProcessorCLI;
+import controller.ImageProcessorController;
+import java.io.InputStreamReader;
 
 public class ImageProcessingApplication {
   public static void main(String[] args) {
-    ImageProcessorCLI imageProcessorCLI = new ImageProcessorCLI();
-    imageProcessorCLI.startImageProcessingController();
+    ImageProcessorController imageProcessorController = new ImageProcessorController(new InputStreamReader(System.in), System.out);
+    imageProcessorController.startImageProcessingController();
   }
 }
