@@ -46,7 +46,7 @@ public class ImageProcessorCLI {
         case "load":
           if (parts.length != 3) {
             throw new IllegalArgumentException(
-                    "Invalid load command. Usage: load <image-name> <image-path>");
+                    "Invalid load command. Usage: load <image-path> <image-name>");
           } else {
             images.put(parts[2], IOFileFactory.decodeImage(parts[1]));
           }
@@ -54,10 +54,10 @@ public class ImageProcessorCLI {
         case "save":
           if (parts.length != 3) {
             throw new IllegalArgumentException(
-                    "Invalid save command. Usage: save <image-name> <image-path>");
+                    "Invalid save command. Usage: save <image-path> <image-name>");
           } else {
             if (images.containsKey(parts[2])) {
-              IOFileFactory.encodeAndSaveImage(parts[2], images.get(parts[2]));
+              IOFileFactory.encodeAndSaveImage(parts[1], images.get(parts[2]));
             }
           }
           break;
@@ -75,7 +75,7 @@ public class ImageProcessorCLI {
                       "Invalid request : An Image exist with the name " + parts[3]);
             }
             // Add call to module factory
-            List<ImageInterface> imageList = Collections.singletonList(images.get(parts[2]));
+            List<ImageInterface> imageList = Collections.singletonList(images.get(parts[3]));
             ImageInterface newImage = ImageProcessorFactory.performOperation(imageList,
                     ImageOperations.fromString(parts[0]), parts[1]);
             images.put(parts[3], newImage);
