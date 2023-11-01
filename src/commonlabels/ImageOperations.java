@@ -32,4 +32,19 @@ public enum ImageOperations {
   public String toString() {
     return stringValue;
   }
+
+  /**
+   * Returns the ImageOperation object corresponding to the given string value.
+   *
+   * @param text the string value of the image format
+   * @return the ImageOperation object corresponding to the given string value
+   */
+  public static ImageOperations fromString(String text) {
+    for (ImageOperations b : ImageOperations.values()) {
+      if (b.stringValue.equalsIgnoreCase(text)) {
+        return b;
+      }
+    }
+    return null;
+  }
 }

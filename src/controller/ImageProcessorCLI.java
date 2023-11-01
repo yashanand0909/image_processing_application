@@ -2,8 +2,9 @@ package controller;
 
 import commonlabels.ImageOperations;
 import commonlabels.InputType;
-import image.ImageInterface;
-import imageio.IOFileFactory;
+import model.image.ImageInterface;
+import model.imageio.IOFileFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,8 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
 import logger.ViewLogger;
-import operations.operationfactory.ImageProcessorFactory;
+import model.operations.operationfactory.ImageProcessorFactory;
 
 public class ImageProcessorCLI {
 
@@ -25,13 +27,10 @@ public class ImageProcessorCLI {
     images = new HashMap<>();
   }
 
-  public void startImageProcessingController(InputType inputType){
+  public void startImageProcessingController() {
     try {
-      switch (inputType) {
-        case CLI -> handleCommands();
-        case FILE -> handleScriptFile();
-      }
-    } catch (Exception e){
+        handleCommands();
+    } catch (Exception e) {
       ViewLogger.logException(e);
     }
   }
@@ -47,7 +46,7 @@ public class ImageProcessorCLI {
         case "load":
           if (parts.length != 3) {
             throw new IllegalArgumentException(
-                "Invalid load command. Usage: load <image-name> <image-path>");
+                    "Invalid load command. Usage: load <image-name> <image-path>");
           } else {
             images.put(parts[2], IOFileFactory.decodeImage(parts[1]));
           }
@@ -55,7 +54,7 @@ public class ImageProcessorCLI {
         case "save":
           if (parts.length != 3) {
             throw new IllegalArgumentException(
-                "Invalid save command. Usage: save <image-name> <image-path>");
+                    "Invalid save command. Usage: save <image-name> <image-path>");
           } else {
             if (images.containsKey(parts[2])) {
               IOFileFactory.encodeAndSaveImage(parts[2], images.get(parts[2]));
@@ -65,20 +64,20 @@ public class ImageProcessorCLI {
         case "brighten":
           if (parts.length != 4) {
             throw new IllegalArgumentException(
-                "Invalid save command. Usage: save <brightness-factor> <current-image-name> <new-image-name>");
+                    "Invalid save command. Usage: save <brightness-factor> <current-image-name> <new-image-name>");
           } else {
             if (!images.containsKey(parts[2])) {
               throw new IllegalArgumentException(
-                  "Invalid request : No image exist with the name " + parts[2]);
+                      "Invalid request : No image exist with the name " + parts[2]);
             }
             if (images.containsKey(parts[3])) {
               throw new IllegalArgumentException(
-                  "Invalid request : An Image exist with the name " + parts[3]);
+                      "Invalid request : An Image exist with the name " + parts[3]);
             }
             // Add call to module factory
             List<ImageInterface> imageList = Collections.singletonList(images.get(parts[2]));
             ImageInterface newImage = ImageProcessorFactory.performOperation(imageList,
-                ImageOperations.valueOf(parts[0]), parts[1]);
+                    ImageOperations.fromString(parts[0]), parts[1]);
             images.put(parts[3], newImage);
           }
           break;
@@ -95,91 +94,96 @@ public class ImageProcessorCLI {
         case "sepia":
           if (parts.length != 3) {
             throw new IllegalArgumentException(
-                "Invalid green-component command. Usage: red-component <image-name> <dest-image-name>");
+                    "Invalid green-component command. Usage: red-component <image-name> <dest-image-name>");
           } else {
             if (!images.containsKey(parts[1])) {
               throw new IllegalArgumentException(
-                  "Invalid request : No image exist with the name " + parts[1]);
+                      "Invalid request : No image exist with the name " + parts[1]);
             }
             if (images.containsKey(parts[2])) {
               throw new IllegalArgumentException(
-                  "Invalid request : An Image exist with the name " + parts[2]);
+                      "Invalid request : An Image exist with the name " + parts[2]);
             }
             // Add call to module factory
             List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
             ImageInterface newImage = ImageProcessorFactory.performOperation(imageList,
-                ImageOperations.valueOf(parts[0]), null);
+                    ImageOperations.fromString(parts[0]), null);
             images.put(parts[2], newImage);
           }
           break;
         case "rgb-split":
           if (parts.length != 5) {
             throw new IllegalArgumentException(
-                "Invalid rgb-split command. Usage: rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> <dest-image-name-blue>");
+                    "Invalid rgb-split command. Usage: rgb-split <image-name> <dest-image-name-red> <dest-image-name-green> <dest-image-name-blue>");
           } else {
             if (!images.containsKey(parts[1])) {
               throw new IllegalArgumentException(
-                  "Invalid request : No image exist with the name " + parts[1]);
+                      "Invalid request : No image exist with the name " + parts[1]);
             }
             if (images.containsKey(parts[2])) {
               throw new IllegalArgumentException(
-                  "Invalid request : An Image exist with the name " + parts[2]);
+                      "Invalid request : An Image exist with the name " + parts[2]);
             }
             if (images.containsKey(parts[3])) {
               throw new IllegalArgumentException(
-                  "Invalid request : An Image exist with the name " + parts[3]);
+                      "Invalid request : An Image exist with the name " + parts[3]);
             }
             if (images.containsKey(parts[4])) {
               throw new IllegalArgumentException(
-                  "Invalid request : An Image exist with the name " + parts[4]);
+                      "Invalid request : An Image exist with the name " + parts[4]);
             }
             if (parts[2].equals(parts[3]) || parts[3].equals(parts[4]) || parts[4]
-                .equals(parts[2])) {
+                    .equals(parts[2])) {
               throw new IllegalArgumentException(
-                  "Invalid request : Red Blue and Green image name cannot be same");
+                      "Invalid request : Red Blue and Green image name cannot be same");
             }
             // Add call to module factory
             for (int i = 0; i < 3; i++) {
               List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
               ImageInterface newImage = ImageProcessorFactory.performOperation(imageList,
-                  ImageOperations.valueOf(parts[0]), i);
-              images.put(parts[i+2], newImage);
+                      ImageOperations.fromString(parts[0]), i);
+              images.put(parts[i + 2], newImage);
             }
           }
           break;
         case "rgb-combine":
           if (parts.length != 5) {
             throw new IllegalArgumentException(
-                "Invalid rgb-combine command. Usage: rgb-combine <image-name> <red-image> <green-image> <blue-image>");
+                    "Invalid rgb-combine command. Usage: rgb-combine <image-name> <red-image> <green-image> <blue-image>");
           } else {
             if (images.containsKey(parts[1])) {
               throw new IllegalArgumentException(
-                  "Invalid request : An Image exist with the name " + parts[1]);
+                      "Invalid request : An Image exist with the name " + parts[1]);
             }
             if (!images.containsKey(parts[2])) {
               throw new IllegalArgumentException(
-                  "Invalid request : No image exist with the name " + parts[2]);
+                      "Invalid request : No image exist with the name " + parts[2]);
             }
             if (!images.containsKey(parts[3])) {
               throw new IllegalArgumentException(
-                  "Invalid request : No image exist with the name " + parts[3]);
+                      "Invalid request : No image exist with the name " + parts[3]);
             }
             if (!images.containsKey(parts[4])) {
               throw new IllegalArgumentException(
-                  "Invalid request : No image exist with the name " + parts[4]);
+                      "Invalid request : No image exist with the name " + parts[4]);
             }
             List<ImageInterface> imageList = new ArrayList<>();
             for (int i = 2; i < 5; i++) {
               imageList = Collections.singletonList(images.get(parts[i]));
             }
             ImageInterface newImage = ImageProcessorFactory.performOperation(imageList,
-                ImageOperations.valueOf(parts[0]), null);
+                    ImageOperations.fromString(parts[0]), null);
             images.put(parts[1], newImage);
           }
           break;
+
+        case "run": {
+          handleScriptFile(parts);
+          break;
+        }
         default:
           throw new IllegalArgumentException(
-              "Unknown command. Try again or type 'exit' to quit.");
+                  "Unknown command. Try again or type 'exit' to quit.");
       }
     } catch (Exception e) {
       ViewLogger.logException(e);
@@ -206,23 +210,25 @@ public class ImageProcessorCLI {
     System.exit(0);
   }
 
-  private void handleScriptFile() throws IOException {
-    Scanner scanner = new Scanner(System.in);
-    System.out.print("Enter the script file name: ");
-    String scriptFileName = scanner.nextLine();
-    File scriptFile = new File(scriptFileName);
-    if (scriptFile.exists() && scriptFile.isFile()) {
-      try (BufferedReader reader = new BufferedReader(new FileReader(scriptFile))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-          String[] parts = line.split(" ");
-          if (parts.length == 0) {
-            System.out.println("Invalid command in the script file.");
+  private void handleScriptFile(String[] commandInput) throws IOException {
+    if (commandInput.length != 2) {
+      throw new IllegalArgumentException(
+              "Invalid run command. Usage: run <script-file-name>");
+    } else {
+      File scriptFile = new File(commandInput[1]);
+
+      if (scriptFile.exists() && scriptFile.isFile()) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(scriptFile))) {
+          String line;
+          while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(" ");
+            if (parts.length == 0) {
+              System.out.println("Invalid command in the script file.");
+            }
+            processCommands(parts);
           }
-          processCommands(parts);
         }
       }
     }
   }
-
 }
