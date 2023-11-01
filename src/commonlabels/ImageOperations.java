@@ -1,5 +1,8 @@
 package commonlabels;
 
+/**
+ * This enum represents the input type.
+ */
 public enum ImageOperations {
   Intensity("intensity-component"),
   Value("value-component"),

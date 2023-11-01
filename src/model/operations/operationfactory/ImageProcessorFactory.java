@@ -51,6 +51,9 @@ public class ImageProcessorFactory {
       case Sepia:
         return new Sepia().apply(images.get(0));
       case SplitImage:
+      case SplitImageByRedChannel:
+      case SplitImageByGreenChannel:
+      case SplitImageByBlueChannel:
         return new SplitImageOperation().apply(images.get(0), operator);
       case Brightness:
         return new BrightnessOperation().apply(images.get(0), operator);

@@ -26,9 +26,11 @@ public class MergeSingleChannelImages implements MultipleToSingleImageProcessor 
     int previousWidth = -1;
     validateImages(images);
     List<int[][]> imageChannel = new ArrayList<>();
+    int imageNumber = 0;
     for (ImageInterface image : images) {
-      if (image.getChannel().size() != 1) {
-        throw new IllegalArgumentException("Should pass in single channel images");
+      if (image.getChannel().size() == images.size()) {
+        throw new IllegalArgumentException("Number of images and " +
+                "number of channels should be same");
       }
       if (previousHeight != -1 && image.getHeight() != previousHeight) {
         throw new IllegalArgumentException("Images should have the same height");
@@ -36,9 +38,14 @@ public class MergeSingleChannelImages implements MultipleToSingleImageProcessor 
       if (previousWidth != -1 && image.getWidth() != previousWidth) {
         throw new IllegalArgumentException("Images should have the same width");
       }
-      imageChannel.add(image.getChannel().get(0));
+      if (images.get(0).getChannel().size() == 1) {
+        imageChannel.add(image.getChannel().get(0));
+      } else {
+        imageChannel.add(image.getChannel().get(imageNumber));
+      }
       previousHeight = image.getHeight();
       previousWidth = image.getWidth();
+      imageNumber++;
     }
     return ImageFactory.createImage(imageChannel);
   }
