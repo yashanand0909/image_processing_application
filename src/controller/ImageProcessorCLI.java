@@ -29,7 +29,7 @@ public class ImageProcessorCLI {
 
   public void startImageProcessingController() {
     try {
-        handleCommands();
+      handleCommands();
     } catch (Exception e) {
       ViewLogger.logException(e);
     }
@@ -91,6 +91,7 @@ public class ImageProcessorCLI {
         case "vertical-flip":
         case "blur":
         case "sharpen":
+        case "greyscale":
         case "sepia":
           if (parts.length != 3) {
             throw new IllegalArgumentException(
@@ -169,7 +170,7 @@ public class ImageProcessorCLI {
             }
             List<ImageInterface> imageList = new ArrayList<>();
             for (int i = 2; i < 5; i++) {
-              imageList = Collections.singletonList(images.get(parts[i]));
+              imageList.add(images.get(parts[i]));
             }
             ImageInterface newImage = ImageProcessorFactory.performOperation(imageList,
                     ImageOperations.fromString(parts[0]), null);

@@ -2,9 +2,12 @@ package model.operations.colortransformation;
 
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import model.operations.operationinterfaces.SingleImageProcessor;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,7 +52,7 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
         newBlueChannel[i][j] = Math.min(newBlue, 255);
       }
     }
-    List<int[][]> newImageChannelList = Arrays.asList(newRedChannel,newGreenChannel, newBlueChannel);
+    List<int[][]> newImageChannelList = new ArrayList<>(Collections.singleton(newRedChannel));
     return ImageFactory.createImage(newImageChannelList);
   }
 
