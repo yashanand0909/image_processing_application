@@ -49,6 +49,7 @@ public class CommonFormatsFileAdapterTest {
     assertArrayEquals(redPixels, decodedImage.getChannel().get(0));
     assertArrayEquals(greenPixels, decodedImage.getChannel().get(1));
     assertArrayEquals(bluePixels, decodedImage.getChannel().get(2));
+    new File(outputFileName).delete();
   }
 
   @Test
@@ -80,6 +81,7 @@ public class CommonFormatsFileAdapterTest {
     assertArrayEquals(redPixels, decodedImage.getChannel().get(0));
     assertArrayEquals(greenPixels, decodedImage.getChannel().get(1));
     assertArrayEquals(bluePixels, decodedImage.getChannel().get(2));
+    testImageFile.delete();
   }
 
   @Test(expected = IOException.class)
@@ -104,6 +106,7 @@ public class CommonFormatsFileAdapterTest {
         {20, 30}
     };
     assertArrayEquals(grayPixels, decodedImage.getChannel().get(0));
+    testImageFile.delete();
   }
 
   @Test
@@ -123,5 +126,6 @@ public class CommonFormatsFileAdapterTest {
     fileAdapter.encodeAndSaveImage(outputFileName, image, ImageFormats.PNG);
     ImageInterface decodedImage = fileAdapter.decodeImage(outputFileName);
     assertArrayEquals(greyPixels, decodedImage.getChannel().get(0));
+    new File(outputFileName).delete();
   }
 }

@@ -2,7 +2,7 @@ load res/images/open-source-image-original.png open-source
 rgb-split open-source open-source-small-red open-source-small-green open-source-small-blue
 greyscale open-source open-source-grey
 sharpen open-source open-source-sharp
-sepia open-sourceopen-source-sepia
+sepia open-source open-source-sepia
 brighten 20 open-source open-source-brighten
 blur open-source open-source-blur
 horizontal-flip open-source open-source-horizontal-flip

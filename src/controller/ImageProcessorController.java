@@ -58,7 +58,7 @@ public class ImageProcessorController implements ControllerInterface {
 
     while (true) {
       try {
-        this.out.append("Enter a command: \n");
+        this.out.append("Enter a command:");
         input = scanner.nextLine();
         String[] parts = input.split(" ");
 
@@ -97,11 +97,15 @@ public class ImageProcessorController implements ControllerInterface {
         try (BufferedReader reader = new BufferedReader(new FileReader(scriptFile))) {
           String line;
           while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(" ");
-            if (parts.length == 0) {
-              throw new IllegalArgumentException("Invalid command in the script file.");
+            try {
+              String[] parts = line.split(" ");
+              if (parts.length == 0) {
+                throw new IllegalArgumentException("Invalid command in the script file.");
+              }
+              imageProcessorModel.processCommands(parts);
+            } catch (Exception e) {
+              viewLogger.logException(e);
             }
-            imageProcessorModel.processCommands(parts);
           }
         }
       } else {

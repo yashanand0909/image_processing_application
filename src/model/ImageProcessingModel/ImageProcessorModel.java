@@ -137,7 +137,7 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
       case "red-component":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
-                  "Invalid green-component command. Usage: command <image-name> <dest-image-name>");
+              "Invalid red-component command. Usage: command <image-name> <dest-image-name>");
         } else {
           if (!images.containsKey(parts[1])) {
             throw new IllegalArgumentException(
@@ -177,7 +177,7 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
       case "blue-component":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
-                  "Invalid green-component command. Usage: command <image-name> <dest-image-name>");
+              "Invalid red-component command. Usage: command <image-name> <dest-image-name>");
         } else {
           if (!images.containsKey(parts[1])) {
             throw new IllegalArgumentException(
@@ -205,7 +205,7 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
       case "sepia":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
-                  "Invalid green-component command. Usage: command <image-name> <dest-image-name>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name>");
         } else {
           if (!images.containsKey(parts[1])) {
             throw new IllegalArgumentException(
