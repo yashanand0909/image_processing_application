@@ -25,5 +25,7 @@ rgb-split <img-var-name> <new-img-var-name1> <new-img-var-name2> <new-img-var-na
 To load the plug and play script file use the following command:
 ```run script.txt
 
+Image used for testing is provided in the resources folder and is named as open-source-image-original.png image is open source and can be freely used as per the license.
+
 ### Design
 MVC design pattern is used to design the application. The model contains the image class which contains the image data and the methods to manipulate the image. The view contains the viewlogger class which is responsible for displaying the success and error messages. The controller contains the controller class which is responsible for taking the input from the user and calling the appropriate methods in the model and view.
