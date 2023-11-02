@@ -1,14 +1,21 @@
 package controller;
 
 import java.io.IOException;
+
 import model.operations.ImageProcessingModel.ImageProcessorModelInterface;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+
 import java.io.StringReader;
 import java.io.StringWriter;
+
 import logger.ViewLogger;
 import model.operations.ImageProcessingModel.ImageProcessorModel;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ImageProcessorControllerTest {
 
@@ -17,17 +24,17 @@ public class ImageProcessorControllerTest {
   private ImageProcessorModel model;
   private ViewLogger logger;
 
-   static class MockModel implements ImageProcessorModelInterface {
+  static class MockModel implements ImageProcessorModelInterface {
     private final StringBuilder log;
 
-     public MockModel(StringBuilder log) {
-       this.log = log;
-     }
+    public MockModel(StringBuilder log) {
+      this.log = log;
+    }
 
-     @Override
+    @Override
     public void processCommands(String[] parts) throws IOException {
       for (String s : parts)
-      log.append(s);
+        log.append(s);
     }
   }
 
@@ -41,7 +48,7 @@ public class ImageProcessorControllerTest {
 
   @Test
   public void testHandleValidCommands() {
-     StringBuilder s = new StringBuilder();
+    StringBuilder s = new StringBuilder();
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock, new StringReader("load path/to/image.jpg image1 \nexit"), out);
     controller.startImageProcessingController();
@@ -66,8 +73,8 @@ public class ImageProcessorControllerTest {
   @Test
   public void testHandleMultipleCommands() {
     String scriptContent = "load path/to/image.jpg image1\n"
-        + "brighten 10 image1 image2\n"
-        + "exit\n";
+            + "brighten 10 image1 image2\n"
+            + "exit\n";
     StringBuilder s = new StringBuilder();
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock, new StringReader(scriptContent), out);

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
 
 public class ImageFactoryTest {
@@ -54,9 +55,9 @@ public class ImageFactoryTest {
     List<int[][]> channelList = List.of(channel1, channel2, channel3);
     List<int[][]> returnChannleList = ImageFactory.createImage(channelList).getChannel();
 
-    for (int i=0;i<2;i++){
-      for (int j=0;j<2;j++){
-        for (int w=0;w<2;w++){
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 2; j++) {
+        for (int w = 0; w < 2; w++) {
           assertEquals(channelList.get(i)[j][w], returnChannleList.get(i)[j][w]);
         }
       }

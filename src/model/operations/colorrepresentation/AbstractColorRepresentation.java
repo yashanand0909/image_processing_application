@@ -1,5 +1,6 @@
 package model.operations.colorrepresentation;
 
+import java.util.Collections;
 import java.util.List;
 
 import model.image.ImageFactory;
@@ -32,8 +33,7 @@ public abstract class AbstractColorRepresentation implements SingleImageProcesso
         performOperation(image, valueChannel, i, j);
       }
     }
-    imageChannel.add(valueChannel);
-    return ImageFactory.createImage(imageChannel);
+    return ImageFactory.createImage(Collections.singletonList(valueChannel));
   }
 
   /**

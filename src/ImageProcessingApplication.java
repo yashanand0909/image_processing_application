@@ -1,4 +1,5 @@
 import controller.ImageProcessorController;
+
 import java.io.InputStreamReader;
 import logger.ViewLogger;
 import model.operations.ImageProcessingModel.ImageProcessorModel;

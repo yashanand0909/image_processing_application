@@ -37,31 +37,31 @@ public class ImageProcessorFactory {
     }
 
     switch (operation) {
-      case Blur:
+      case BLUR:
         return new BlurFilter().apply(images.get(0));
-      case Sharpen:
+      case SHARPEN:
         return new SharpenFilter().apply(images.get(0));
-      case HorizontalFlip:
+      case HORIZONTAL_FLIP:
         return new HorizontalFlipOperation().apply(images.get(0));
-      case VerticalFlip:
+      case VERTICAL_FLIP:
         return new VerticalFlipOperation().apply(images.get(0));
-      case Greyscale:
-      case Luma:
+      case GREYSCALE:
+      case LUMA:
         return new Greyscale().apply(images.get(0));
-      case Sepia:
+      case SEPIA:
         return new Sepia().apply(images.get(0));
-      case SplitImage:
-      case SplitImageByRedChannel:
-      case SplitImageByGreenChannel:
-      case SplitImageByBlueChannel:
+      case SPLIT_IMAGE:
+      case SPLIT_IMAGE_BY_RED_CHANNEL:
+      case SPLIT_IMAGE_BY_GREEN_CHANNEL:
+      case SPLIT_IMAGE_BY_BLUE_CHANNEL:
         return new SplitImageOperation().apply(images.get(0), operator);
-      case Brightness:
+      case BRIGHTNESS:
         return new BrightnessOperation().apply(images.get(0), operator);
-      case Intensity:
+      case INTENSITY:
         return new Intensity().apply(images.get(0));
-      case Value:
+      case VALUE:
         return new Value().apply(images.get(0));
-      case MergeSingleChannelImages:
+      case MERGE_SINGLE_CHANNEL_IMAGES:
         return new MergeSingleChannelImages().apply(images);
       default:
         throw new IllegalArgumentException("Invalid operation");

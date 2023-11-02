@@ -2,7 +2,9 @@ package model.image;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CommonImageTest {
 
@@ -46,7 +48,7 @@ public class CommonImageTest {
     builder.addChannel(channel1);
     builder.addChannel(channel2);
     builder.build();
-    }
+  }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidHeight() {

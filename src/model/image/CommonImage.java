@@ -20,8 +20,8 @@ public class CommonImage implements ImageInterface {
   private CommonImage(List<int[][]> channels) throws IllegalArgumentException {
     int height = channels.get(0).length;
     int width = channels.get(0)[0].length;
-    for (int i=1;i<channels.size();i++){
-      if (channels.get(i).length != height || channels.get(i)[0].length != width){
+    for (int i = 1; i < channels.size(); i++) {
+      if (channels.get(i).length != height || channels.get(i)[0].length != width) {
         throw new IllegalArgumentException("Number of rows and columns must be the same");
       }
     }
