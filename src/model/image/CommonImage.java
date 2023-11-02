@@ -18,10 +18,12 @@ public class CommonImage implements ImageInterface {
    * @throws IllegalArgumentException if the number of channels is not 3
    */
   private CommonImage(List<int[][]> channels) throws IllegalArgumentException {
-    if (channels.get(0).length != channels.get(1).length || channels.get(0).length != channels.get(2).length
-            || channels.get(0)[0].length != channels.get(1)[0].length
-            || channels.get(0)[0].length != channels.get(2)[0].length) {
-      throw new IllegalArgumentException("Number of rows and columns must be the same");
+    int height = channels.get(0).length;
+    int width = channels.get(0)[0].length;
+    for (int i=1;i<channels.size();i++){
+      if (channels.get(i).length != height || channels.get(i)[0].length != width){
+        throw new IllegalArgumentException("Number of rows and columns must be the same");
+      }
     }
     this.channels = channels;
     this.height = channels.get(0).length;

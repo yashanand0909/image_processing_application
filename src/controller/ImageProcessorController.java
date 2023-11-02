@@ -49,7 +49,7 @@ public class ImageProcessorController implements ControllerInterface {
       input = scanner.nextLine();
       String[] parts = input.split(" ");
 
-      if (parts.length == 0) {
+      if (parts.length == 1) {
         throw new IllegalArgumentException("Invalid command. Try again.");
       }
       if (parts[0].equals("exit")) {
@@ -61,7 +61,6 @@ public class ImageProcessorController implements ControllerInterface {
       imageProcessorModel.processCommands(parts);
       viewLogger.LogString("Command ran successfully \n");
     }
-    System.exit(0);
   }
 
   /**

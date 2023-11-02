@@ -39,12 +39,32 @@ public class CommonImageTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testInvalidImageCreation() {
+  public void testInvalidWidth() {
     CommonImage.ImageBuilder builder = new CommonImage.ImageBuilder();
     int[][] channel1 = {{255, 0}, {0, 255}};
-    int[][] channel2 = {{0, 255}, {255, 0}};
+    int[][] channel2 = {{0, 255, 0}, {255, 0, 0}};
     builder.addChannel(channel1);
     builder.addChannel(channel2);
     builder.build();
     }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidHeight() {
+    CommonImage.ImageBuilder builder = new CommonImage.ImageBuilder();
+    int[][] channel1 = {{255, 0}, {0, 255}};
+    int[][] channel2 = {{0, 255}, {255, 0}, {255, 0}};
+    builder.addChannel(channel1);
+    builder.addChannel(channel2);
+    builder.build();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalid() {
+    CommonImage.ImageBuilder builder = new CommonImage.ImageBuilder();
+    int[][] channel1 = {{255, 0}, {0, 255}};
+    int[][] channel2 = {{0, 255, 0}, {255, 0}};
+    builder.addChannel(channel1);
+    builder.addChannel(channel2);
+    builder.build();
+  }
 }

@@ -17,8 +17,8 @@ public class ImageProcessorControllerTest {
   private ImageProcessorModel model;
   private ViewLogger logger;
 
-   class MockModel implements ImageProcessorModelInterface {
-    private StringBuilder log;
+   static class MockModel implements ImageProcessorModelInterface {
+    private final StringBuilder log;
 
      public MockModel(StringBuilder log) {
        this.log = log;
@@ -35,7 +35,7 @@ public class ImageProcessorControllerTest {
   public void setUp() {
     out = new StringWriter();
     logger = new ViewLogger(out);
-    model = new ImageProcessorModel(); // You can create a mock or stub for ImageProcessorModel
+    model = new ImageProcessorModel();
 
   }
 
@@ -45,52 +45,34 @@ public class ImageProcessorControllerTest {
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock, new StringReader("load path/to/image.jpg image1 \nexit"), out);
     controller.startImageProcessingController();
-    assertEquals("load path/to/image.jpg image1", s.toString());
+    assertEquals("loadpath/to/image.jpgimage1", s.toString());
     assertTrue(out.toString().contains("Command ran successfully"));
   }
 
   @Test
   public void testHandleExitCommand() {
-    controller = new ImageProcessorController(logger, model, new StringReader("load path/to/image.jpg image1 \nexit"), out);
-    assertEquals("", out.toString());
-    // Ensure that no output is generated for the exit command
+    controller = new ImageProcessorController(logger, model, new StringReader("exit"), out);
+    controller.startImageProcessingController();
+    assertEquals("Enter a command: \n", out.toString());
   }
 
   @Test
   public void testHandleInvalidCommands() {
-    controller = new ImageProcessorController(logger, model, new StringReader("load path/to/image.jpg image1 \nexit"), out);
+    controller = new ImageProcessorController(logger, model, new StringReader("\nexit"), out);
+    controller.startImageProcessingController();
     assertTrue(out.toString().contains("Invalid command. Try again."));
-
-    controller = new ImageProcessorController(logger, model, new StringReader("load path/to/image.jpg image1 \nexit"), out);
-    assertTrue(out.toString().contains("Unknown command. Try again"));
-
-    controller = new ImageProcessorController(logger, model, new StringReader("load path/to/image.jpg image1 \nexit"), out);
-    assertTrue(out.toString().contains("Invalid load command. Try again."));
-
-    // Add more test cases to cover various invalid command scenarios
   }
 
   @Test
-  public void testHandleScriptFile() {
+  public void testHandleMultipleCommands() {
     String scriptContent = "load path/to/image.jpg image1\n"
         + "brighten 10 image1 image2\n"
         + "exit\n";
-    controller = new ImageProcessorController(logger, model, new StringReader("load path/to/image.jpg image1 \nexit"), out);
-
-    assertTrue(out.toString().contains("Command ran successfully"));
-    // Add assertions to validate the expected behavior of script execution
+    StringBuilder s = new StringBuilder();
+    MockModel modelMock = new MockModel(s);
+    controller = new ImageProcessorController(logger, modelMock, new StringReader(scriptContent), out);
+    controller.startImageProcessingController();
+    assertEquals("loadpath/to/image.jpgimage1brighten10image1image2", s.toString());
   }
 
-  @Test
-  public void testHandleInvalidScriptFile() {
-    String invalidScript = "invalid-command\n";
-    controller = new ImageProcessorController(logger, model, new StringReader("load path/to/image.jpg image1 \nexit"), out);
-
-    assertTrue(out.toString().contains("Invalid command in the script file."));
-
-    controller = new ImageProcessorController(logger, model, new StringReader("load path/to/image.jpg image1 \nexit"), out);
-    assertTrue(out.toString().contains("Invalid run command. Usage: run <script-file-name>"));
-  }
-
-  // You can add more test cases for specific scenarios or edge cases as needed
 }
