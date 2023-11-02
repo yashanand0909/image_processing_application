@@ -14,7 +14,7 @@ public class CommonImage implements ImageInterface {
   /**
    * Constructs a RGB image object with the given height, width and channels.
    *
-   * @param channels   the list of channels of the image
+   * @param channels the list of channels of the image
    * @throws IllegalArgumentException if the number of channels is not 3
    */
   private CommonImage(List<int[][]> channels) throws IllegalArgumentException {
@@ -28,33 +28,64 @@ public class CommonImage implements ImageInterface {
     this.width = channels.get(0)[0].length;
   }
 
-  public static class ImageBuilder{
+  /**
+   * This method returns the builder of the image.
+   */
+  public static class ImageBuilder {
     private List<int[][]> channles;
 
+    /**
+     * Constructs a image builder object.
+     */
     public ImageBuilder() {
       this.channles = new ArrayList<>();
     }
 
-    public void addChannel(int[][] channel){
+    /**
+     * This method adds a channel to the image.
+     *
+     * @param channel the channel to be added
+     */
+    public void addChannel(int[][] channel) {
       this.channles.add(channel);
     }
 
-    public ImageInterface build(){
+    /**
+     * This method builds the image.
+     *
+     * @return the image
+     */
+    public ImageInterface build() {
       return new CommonImage(channles);
     }
 
   }
 
+  /**
+   * This method returns the channels of the image.
+   *
+   * @return the channels of the image
+   */
   @Override
   public List<int[][]> getChannel() {
     return new ArrayList<>(channels);
   }
 
+  /**
+   * This method returns the height of the image.
+   *
+   * @return the height of the image
+   */
   @Override
   public int getHeight() {
     return height;
   }
 
+  /**
+   * This method returns the width of the image.
+   *
+   * @return the width of the image
+   */
   @Override
   public int getWidth() {
     return width;

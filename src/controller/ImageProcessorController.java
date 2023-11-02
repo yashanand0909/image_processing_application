@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import logger.ViewLogger;
-import model.operations.ImageProcessingModel.ImageProcessorModel;
 import model.operations.ImageProcessingModel.ImageProcessorModelInterface;
 
 public class ImageProcessorController implements ControllerInterface {
