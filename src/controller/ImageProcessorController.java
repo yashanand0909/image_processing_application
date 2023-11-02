@@ -46,22 +46,27 @@ public class ImageProcessorController implements ControllerInterface {
     String input;
 
     while (true) {
-      this.out.append("Enter a command: \n");
-      input = scanner.nextLine();
-      String[] parts = input.split(" ");
+      try {
+        this.out.append("Enter a command: \n");
+        input = scanner.nextLine();
+        String[] parts = input.split(" ");
 
-      if (parts.length == 1 && !parts[0].equals("exit")) {
-        throw new IllegalArgumentException("Invalid command. Try again.");
+        if (parts.length == 1 && !parts[0].equals("exit")) {
+          throw new IllegalArgumentException("Invalid command. Try again.");
+        }
+        if (parts[0].equals("exit")) {
+          break;
+        }
+        if (parts[0].equals("run")) {
+          handleScriptFile(parts);
+        } else {
+          imageProcessorModel.processCommands(parts);
+        }
+        viewLogger.LogString("Command ran successfully \n");
       }
-      if (parts[0].equals("exit")) {
-        break;
+      catch(Exception e){
+        viewLogger.logException(e);
       }
-      if (parts[0].equals("run")) {
-        handleScriptFile(parts);
-      } else {
-        imageProcessorModel.processCommands(parts);
-      }
-      viewLogger.LogString("Command ran successfully \n");
     }
   }
 
