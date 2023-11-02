@@ -158,6 +158,16 @@ public class IntegrationTest {
   }
 
   @Test
+  public void testUnknownCommand() {
+    String loadCommand = "load " + imagePath + " test\n";
+    String unknownCommand = "unknown test test_unknown\n";
+    imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
+            new StringReader(loadCommand + unknownCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Unknown command"));
+  }
+
+  @Test
   public void testGreenComponentFlow() throws IOException {
     String newImagePath = "test_image_green_component.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
