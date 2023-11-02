@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import org.junit.Before;
@@ -90,4 +91,32 @@ public class PPMFileAdapterTest {
     File file = new File(testFileName);
     assertTrue(Files.deleteIfExists(file.toPath()));
   }
+
+  @Test
+  public void testEncodeAndSaveGrayscaleImage() throws IOException {
+    int width = 3;
+    int height = 2;
+    int[][] greyPixels = new int[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        greyPixels[i][j] = i * width + j;
+      }
+    }
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(greyPixels));
+
+    // Encoding and saving grayscale image
+    String outputFileName = "test_output.ppm";
+    fileAdapter.encodeAndSaveImage(outputFileName, image, ImageFormats.PPM);
+
+    // Decoding the saved image for verification
+    ImageInterface decodedImage = fileAdapter.decodeImage(outputFileName);
+
+    // Verifying that the encoded and decoded grayscale image match
+    assertArrayEquals(greyPixels, decodedImage.getChannel().get(0));
+
+    // Clean up the generated test file
+    File file = new File(outputFileName);
+    assertTrue(Files.deleteIfExists(file.toPath()));
+  }
+
 }

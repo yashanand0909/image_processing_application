@@ -51,6 +51,14 @@ public class ImageProcessorControllerTest {
   }
 
   @Test
+  public void testExitCommand() {
+    ImageProcessorController controller = new ImageProcessorController(logger, model,
+        new StringReader("exit"), out);
+    controller.startImageProcessingController();
+    assertEquals("Enter a command: \n", out.toString());
+  }
+
+  @Test
   public void testHandleInvalidCommands() {
     controller = new ImageProcessorController(logger, model, new StringReader("\nexit"), out);
     controller.startImageProcessingController();
@@ -74,17 +82,58 @@ public class ImageProcessorControllerTest {
   public void testHandleScriptCommands() throws IOException {
     String scriptContent = "load path/to/image.jpg image1\n"
         + "brighten 10 image1 image2\n";
-    File tempFile = File.createTempFile("temp", ".txt");
+    File tempFile = createTempScriptFile(scriptContent);
+    assert tempFile != null;
     String filePath = tempFile.getAbsolutePath();
-    PrintWriter writer = new PrintWriter(new FileWriter(tempFile));
-    writer.println(scriptContent);
-    writer.close();
     String runString = "run " + filePath + "\nexit";
     StringBuilder s = new StringBuilder();
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock, new StringReader(runString), out);
     controller.startImageProcessingController();
     assertTrue(s.toString().contains("loadpath/to/image.jpgimage1brighten10image1image2"));
+  }
+
+  @Test
+  public void testInvalidScriptFile() {
+    String scriptContent = "invalid_command\nexit";
+    File tempFile = createTempScriptFile(scriptContent);
+    assert tempFile != null;
+    String filePath = tempFile.getAbsolutePath();
+    ImageProcessorController controller = new ImageProcessorController(logger, model,
+        new StringReader("run " + filePath + "\nexit"), out);
+    controller.startImageProcessingController();
+    assertTrue(out.toString().contains("Unknown command. Try again or type 'exit' to quit."));
+  }
+
+  @Test
+  public void testHandleScriptAndCliCommands() throws IOException {
+    String scriptContent = "load path/to/image.jpg image1\n"
+        + "brighten 10 image1 image2\n";
+    File tempFile = File.createTempFile("temp", ".txt");
+    String filePath = tempFile.getAbsolutePath();
+    PrintWriter writer = new PrintWriter(new FileWriter(tempFile));
+    writer.println(scriptContent);
+    writer.close();
+    String runString = "run " + filePath + "\nbrighten 10 image1 image3" + "\nexit";
+    StringBuilder s = new StringBuilder();
+    MockModel modelMock = new MockModel(s);
+    controller = new ImageProcessorController(logger, modelMock, new StringReader(runString), out);
+    controller.startImageProcessingController();
+    assertTrue(s.toString()
+        .contains("loadpath/to/image.jpgimage1brighten10image1image2brighten10image1image3"));
+  }
+
+  private File createTempScriptFile(String scriptContent) {
+    try {
+      File tempFile = File.createTempFile("temp", ".txt");
+      PrintWriter writer = new PrintWriter(new FileWriter(tempFile));
+      writer.println(scriptContent);
+      writer.close();
+      return tempFile;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   static class MockModel implements ImageProcessorModelInterface {
