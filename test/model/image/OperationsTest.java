@@ -64,6 +64,15 @@ public class OperationsTest {
     assertEqualImages(imageAfterValue, newImage);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidGreyscale() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
+    ImageProcessorFactory.performOperation(List.of(image),
+            ImageOperations.GREYSCALE, null);
+  }
+
   @Test
   public void testLuma() {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
@@ -79,6 +88,15 @@ public class OperationsTest {
     ImageInterface newImage = ImageProcessorFactory.performOperation(List.of(image),
             ImageOperations.LUMA, null);
     assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidLuma() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
+    ImageProcessorFactory.performOperation(List.of(image),
+            ImageOperations.LUMA, null);
   }
 
   @Test
@@ -237,6 +255,15 @@ public class OperationsTest {
     assertEqualImages(imageAfterValue, newImage);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidSplit() {
+    int[][] redChannel = {{255, 0}, {0, 255}};
+
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(redChannel));
+    ImageProcessorFactory.performOperation(List.of(image),
+            ImageOperations.SPLIT_IMAGE, 0);
+  }
+
   @Test
   public void testSplitOperationGreen() {
     int[][] redChannel = {{255, 0}, {0, 255}};
@@ -351,6 +378,48 @@ public class OperationsTest {
             ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
     assertEqualImages(imageAfterValue, newImage);
 
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidMergeWithMoreChannels() {
+    int[][] redChannel1 = {{255, 0}, {0, 255}};
+    int[][] greenChannel1 = {{255, 0}, {0, 255}};
+    int[][] blueChannel1 = {{255, 0}, {0, 255}};
+    ImageInterface imageAfterValue1 = ImageFactory.createImage(
+            List.of(redChannel1, greenChannel1,
+                    blueChannel1));
+
+    int[][] redChannel2 = {{0, 255}, {255, 0}};
+    int[][] greenChannel2 = {{0, 255}, {255, 0}};
+    int[][] blueChannel2 = {{0, 255}, {255, 0}};
+    ImageInterface imageAfterValue2 = ImageFactory.createImage(
+            List.of(redChannel2, greenChannel2,
+                    blueChannel2));
+
+    ImageProcessorFactory.performOperation(List.of(imageAfterValue1,
+                    imageAfterValue2),
+            ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testUnequalHeightForMerge() {
+    int[][] redChannel1 = {{255, 0}, {0, 255}, {0, 255}};
+    int[][] greenChannel1 = {{255, 0}, {0, 255}, {0, 255}};
+    int[][] blueChannel1 = {{255, 0}, {0, 255}, {0, 255}};
+    ImageInterface imageAfterValue1 = ImageFactory.createImage(
+            List.of(redChannel1, greenChannel1,
+                    blueChannel1));
+
+    int[][] redChannel2 = {{0, 255}, {255, 0}};
+    int[][] greenChannel2 = {{0, 255}, {255, 0}};
+    int[][] blueChannel2 = {{0, 255}, {255, 0}};
+    ImageInterface imageAfterValue2 = ImageFactory.createImage(
+            List.of(redChannel2, greenChannel2,
+                    blueChannel2));
+
+    ImageProcessorFactory.performOperation(List.of(imageAfterValue1,
+                    imageAfterValue2),
+            ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
   }
 
   private void assertEqualImages(ImageInterface imageAfterIntensity, ImageInterface newImage) {
