@@ -1,5 +1,6 @@
 package model.operations.colorrepresentation;
 
+import java.util.Collections;
 import java.util.List;
 
 import model.image.ImageFactory;
@@ -20,8 +21,11 @@ public abstract class AbstractColorRepresentation implements SingleImageProcesso
   @Override
   public ImageInterface apply(ImageInterface image) throws IllegalArgumentException {
     if (image == null || image.getHeight() == 0
-            || image.getWidth() == 0 || image.getChannel().size() == 1) {
+            || image.getWidth() == 0) {
       throw new IllegalArgumentException("Image is not valid");
+    }
+    if (image.getChannel().size() == 1) {
+      return image;
     }
     List<int[][]> imageChannel = image.getChannel();
     int height = image.getHeight();
@@ -32,8 +36,7 @@ public abstract class AbstractColorRepresentation implements SingleImageProcesso
         performOperation(image, valueChannel, i, j);
       }
     }
-    imageChannel.add(valueChannel);
-    return ImageFactory.createImage(imageChannel);
+    return ImageFactory.createImage(Collections.singletonList(valueChannel));
   }
 
   /**

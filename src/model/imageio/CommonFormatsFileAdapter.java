@@ -1,25 +1,32 @@
 package model.imageio;
 
+import commonlabels.ImageFormats;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Arrays;
 import java.util.Collections;
 import javax.imageio.ImageIO;
-
-import commonlabels.ImageFormats;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
-import model.image.CommonImage;
 
 /**
  * For JPG and PNG files, we will use the ImageIO class from the Java standard library.
  */
 public class CommonFormatsFileAdapter implements IOFileByFormat {
+
+
+  /**
+   * Encodes and saves an image in the specified file format.
+   *
+   * @param filename the name of the file to save the image to
+   * @param image    the image to be saved
+   * @param format   the image format to use (e.g., JPEG, PNG)
+   * @throws IOException if an error occurs during the encoding and saving process
+   */
   @Override
   public void encodeAndSaveImage(String filename, ImageInterface image,
-                                 ImageFormats format) throws IOException {
+      ImageFormats format) throws IOException {
     int height = image.getHeight();
     int width = image.getWidth();
     int[][] redPixels;
@@ -71,7 +78,7 @@ public class CommonFormatsFileAdapter implements IOFileByFormat {
         greenPixels[i][j] = (pixel >> 8) & 0xff;
         bluePixels[i][j] = (pixel) & 0xff;
         if (redPixels[i][j] == greenPixels[i][j]
-                && redPixels[i][j] == bluePixels[i][j] && isGrayscale) {
+            && redPixels[i][j] == bluePixels[i][j] && isGrayscale) {
           continue;
         } else {
           isGrayscale = false;
@@ -79,7 +86,7 @@ public class CommonFormatsFileAdapter implements IOFileByFormat {
       }
     }
     if (isGrayscale) {
-      return  ImageFactory.createImage(Collections.singletonList(redPixels));
+      return ImageFactory.createImage(Collections.singletonList(redPixels));
     }
     return ImageFactory.createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
 

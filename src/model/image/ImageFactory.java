@@ -22,7 +22,8 @@ public class ImageFactory {
       }
       return imageBuilder.build();
     } else {
-      throw new IllegalArgumentException(channelList.size() + " number of channel is not supported");
+      throw new IllegalArgumentException(channelList.size() +
+              " number of channel is not supported");
     }
   }
 

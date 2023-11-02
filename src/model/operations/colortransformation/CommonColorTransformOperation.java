@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import model.operations.operationinterfaces.SingleImageProcessor;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

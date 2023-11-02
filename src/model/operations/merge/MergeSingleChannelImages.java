@@ -2,35 +2,34 @@ package model.operations.merge;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import model.image.ImageInterface;
 import model.image.ImageFactory;
+import model.image.ImageInterface;
 import model.operations.operationinterfaces.MultipleToSingleImageProcessor;
 
 /**
  * This class merges single channel images to a new image.
  */
 public class MergeSingleChannelImages implements MultipleToSingleImageProcessor {
+
   /**
    * This method applies the merge operation on the given image.
    *
    * @param images the images to be merged
    * @return the merged image
-   * @throws IllegalArgumentException if image has single channel,
-   *                                  has different height or width
+   * @throws IllegalArgumentException if image has single channel, has different height or width
    */
   @Override
   public ImageInterface apply(List<ImageInterface> images)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     int previousHeight = -1;
     int previousWidth = -1;
     validateImages(images);
     List<int[][]> imageChannel = new ArrayList<>();
     int imageNumber = 0;
     for (ImageInterface image : images) {
-      if (image.getChannel().size() == images.size()) {
+      if (image.getChannel().size() != images.size()) {
         throw new IllegalArgumentException("Number of images and " +
-                "number of channels should be same");
+            "number of channels should be same");
       }
       if (previousHeight != -1 && image.getHeight() != previousHeight) {
         throw new IllegalArgumentException("Images should have the same height");

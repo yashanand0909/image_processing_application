@@ -1,9 +1,14 @@
 package model.image;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
+/**
+ * This class tests the CommonImage class.
+ */
 public class CommonImageTest {
 
   private ImageInterface image;
@@ -39,12 +44,32 @@ public class CommonImageTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testInvalidImageCreation() {
+  public void testInvalidWidth() {
     CommonImage.ImageBuilder builder = new CommonImage.ImageBuilder();
     int[][] channel1 = {{255, 0}, {0, 255}};
-    int[][] channel2 = {{0, 255}, {255, 0}};
+    int[][] channel2 = {{0, 255, 0}, {255, 0, 0}};
     builder.addChannel(channel1);
     builder.addChannel(channel2);
     builder.build();
-    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalidHeight() {
+    CommonImage.ImageBuilder builder = new CommonImage.ImageBuilder();
+    int[][] channel1 = {{255, 0}, {0, 255}};
+    int[][] channel2 = {{0, 255}, {255, 0}, {255, 0}};
+    builder.addChannel(channel1);
+    builder.addChannel(channel2);
+    builder.build();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInvalid() {
+    CommonImage.ImageBuilder builder = new CommonImage.ImageBuilder();
+    int[][] channel1 = {{255, 0}, {0, 255}};
+    int[][] channel2 = {{0, 255, 0}, {255, 0}};
+    builder.addChannel(channel1);
+    builder.addChannel(channel2);
+    builder.build();
+  }
 }

@@ -4,6 +4,7 @@ package model.operations.filters;
  * Represents a sharpen filter operation object.
  */
 public class SharpenFilter extends CommonFilterOperation {
+
   double[][] sharpenFilter;
 
   /**
@@ -11,11 +12,11 @@ public class SharpenFilter extends CommonFilterOperation {
    */
   public SharpenFilter() {
     this.sharpenFilter = new double[][]{
-            {-0.125, -0.125, -0.125, -0.125, -0.125},
-            {-0.125, 0.25, 0.25, 0.25, -0.125},
-            {-0.125, 0.25, 1, 0.25, -0.125},
-            {-0.125, 0.25, 0.25, 0.25, -0.125},
-            {-0.125, -0.125, -0.125, -0.125, -0.125}
+        {-0.125, -0.125, -0.125, -0.125, -0.125},
+        {-0.125, 0.25, 0.25, 0.25, -0.125},
+        {-0.125, 0.25, 1, 0.25, -0.125},
+        {-0.125, 0.25, 0.25, 0.25, -0.125},
+        {-0.125, -0.125, -0.125, -0.125, -0.125}
     };
   }
 

@@ -13,9 +13,9 @@ public class Intensity extends AbstractColorRepresentation {
   @Override
   public void performOperation(ImageInterface image,
                                int[][] valueChannel, int i, int j) {
-    int value = -1;
+    int value = 0;
     for (int[][] channel : image.getChannel()) {
-      value = channel[i][j];
+      value += channel[i][j];
     }
     valueChannel[i][j] = value / (image.getChannel().size());
   }

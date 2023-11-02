@@ -1,16 +1,15 @@
 package model.operations.filters;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * This class represents a common filter operation that implements the FilterOperation interface.
- * It contains a method that applies a filter to an image.
+ * This class represents a common filter operation that implements the FilterOperation interface. It
+ * contains a method that applies a filter to an image.
  */
 public abstract class CommonFilterOperation implements SingleImageProcessor {
 
@@ -26,10 +25,11 @@ public abstract class CommonFilterOperation implements SingleImageProcessor {
     double[][] kernel = getFilter();
     int height = image.getHeight();
     int width = image.getWidth();
+    ImageInterface newImage = image;
     if (kernel.length > height || kernel[0].length > width) {
-      throw new IllegalArgumentException("Kernel must be smaller than image");
+      newImage = addPadding(image, kernel.length, kernel[0].length);
     }
-    List<int[][]> imageChannel = image.getChannel();
+    List<int[][]> imageChannel = newImage.getChannel();
     List<int[][]> filteredChannel = new ArrayList<>();
 
     for (int[][] channel : imageChannel) {
@@ -50,7 +50,7 @@ public abstract class CommonFilterOperation implements SingleImageProcessor {
               }
             }
           }
-
+          sum = Math.min(Math.max(sum, 0), 255);
           filteredPixels[i][j] = sum;
         }
       }
@@ -59,6 +59,26 @@ public abstract class CommonFilterOperation implements SingleImageProcessor {
     }
 
     return ImageFactory.createImage(filteredChannel);
+  }
+
+  private ImageInterface addPadding(ImageInterface image,
+      int kernalHeight, int kernalWidth) {
+    int height = image.getHeight();
+    int width = image.getWidth();
+    List<int[][]> imageChannel = image.getChannel();
+    List<int[][]> paddedChannel = new ArrayList<>();
+
+    for (int[][] channel : imageChannel) {
+      int[][] paddedPixels = new int[height + kernalHeight - 1][width + kernalWidth - 1];
+
+      for (int i = 0; i < height; i++) {
+        System.arraycopy(channel[i], 0, paddedPixels[i], 0, width);
+      }
+
+      paddedChannel.add(paddedPixels);
+    }
+
+    return ImageFactory.createImage(paddedChannel);
   }
 
   /**

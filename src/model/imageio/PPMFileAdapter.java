@@ -1,20 +1,20 @@
 package model.imageio;
 
+import commonlabels.ImageFormats;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
-import java.io.FileInputStream;
-
-import commonlabels.ImageFormats;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
-import model.image.CommonImage;
 
 
 /**
- * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
- * as required.
+ * This class contains utility methods to read a PPM image from file and simply print its contents.
+ * Feel free to change this method as required.
  */
 public class PPMFileAdapter implements IOFileByFormat {
 
@@ -27,7 +27,7 @@ public class PPMFileAdapter implements IOFileByFormat {
    */
   @Override
   public void encodeAndSaveImage(String filename, ImageInterface image,
-                                 ImageFormats format) throws IOException {
+      ImageFormats format) throws IOException {
     int height = image.getHeight();
     int width = image.getWidth();
     int[][] redPixels;
@@ -54,7 +54,7 @@ public class PPMFileAdapter implements IOFileByFormat {
       }
       builder.append(System.lineSeparator());
     }
-    java.io.FileWriter fw = new java.io.FileWriter(filename);
+    java.io.FileWriter fw = new java.io.FileWriter(filename, StandardCharsets.US_ASCII);
     fw.write(builder.toString());
     fw.close();
   }
@@ -69,8 +69,8 @@ public class PPMFileAdapter implements IOFileByFormat {
   @Override
   public ImageInterface decodeImage(String filename) throws IOException {
     Scanner sc;
-
-    sc = new Scanner(new FileInputStream(filename));
+    InputStream stream = new FileInputStream(filename);
+    sc = new Scanner(stream);
 
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
@@ -113,6 +113,7 @@ public class PPMFileAdapter implements IOFileByFormat {
         }
       }
     }
+    stream.close();
 
     if (isGrayscale) {
       return ImageFactory.createImage(Collections.singletonList(redPixels));

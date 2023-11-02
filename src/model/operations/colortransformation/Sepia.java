@@ -10,9 +10,15 @@ public class Sepia extends CommonColorTransformOperation {
    * Constructs a sepia color transformation object.
    */
   public Sepia() {
-    this.sepiamatrix = new double[][]{{0.393, 0.769, 0.189}, {0.349, 0.686, 0.168}, {0.272, 0.534, 0.131}};
+    this.sepiamatrix = new double[][]{{0.393, 0.769, 0.189},
+            {0.349, 0.686, 0.168}, {0.272, 0.534, 0.131}};
   }
 
+  /**
+   * Returns the transformation coefficients used for the Sepia operation.
+   *
+   * @return a 2D array of transformation coefficients
+   */
   @Override
   public double[][] getTransformCoefficient() {
     return sepiamatrix;
