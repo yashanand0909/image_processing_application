@@ -1,12 +1,13 @@
 package controller;
 
 /**
- * This interface represents the controller for image.
+ * This interface defines the methods for an image processing controller.
  */
 public interface ControllerInterface {
+
   /**
-   * This method starts the image processing controller.
+   * Starts the image processing controller.
    */
   void startImageProcessingController();
-
 }
+

@@ -1,17 +1,16 @@
 package model.operations.pixeloffset;
 
+import java.util.ArrayList;
+import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * This class represents a simple offset operation of
- * brightening on image applied on every pixel.
+ * This class represents a simple offset operation of brightening on image applied on every pixel.
  */
 public class BrightnessOperation implements SingleImageProcessorWithOffset {
+
   int maxValue = 255;
 
   /**
@@ -22,7 +21,7 @@ public class BrightnessOperation implements SingleImageProcessorWithOffset {
    */
   @Override
   public ImageInterface apply(ImageInterface image,
-                              Object operator) throws IllegalArgumentException {
+      Object operator) throws IllegalArgumentException {
     int factor = Integer.parseInt((String) operator);
     int height = image.getHeight();
     int width = image.getWidth();

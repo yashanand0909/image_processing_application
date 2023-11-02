@@ -1,15 +1,14 @@
 package model.image;
 
+import commonlabels.ImageOperations;
 import model.ImageProcessingModel.ImageProcessorModel;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import commonlabels.ImageOperations;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,6 +16,7 @@ import static org.junit.Assert.assertEquals;
  * This class tests the operations on an image.
  */
 public class OperationsTest {
+
   ImageProcessorModel imageProcessorModel;
 
   @Before
@@ -160,8 +160,9 @@ public class OperationsTest {
     int[][] newChannelAfterIncreaseBrightnessGreen = {{10, 10, 10}, {10, 10, 10}, {10, 96, 10}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{255, 255, 250}, {250, 10, 100},
             {93, 255, 54}};
-    ImageInterface imageAfterValue = ImageFactory.createImage(List.of(newChannelAfterIncreaseBrightnessRed,
-            newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
+    ImageInterface imageAfterValue = ImageFactory
+            .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
+                    newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
     ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
             ImageOperations.BRIGHTNESS, "10");
@@ -178,8 +179,9 @@ public class OperationsTest {
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 76, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{244, 244, 230}, {230, 0, 80},
             {73, 245, 34}};
-    ImageInterface imageAfterValue = ImageFactory.createImage(List.of(newChannelAfterIncreaseBrightnessRed,
-            newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
+    ImageInterface imageAfterValue = ImageFactory
+            .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
+                    newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
     ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
             ImageOperations.BRIGHTNESS, "-10");
@@ -363,7 +365,6 @@ public class OperationsTest {
             List.of(newChannelAfterSplitRedForBlue, newChannelAfterSplitGreenForBlue,
                     newChannelAfterSplitBlueForBlue));
     newChannels.add(imageAfterValue3);
-
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 

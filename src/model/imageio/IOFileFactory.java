@@ -1,27 +1,33 @@
 package model.imageio;
 
-import java.io.IOException;
-
 import commonlabels.ImageFormats;
+import java.io.IOException;
 import model.image.ImageInterface;
 
 /**
- * This class is a factory for IOFileByFormat objects.
+ * This class is a factory for IOFileByFormat objects. It provides methods for encoding and saving
+ * images as well as decoding images from files based on their file extensions.
  */
 public class IOFileFactory {
 
   /**
-   * This method creates an IOFileByFormat object based on the file extension.
+   * Encodes and saves an image to a file with the specified filename and format.
    *
-   * @param filename the filename to read the image
-   * @throws IOException if the file cannot be read
+   * @param filename the filename to save the image
+   * @param image    the image to be saved
+   * @throws IOException              if an error occurs during the encoding and saving process
+   * @throws IllegalArgumentException if the filename has an invalid file extension
    */
-  public static void encodeAndSaveImage(String filename, ImageInterface image) throws IOException,
-          IllegalArgumentException {
+  public static void encodeAndSaveImage(String filename, ImageInterface image)
+      throws IOException, IllegalArgumentException {
+    // Extract the file extension from the filename
     String fileExtension = getFileExtension(filename);
+
     if (fileExtension == null) {
       throw new IllegalArgumentException("Invalid file");
     }
+
+    // Select the appropriate IOFileByFormat implementation based on the file extension
     switch (fileExtension) {
       case "ppm":
         IOFileByFormat ppmFileAdapter = new PPMFileAdapter();
@@ -39,18 +45,23 @@ public class IOFileFactory {
   }
 
   /**
-   * This method decodes the image from the given filename.
+   * Decodes an image from the given filename.
    *
-   * @param filename the filename to read the image
-   * @return the image read from the file
-   * @throws IOException if the file cannot be read
+   * @param filename the filename to read the image from
+   * @return the decoded image
+   * @throws IOException              if the file cannot be read
+   * @throws IllegalArgumentException if the filename has an invalid file extension
    */
-  public static ImageInterface decodeImage(String filename) throws IOException,
-          IllegalArgumentException {
+  public static ImageInterface decodeImage(String filename)
+      throws IOException, IllegalArgumentException {
+    // Extract the file extension from the filename
     String fileExtension = getFileExtension(filename);
+
     if (fileExtension == null) {
       throw new IllegalArgumentException("Invalid file");
     }
+
+    // Select the appropriate IOFileByFormat implementation based on the file extension
     switch (fileExtension) {
       case "ppm":
         IOFileByFormat ppmFileAdapter = new PPMFileAdapter();
@@ -65,6 +76,12 @@ public class IOFileFactory {
     }
   }
 
+  /**
+   * Extracts the file extension from a file path.
+   *
+   * @param filePath the file path containing the extension
+   * @return the file extension (e.g., "jpg", "png"), or null if no extension is found
+   */
   public static String getFileExtension(String filePath) {
     int lastDotIndex = filePath.lastIndexOf('.');
     if (lastDotIndex > 0) {

@@ -296,14 +296,4 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
     }
   }
 
-  /**
-   * This method returns the image with the given name.
-   *
-   * @param name of the image
-   * @return the Image
-   */
-  @Override
-  public ImageInterface getImage(String name) {
-    return images.get(name);
-  }
 }

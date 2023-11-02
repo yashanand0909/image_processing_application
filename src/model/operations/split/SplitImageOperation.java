@@ -2,7 +2,6 @@ package model.operations.split;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
@@ -11,9 +10,10 @@ import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
  * This class represents a split image operation.
  */
 public class SplitImageOperation implements SingleImageProcessorWithOffset {
+
   /**
-   * This method splits the image on the given channel (all other channels are zero)
-   * and returns the processed image.
+   * This method splits the image on the given channel (all other channels are zero) and returns the
+   * processed image.
    *
    * @param image    the image to be processed
    * @param operator the operator to be applied
@@ -21,7 +21,8 @@ public class SplitImageOperation implements SingleImageProcessorWithOffset {
    * @throws IllegalArgumentException if the process not possible
    */
   @Override
-  public ImageInterface apply(ImageInterface image, Object operator) throws IllegalArgumentException {
+  public ImageInterface apply(ImageInterface image, Object operator)
+      throws IllegalArgumentException {
     List<int[][]> imageChannel = image.getChannel();
     int imageComponentNumber = (int) operator;
     if (imageChannel.size() == 1) {

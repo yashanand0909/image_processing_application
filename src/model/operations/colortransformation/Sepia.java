@@ -14,6 +14,11 @@ public class Sepia extends CommonColorTransformOperation {
             {0.349, 0.686, 0.168}, {0.272, 0.534, 0.131}};
   }
 
+  /**
+   * Returns the transformation coefficients used for the Sepia operation.
+   *
+   * @return a 2D array of transformation coefficients
+   */
   @Override
   public double[][] getTransformCoefficient() {
     return sepiamatrix;
