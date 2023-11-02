@@ -18,4 +18,12 @@ public class ViewLogger {
     }
   }
 
+  public void LogString(String s){
+    try {
+      this.out.append(s);
+    } catch (IOException ex) {
+      System.out.println(ex.getMessage());
+    }
+  }
+
 }
