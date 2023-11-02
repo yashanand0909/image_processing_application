@@ -156,10 +156,10 @@ public class OperationsTest {
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+                                                    {255, 255, 255}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{10, 10, 10}, {10, 10, 10}, {10, 96, 10}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{255, 255, 250}, {250, 10, 100},
-            {93, 255, 54}};
+                                                     {93, 255, 54}};
     ImageInterface imageAfterValue = ImageFactory
             .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
                     newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
@@ -175,9 +175,11 @@ public class OperationsTest {
     int[][] greenChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] blueChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-        {255, 255, 255}};
-    int[][] newChannelAfterIncreaseBrightnessGreen = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
-    int[][] newChannelAfterIncreaseBrightnessBlue = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+                                                    {255, 255, 255}};
+    int[][] newChannelAfterIncreaseBrightnessGreen = {{255, 255, 255},
+                                                      {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterIncreaseBrightnessBlue = {{255, 255, 255},
+                                                     {255, 255, 255}, {255, 255, 255}};
     ImageInterface imageAfterValue = ImageFactory
         .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
             newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
@@ -193,10 +195,10 @@ public class OperationsTest {
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
     int[][] newChannelAfterIncreaseBrightnessRed = {{245, 245, 245}, {245, 245, 245},
-            {245, 245, 245}};
+                                                    {245, 245, 245}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 76, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{244, 244, 230}, {230, 0, 80},
-            {73, 245, 34}};
+                                                     {73, 245, 34}};
     ImageInterface imageAfterValue = ImageFactory
             .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
                     newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
@@ -268,7 +270,7 @@ public class OperationsTest {
     int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
 
     int[][] newChannelAfterVerticalRotationRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+                                                  {255, 255, 255}};
     int[][] newChannelAfterVerticalRotationGreen = {{0, 86, 0}, {0, 0, 0}, {0, 0, 0}};
     int[][] newChannelAfterVerticalRotationBlue = {{83, 255, 44}, {240, 0, 90}, {254, 254, 240}};
     ImageInterface imageAfterValue = ImageFactory.createImage(
@@ -289,10 +291,10 @@ public class OperationsTest {
     int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
 
     int[][] newChannelAfterHorizontalRotationRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+                                                    {255, 255, 255}};
     int[][] newChannelAfterHorizontalRotationGreen = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] newChannelAfterHorizontalRotationBlue = {{240, 254, 254}, {90, 0, 240},
-            {44, 255, 83}};
+                                                     {44, 255, 83}};
     ImageInterface imageAfterValue = ImageFactory.createImage(
             List.of(newChannelAfterHorizontalRotationRed, newChannelAfterHorizontalRotationGreen,
                     newChannelAfterHorizontalRotationBlue));

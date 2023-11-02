@@ -30,7 +30,7 @@ public class ViewLoggerTest {
 
   @Test
   public void testLogString() {
-    viewLogger.LogString("Test Log String");
+    viewLogger.logString("Test Log String");
     assertEquals("Test Log String", stringWriter.toString());
   }
 
@@ -77,7 +77,7 @@ public class ViewLoggerTest {
       }
     });
 
-    loggerWithException.LogString("Test Log String");
+    loggerWithException.logString("Test Log String");
     assertEquals("", stringWriter.toString());
   }
 }

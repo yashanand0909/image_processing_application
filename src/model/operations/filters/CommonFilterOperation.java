@@ -82,7 +82,7 @@ public abstract class CommonFilterOperation implements SingleImageProcessor {
   }
 
   /**
-   * This method returns the filter to be applied to the image.
+   * Filter to be applied to the image is returned by this.
    *
    * @return the filter to be applied to the image
    */

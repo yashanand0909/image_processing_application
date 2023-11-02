@@ -11,7 +11,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import logger.ViewLogger;
 import model.imageprocessingmodel.ImageProcessorModel;
-import model.ImageProcessingModel.ImageProcessorModelInterface;
+import model.imageprocessingmodel.ImageProcessorModelInterface;
 
 import org.junit.Before;
 import org.junit.Test;

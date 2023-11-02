@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import logger.ViewLogger;
-import model.ImageProcessingModel.ImageProcessorModelInterface;
+import model.imageprocessingmodel.ImageProcessorModelInterface;
 
 /**
  * This class represents an image processing controller that handles user commands.
@@ -73,7 +73,7 @@ public class ImageProcessorController implements ControllerInterface {
         } else {
           imageProcessorModel.processCommands(parts);
         }
-        viewLogger.LogString("Command ran successfully \n");
+        viewLogger.logString("Command ran successfully \n");
       } catch (Exception e) {
         viewLogger.logException(e);
       }

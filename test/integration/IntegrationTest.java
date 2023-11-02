@@ -1,4 +1,4 @@
-package Integration;
+package integration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,19 +45,19 @@ public class IntegrationTest {
             .addChannel(greenChannel)
             .addChannel(blueChannel)
             .build();
-    IOFileFactory.encodeAndSaveImage
-            (imagePath
-                    , imageInterface);
+    IOFileFactory.encodeAndSaveImage(imagePath, imageInterface);
   }
 
   @Test
   public void testBrightenFlow() throws IOException {
     String newImagePath = "test_image_bright.jpg";
-    int[][] newChannelAfterIncreaseBrightnessRed = {{245, 245, 245}, {245, 245, 245},
-            {245, 245, 245}};
+    int[][] newChannelAfterIncreaseBrightnessRed = {{245, 245, 245},
+                                                    {245, 245, 245},
+                                                    {245, 245, 245}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 76, 0}};
-    int[][] newChannelAfterIncreaseBrightnessBlue = {{244, 244, 230}, {230, 0, 80},
-            {73, 245, 34}};
+    int[][] newChannelAfterIncreaseBrightnessBlue = {{244, 244, 230},
+                                                     {230, 0, 80},
+                                                     {73, 245, 34}};
     List<int[][]> newChannleList = Arrays
             .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
                     newChannelAfterIncreaseBrightnessBlue);
@@ -82,11 +82,12 @@ public class IntegrationTest {
   @Test
   public void testBrightenFlowAfterIncorrectCommand() throws IOException {
     String newImagePath = "test_image_bright.jpg";
-    int[][] newChannelAfterIncreaseBrightnessRed = {{245, 245, 245}, {245, 245, 245},
-            {245, 245, 245}};
+    int[][] newChannelAfterIncreaseBrightnessRed = {{245, 245, 245},
+                                                    {245, 245, 245},
+                                                    {245, 245, 245}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 76, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{244, 244, 230}, {230, 0, 80},
-            {73, 245, 34}};
+                                                     {73, 245, 34}};
     List<int[][]> newChannleList = Arrays
             .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
                     newChannelAfterIncreaseBrightnessBlue);
@@ -95,7 +96,8 @@ public class IntegrationTest {
     String brightenCommand = "brighten -10 test test_bright\n";
     String saveCommand = "save " + newImagePath + " test_bright\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + wrongCommand + brightenCommand + saveCommand + "exit"), out);
+            new StringReader(loadCommand + wrongCommand
+                    + brightenCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
@@ -139,7 +141,7 @@ public class IntegrationTest {
     // Define your expected image and other necessary variables
     String newImagePath = "test_image_red_component.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+                                                    {255, 255, 255}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
     List<int[][]> newChannleList = Arrays
@@ -213,10 +215,10 @@ public class IntegrationTest {
   public void testHorizontalFlipFlow() throws IOException {
     String newImagePath = "test_image_horizontal_flip.jpg";
     int[][] newChannelAfterHorizontalRotationRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+                                                    {255, 255, 255}};
     int[][] newChannelAfterHorizontalRotationGreen = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] newChannelAfterHorizontalRotationBlue = {{240, 254, 254}, {90, 0, 240},
-            {44, 255, 83}};
+                                                     {44, 255, 83}};
     List<int[][]> newChannleList = Arrays
             .asList(newChannelAfterHorizontalRotationRed, newChannelAfterHorizontalRotationGreen,
                     newChannelAfterHorizontalRotationBlue);
@@ -236,7 +238,7 @@ public class IntegrationTest {
   public void testVerticalFlipFlow() throws IOException {
     String newImagePath = "test_image_vertical_flip.jpg";
     int[][] newChannelAfterVerticalRotationRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+                                                  {255, 255, 255}};
     int[][] newChannelAfterVerticalRotationGreen = {{0, 86, 0}, {0, 0, 0}, {0, 0, 0}};
     int[][] newChannelAfterVerticalRotationBlue = {{83, 255, 44}, {240, 0, 90}, {254, 254, 240}};
     List<int[][]> newChannleList = Arrays
@@ -508,6 +510,4 @@ public class IntegrationTest {
       file.delete();
     }
   }
-
-
 }

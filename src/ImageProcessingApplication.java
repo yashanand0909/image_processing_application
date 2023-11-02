@@ -10,7 +10,7 @@ import model.imageprocessingmodel.ImageProcessorModel;
  */
 public class ImageProcessingApplication {
   /**
-   * Main method for starting the application
+   * Main method for starting the application.
    *
    * @param args argument
    */

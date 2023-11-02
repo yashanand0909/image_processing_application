@@ -36,7 +36,7 @@ public class ViewLogger {
    *
    * @param s the String
    */
-  public void LogString(String s) {
+  public void logString(String s) {
     try {
       this.out.append(s);
     } catch (IOException ex) {

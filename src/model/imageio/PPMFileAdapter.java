@@ -1,6 +1,7 @@
 package model.imageio;
 
 import commonlabels.ImageFormats;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
+
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 
@@ -27,7 +29,7 @@ public class PPMFileAdapter implements IOFileByFormat {
    */
   @Override
   public void encodeAndSaveImage(String filename, ImageInterface image,
-      ImageFormats format) throws IOException {
+                                 ImageFormats format) throws IOException {
     int height = image.getHeight();
     int width = image.getWidth();
     int[][] redPixels;
@@ -108,6 +110,7 @@ public class PPMFileAdapter implements IOFileByFormat {
         greenPixels[i][j] = g;
         bluePixels[i][j] = b;
         if (r == g && g == b && isGrayscale) {
+          // Do nothing for given condition
         } else {
           isGrayscale = false;
         }
