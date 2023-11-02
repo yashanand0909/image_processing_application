@@ -5,20 +5,30 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
-
 import logger.ViewLogger;
 import model.ImageProcessingModel.ImageProcessorModelInterface;
 
+/**
+ * This class represents an image processing controller that handles user commands.
+ */
 public class ImageProcessorController implements ControllerInterface {
 
-  final Readable in;
-  final Appendable out;
-  final ViewLogger viewLogger;
-  final ImageProcessorModelInterface imageProcessorModel;
+  private final Readable in;
+  private final Appendable out;
+  private final ViewLogger viewLogger;
+  private final ImageProcessorModelInterface imageProcessorModel;
 
+  /**
+   * Constructs an ImageProcessorController with the specified dependencies.
+   *
+   * @param viewLogger          the logger for displaying messages
+   * @param imageProcessorModel the model for processing image commands
+   * @param in                  the input source (e.g., user input)
+   * @param out                 the output destination (e.g., console or file)
+   */
   public ImageProcessorController(ViewLogger viewLogger,
-                                  ImageProcessorModelInterface imageProcessorModel,
-                                  Readable in, Appendable out) {
+      ImageProcessorModelInterface imageProcessorModel,
+      Readable in, Appendable out) {
     this.in = in;
     this.out = out;
     this.viewLogger = viewLogger;
@@ -26,7 +36,7 @@ public class ImageProcessorController implements ControllerInterface {
   }
 
   /**
-   * This method starts the image processing controller.
+   * Starts the image processing controller, allowing users to enter and execute commands.
    */
   public void startImageProcessingController() {
     try {
@@ -37,9 +47,9 @@ public class ImageProcessorController implements ControllerInterface {
   }
 
   /**
-   * This method handles the commands.
+   * Handles user commands for image processing.
    *
-   * @throws IOException if the input is invalid
+   * @throws IOException if there is an issue with input or output
    */
   private void handleCommands() throws IOException {
     Scanner scanner = new Scanner(this.in);
@@ -63,23 +73,22 @@ public class ImageProcessorController implements ControllerInterface {
           imageProcessorModel.processCommands(parts);
         }
         viewLogger.LogString("Command ran successfully \n");
-      }
-      catch(Exception e){
+      } catch (Exception e) {
         viewLogger.logException(e);
       }
     }
   }
 
   /**
-   * This method handles the script file.
+   * Handles a script file containing image processing commands.
    *
    * @param commandInput the command input
-   * @throws IOException if the input is invalid
+   * @throws IOException if there is an issue with input or output
    */
   private void handleScriptFile(String[] commandInput) throws IOException {
     if (commandInput.length != 2) {
       throw new IllegalArgumentException(
-              "Invalid run command. Usage: run <script-file-name>");
+          "Invalid run command. Usage: run <script-file-name>");
     } else {
       File scriptFile = new File(commandInput[1]);
 
@@ -96,7 +105,7 @@ public class ImageProcessorController implements ControllerInterface {
         }
       } else {
         throw new IllegalArgumentException("Invalid command : " +
-                "File does not exist with name " + commandInput[1]);
+            "File does not exist with name " + commandInput[1]);
       }
     }
   }

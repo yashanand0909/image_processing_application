@@ -14,6 +14,11 @@ public class Greyscale extends CommonColorTransformOperation {
             {0.2126, 0.7152, 0.0722},{0.2126, 0.7152, 0.0722}};
   }
 
+  /**
+   * Returns the transformation coefficients used for the greyscale operation.
+   *
+   * @return a 2D array of transformation coefficients
+   */
   @Override
   public double[][] getTransformCoefficient() {
     return greymatrix;

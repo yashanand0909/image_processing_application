@@ -1,21 +1,20 @@
 package model.imageio;
 
+import commonlabels.ImageFormats;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
-import java.io.FileInputStream;
-
-import commonlabels.ImageFormats;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 
 
 /**
- * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method
- * as required.
+ * This class contains utility methods to read a PPM image from file and simply print its contents.
+ * Feel free to change this method as required.
  */
 public class PPMFileAdapter implements IOFileByFormat {
 
@@ -28,7 +27,7 @@ public class PPMFileAdapter implements IOFileByFormat {
    */
   @Override
   public void encodeAndSaveImage(String filename, ImageInterface image,
-                                 ImageFormats format) throws IOException {
+      ImageFormats format) throws IOException {
     int height = image.getHeight();
     int width = image.getWidth();
     int[][] redPixels;

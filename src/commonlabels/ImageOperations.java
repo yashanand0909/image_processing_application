@@ -31,11 +31,6 @@ public enum ImageOperations {
     this.stringValue = stringValue;
   }
 
-  @Override
-  public String toString() {
-    return stringValue;
-  }
-
   /**
    * Returns the ImageOperation object corresponding to the given string value.
    *
@@ -49,5 +44,10 @@ public enum ImageOperations {
       }
     }
     return null;
+  }
+
+  @Override
+  public String toString() {
+    return stringValue;
   }
 }

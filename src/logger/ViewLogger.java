@@ -31,6 +31,11 @@ public class ViewLogger {
     }
   }
 
+  /**
+   * This method logs the String.
+   *
+   * @param s the String
+   */
   public void LogString(String s){
     try {
       this.out.append(s);

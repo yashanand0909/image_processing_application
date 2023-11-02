@@ -1,11 +1,10 @@
 package model.operations.rotation;
 
+import java.util.ArrayList;
+import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class represents a horizontal flip operation on an image.

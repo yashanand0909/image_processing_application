@@ -35,8 +35,8 @@ public class PPMFileAdapterTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         redPixels[i][j] = i * width + j;
-        greenPixels[i][j] = i * width + j+1;
-        bluePixels[i][j] = i * width + j+2;
+        greenPixels[i][j] = i * width + j + 1;
+        bluePixels[i][j] = i * width + j + 2;
       }
     }
     ImageInterface image = ImageFactory

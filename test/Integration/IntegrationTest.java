@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import controller.ImageProcessorController;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,13 +12,11 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
-
 import logger.ViewLogger;
 import model.ImageProcessingModel.ImageProcessorModel;
 import model.image.CommonImage;
 import model.image.ImageInterface;
 import model.imageio.IOFileFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 
