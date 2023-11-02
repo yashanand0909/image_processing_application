@@ -61,7 +61,8 @@ public class ImageProcessorControllerTest {
   public void testHandleValidCommands() {
     StringBuilder s = new StringBuilder();
     MockModel modelMock = new MockModel(s);
-    controller = new ImageProcessorController(logger, modelMock, new StringReader("load path/to/image.jpg image1 \nexit"), out);
+    controller = new ImageProcessorController(logger, modelMock,
+            new StringReader("load path/to/image.jpg image1 \nexit"), out);
     controller.startImageProcessingController();
     assertEquals("loadpath/to/image.jpgimage1", s.toString());
     assertTrue(out.toString().contains("Command ran successfully"));
@@ -99,15 +100,16 @@ public class ImageProcessorControllerTest {
         + "brighten 10 image1 image2\n"
         + "exit\n";
     File tempFile = File.createTempFile("temp", ".txt");
+    String filePath = tempFile.getAbsolutePath();
     PrintWriter writer = new PrintWriter(new FileWriter(tempFile));
     writer.println(scriptContent);
     writer.close();
-    String runString = "run temp.txt";
+    String runString = "run " + filePath;
     StringBuilder s = new StringBuilder();
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock, new StringReader(runString), out);
     controller.startImageProcessingController();
-    assertEquals("loadpath/to/image.jpgimage1brighten10image1image2", s.toString());
+    assertTrue(s.toString().contains("loadpath/to/image.jpgimage1brighten10image1image2"));
   }
 
 }

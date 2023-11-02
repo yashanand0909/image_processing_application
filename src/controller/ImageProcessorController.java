@@ -16,8 +16,9 @@ public class ImageProcessorController implements ControllerInterface {
   final ViewLogger viewLogger;
   final ImageProcessorModelInterface imageProcessorModel;
 
-  public ImageProcessorController(ViewLogger viewLogger, ImageProcessorModelInterface imageProcessorModel,
-      Readable in, Appendable out) {
+  public ImageProcessorController(ViewLogger viewLogger,
+                                  ImageProcessorModelInterface imageProcessorModel,
+                                  Readable in, Appendable out) {
     this.in = in;
     this.out = out;
     this.viewLogger = viewLogger;
@@ -57,8 +58,9 @@ public class ImageProcessorController implements ControllerInterface {
       }
       if (parts[0].equals("run")) {
         handleScriptFile(parts);
+      } else {
+        imageProcessorModel.processCommands(parts);
       }
-      imageProcessorModel.processCommands(parts);
       viewLogger.LogString("Command ran successfully \n");
     }
   }
@@ -87,9 +89,9 @@ public class ImageProcessorController implements ControllerInterface {
             imageProcessorModel.processCommands(parts);
           }
         }
-      }
-      else {
-        throw new IllegalArgumentException("Invalid command : File does not exist with name "+commandInput[1]);
+      } else {
+        throw new IllegalArgumentException("Invalid command : " +
+                "File does not exist with name " + commandInput[1]);
       }
     }
   }

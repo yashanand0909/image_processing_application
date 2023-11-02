@@ -16,7 +16,8 @@ public interface IOFileByFormat {
    * @param image    the image to be saved
    * @throws IOException if the file cannot be saved
    */
-  public void encodeAndSaveImage(String filename, ImageInterface image, ImageFormats format) throws IOException;
+  public void encodeAndSaveImage(String filename, ImageInterface image,
+                                 ImageFormats format) throws IOException;
 
   /**
    * This method decodes the image from the given filename.

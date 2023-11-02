@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import commonlabels.ImageFormats;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
-import model.image.CommonImage;
 
 /**
  * For JPG and PNG files, we will use the ImageIO class from the Java standard library.

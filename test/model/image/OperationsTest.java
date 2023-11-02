@@ -80,7 +80,7 @@ public class OperationsTest {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
-    ImageProcessorFactory.performOperation(List.of(image),
+    imageProcessorModel.performOperation(List.of(image),
             ImageOperations.GREYSCALE, null);
   }
 
@@ -106,7 +106,7 @@ public class OperationsTest {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
-    ImageProcessorFactory.performOperation(List.of(image),
+    imageProcessorModel.performOperation(List.of(image),
             ImageOperations.LUMA, null);
   }
 
@@ -205,6 +205,25 @@ public class OperationsTest {
   }
 
   @Test
+  public void testSepiaClamp() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] blueChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+
+    int[][] newChannelAfterSepiaRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSepiaGreen = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSepiaBlue = {{238, 238, 238}, {238, 238, 238}, {238, 238, 238}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+            List.of(newChannelAfterSepiaRed, newChannelAfterSepiaGreen, newChannelAfterSepiaBlue));
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
+            ImageOperations.SEPIA, null);
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
   public void testVerticalRotation() {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
@@ -271,7 +290,7 @@ public class OperationsTest {
     int[][] redChannel = {{255, 0}, {0, 255}};
 
     ImageInterface image = ImageFactory.createImage(Collections.singletonList(redChannel));
-    ImageProcessorFactory.performOperation(List.of(image),
+    imageProcessorModel.performOperation(List.of(image),
             ImageOperations.SPLIT_IMAGE, 0);
   }
 
@@ -407,7 +426,7 @@ public class OperationsTest {
             List.of(redChannel2, greenChannel2,
                     blueChannel2));
 
-    ImageProcessorFactory.performOperation(List.of(imageAfterValue1,
+    imageProcessorModel.performOperation(List.of(imageAfterValue1,
                     imageAfterValue2),
             ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
   }
@@ -428,7 +447,7 @@ public class OperationsTest {
             List.of(redChannel2, greenChannel2,
                     blueChannel2));
 
-    ImageProcessorFactory.performOperation(List.of(imageAfterValue1,
+    imageProcessorModel.performOperation(List.of(imageAfterValue1,
                     imageAfterValue2),
             ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
   }

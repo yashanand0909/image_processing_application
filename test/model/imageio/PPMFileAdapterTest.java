@@ -13,6 +13,9 @@ import model.image.ImageInterface;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * This class tests the PPMFileAdapter class.
+ */
 public class PPMFileAdapterTest {
 
   private PPMFileAdapter fileAdapter;
