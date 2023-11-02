@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+/**
+ * This class tests the ImageFactory class.
+ */
 public class ImageFactoryTest {
 
   @Test

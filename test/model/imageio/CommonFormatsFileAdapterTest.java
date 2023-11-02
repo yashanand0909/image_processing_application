@@ -3,17 +3,24 @@ package model.imageio;
 import static org.junit.Assert.assertArrayEquals;
 
 import commonlabels.ImageFormats;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+
 import javax.imageio.ImageIO;
+
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * This class tests the CommonFormatsFileAdapter class.
+ */
 public class CommonFormatsFileAdapterTest {
 
   private CommonFormatsFileAdapter fileAdapter;
@@ -39,7 +46,7 @@ public class CommonFormatsFileAdapterTest {
       }
     }
     ImageInterface image = ImageFactory
-        .createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
+            .createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
     String outputFileName = "test_output.png";
     fileAdapter.encodeAndSaveImage(outputFileName, image, ImageFormats.PNG);
     ImageInterface decodedImage = fileAdapter.decodeImage(outputFileName);
@@ -63,16 +70,16 @@ public class CommonFormatsFileAdapterTest {
     ImageIO.write(testImage, "png", testImageFile);
     ImageInterface decodedImage = fileAdapter.decodeImage("test_image.png");
     int[][] redPixels = new int[][]{
-        {0, 10, 20},
-        {30, 40, 50}
+            {0, 10, 20},
+            {30, 40, 50}
     };
     int[][] greenPixels = new int[][]{
-        {10, 20, 30},
-        {40, 50, 60}
+            {10, 20, 30},
+            {40, 50, 60}
     };
     int[][] bluePixels = new int[][]{
-        {20, 30, 40},
-        {50, 60, 70}
+            {20, 30, 40},
+            {50, 60, 70}
     };
     assertArrayEquals(redPixels, decodedImage.getChannel().get(0));
     assertArrayEquals(greenPixels, decodedImage.getChannel().get(1));
@@ -97,8 +104,8 @@ public class CommonFormatsFileAdapterTest {
     ImageIO.write(testImage, "png", testImageFile);
     ImageInterface decodedImage = fileAdapter.decodeImage("grayscale_image.png");
     int[][] grayPixels = new int[][]{
-        {0, 10},
-        {20, 30}
+            {0, 10},
+            {20, 30}
     };
     assertArrayEquals(grayPixels, decodedImage.getChannel().get(0));
   }
@@ -115,7 +122,7 @@ public class CommonFormatsFileAdapterTest {
       }
     }
     ImageInterface image = ImageFactory
-        .createImage(Collections.singletonList(greyPixels));
+            .createImage(Collections.singletonList(greyPixels));
     String outputFileName = "test_output.png";
     fileAdapter.encodeAndSaveImage(outputFileName, image, ImageFormats.PNG);
     ImageInterface decodedImage = fileAdapter.decodeImage(outputFileName);

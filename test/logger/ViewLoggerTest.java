@@ -8,6 +8,9 @@ import java.io.StringWriter;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * This class tests the ViewLogger class.
+ */
 public class ViewLoggerTest {
 
   private StringWriter stringWriter;

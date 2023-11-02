@@ -11,6 +11,9 @@ import model.operations.operationfactory.ImageProcessorFactory;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * This class tests the operations on an image.
+ */
 public class OperationsTest {
   @Test
   public void testIntensity() {

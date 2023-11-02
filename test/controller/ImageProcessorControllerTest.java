@@ -17,6 +17,9 @@ import model.operations.ImageProcessingModel.ImageProcessorModel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * This class tests the ImageProcessorController class.
+ */
 public class ImageProcessorControllerTest {
 
   private ImageProcessorController controller;

@@ -6,6 +6,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * This class tests the CommonImage class.
+ */
 public class CommonImageTest {
 
   private ImageInterface image;
