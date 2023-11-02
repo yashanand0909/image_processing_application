@@ -1,4 +1,4 @@
-package model.ImageProcessingModel;
+package model.imageprocessingmodel;
 
 import commonlabels.ImageOperations;
 import java.io.IOException;

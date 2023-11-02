@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 import logger.ViewLogger;
-import model.ImageProcessingModel.ImageProcessorModelInterface;
+import model.imageprocessingmodel.ImageProcessorModelInterface;
 
 /**
  * This class represents an image processing controller that handles user commands.

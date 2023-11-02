@@ -10,8 +10,8 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import logger.ViewLogger;
-import model.ImageProcessingModel.ImageProcessorModel;
-import model.ImageProcessingModel.ImageProcessorModelInterface;
+import model.imageprocessingmodel.ImageProcessorModel;
+import model.imageprocessingmodel.ImageProcessorModelInterface;
 import org.junit.Before;
 import org.junit.Test;
 

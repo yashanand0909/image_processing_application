@@ -6,7 +6,7 @@ import commonlabels.ImageOperations;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import model.ImageProcessingModel.ImageProcessorModel;
+import model.imageprocessingmodel.ImageProcessorModel;
 import org.junit.Before;
 import org.junit.Test;
 

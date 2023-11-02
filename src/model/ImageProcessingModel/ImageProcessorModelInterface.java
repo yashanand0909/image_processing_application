@@ -1,4 +1,4 @@
-package model.ImageProcessingModel;
+package model.imageprocessingmodel;
 
 import java.io.IOException;
 
