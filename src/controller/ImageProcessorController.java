@@ -9,6 +9,9 @@ import java.util.Scanner;
 import logger.ViewLogger;
 import model.ImageProcessingModel.ImageProcessorModelInterface;
 
+/**
+ * This class represents an image processor controller.
+ */
 public class ImageProcessorController implements ControllerInterface {
 
   final Readable in;
@@ -16,6 +19,14 @@ public class ImageProcessorController implements ControllerInterface {
   final ViewLogger viewLogger;
   final ImageProcessorModelInterface imageProcessorModel;
 
+  /**
+   * This constructor creates an object of the image processor controller.
+   *
+   * @param viewLogger          the view logger
+   * @param imageProcessorModel the image processor model
+   * @param in                  the readable input
+   * @param out                 the appendable output
+   */
   public ImageProcessorController(ViewLogger viewLogger,
                                   ImageProcessorModelInterface imageProcessorModel,
                                   Readable in, Appendable out) {
@@ -63,8 +74,7 @@ public class ImageProcessorController implements ControllerInterface {
           imageProcessorModel.processCommands(parts);
         }
         viewLogger.LogString("Command ran successfully \n");
-      }
-      catch(Exception e){
+      } catch (Exception e) {
         viewLogger.logException(e);
       }
     }

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.Collections;
+
 import javax.imageio.ImageIO;
 
 import commonlabels.ImageFormats;
@@ -16,6 +17,14 @@ import model.image.ImageInterface;
  * For JPG and PNG files, we will use the ImageIO class from the Java standard library.
  */
 public class CommonFormatsFileAdapter implements IOFileByFormat {
+  /**
+   * This method encodes and saves the image to the given filename.
+   *
+   * @param filename the filename to save the image to
+   * @param image    the image to be saved
+   * @param format   the format of the image
+   * @throws IOException if the file cannot be written
+   */
   @Override
   public void encodeAndSaveImage(String filename, ImageInterface image,
                                  ImageFormats format) throws IOException {
@@ -78,7 +87,7 @@ public class CommonFormatsFileAdapter implements IOFileByFormat {
       }
     }
     if (isGrayscale) {
-      return  ImageFactory.createImage(Collections.singletonList(redPixels));
+      return ImageFactory.createImage(Collections.singletonList(redPixels));
     }
     return ImageFactory.createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
 

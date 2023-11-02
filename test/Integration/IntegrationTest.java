@@ -289,6 +289,90 @@ public class IntegrationTest {
   }
 
   @Test
+  public void testMergeImage() throws IOException {
+    String newImagePath = "test_image_merge.jpg";
+    int[][] newChannelAfterMergeRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterMergeGreen = new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] newChannelAfterMergeBlue = new int[][]{{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+    List<int[][]> newChannleList = Arrays
+            .asList(newChannelAfterMergeRed, newChannelAfterMergeGreen,
+                    newChannelAfterMergeBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String mergeCommand = "rgb-combine test_merge test test test\n";
+    String saveCommand = "save " + newImagePath + " test_merge\n";
+    imageProcessorController = new ImageProcessorController(logger,
+            new ImageProcessorModel(), new StringReader(loadCommand
+            + mergeCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+  @Test
+  public void testMergeImageWithError() throws IOException {
+    String newImagePath = "test_image_merge.jpg";
+    int[][] newChannelAfterSharpenRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSharpenGreen = new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] newChannelAfterSharpenBlue = new int[][]{{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+    List<int[][]> newChannleList = Arrays
+            .asList(newChannelAfterSharpenRed, newChannelAfterSharpenGreen,
+                    newChannelAfterSharpenBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String mergeCommand = "rgb-combine test_merge test test\n";
+    String saveCommand = "save " + newImagePath + " test_merge\n";
+    imageProcessorController = new ImageProcessorController(logger,
+            new ImageProcessorModel(), new StringReader(loadCommand
+            + mergeCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Invalid rgb-combine command"));
+    cleanupImages(List.of(imagePath));
+  }
+
+  @Test
+  public void testSplitImage() throws IOException {
+    String newImagePathRed = "test_image_split_red.jpg";
+    String newImagePathGreen = "test_image_split_green.jpg";
+    String newImagePathBlue = "test_image_split_blue.jpg";
+    int[][] newChannelAfterSplitRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSplitGreen = new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] newChannelAfterSplitBlue = new int[][]{{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+    int[][] newZeroChannel = new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    List<int[][]> newChannelListRed = Arrays
+            .asList(newChannelAfterSplitRed, newZeroChannel,
+                    newZeroChannel);
+    List<int[][]> newChannelListGreen = Arrays
+            .asList(newZeroChannel, newChannelAfterSplitGreen,
+                    newZeroChannel);
+    List<int[][]> newChannleListBlue = Arrays
+            .asList(newZeroChannel, newZeroChannel,
+                    newChannelAfterSplitBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String splitCommand = "rgb-split test test_red test_green test_blue\n";
+    String saveCommand1 = "save " + newImagePathRed + " test_red\n";
+    String saveCommand2 = "save " + newImagePathGreen + " test_green\n";
+    String saveCommand3 = "save " + newImagePathBlue + " test_blue\n";
+    imageProcessorController = new ImageProcessorController(logger,
+            new ImageProcessorModel(), new StringReader(loadCommand
+            + splitCommand + saveCommand1 +
+            saveCommand2 + saveCommand3 +
+            "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface imageRed = IOFileFactory.decodeImage(newImagePathRed);
+    assertImageEquals(newChannelListRed, imageRed);
+
+    ImageInterface imageGreen = IOFileFactory.decodeImage(newImagePathGreen);
+    assertImageEquals(newChannelListGreen, imageGreen);
+
+    ImageInterface imageBlue = IOFileFactory.decodeImage(newImagePathBlue);
+    assertImageEquals(newChannleListBlue, imageBlue);
+
+    cleanupImages(Arrays.asList(imagePath, newImagePathRed, newImagePathBlue, newImagePathGreen));
+  }
+
+  @Test
   public void testScriptFile() throws IOException {
     String newImagePath = "test_image_sharpen.jpg";
 

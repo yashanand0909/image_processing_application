@@ -5,9 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.io.PrintWriter;
+
 import model.ImageProcessingModel.ImageProcessorModelInterface;
 
 import model.image.ImageInterface;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -97,8 +99,8 @@ public class ImageProcessorControllerTest {
   @Test
   public void testHandleScriptCommands() throws IOException {
     String scriptContent = "load path/to/image.jpg image1\n"
-        + "brighten 10 image1 image2\n"
-        + "exit\n";
+            + "brighten 10 image1 image2\n"
+            + "exit\n";
     File tempFile = File.createTempFile("temp", ".txt");
     String filePath = tempFile.getAbsolutePath();
     PrintWriter writer = new PrintWriter(new FileWriter(tempFile));

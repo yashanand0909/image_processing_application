@@ -1,6 +1,7 @@
 package model.image;
 
 import model.ImageProcessingModel.ImageProcessorModel;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class OperationsTest {
   ImageProcessorModel imageProcessorModel;
 
   @Before
-  public void setup(){
+  public void setup() {
     imageProcessorModel = new ImageProcessorModel();
   }
 

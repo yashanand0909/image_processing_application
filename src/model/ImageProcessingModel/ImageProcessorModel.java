@@ -82,6 +82,12 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
     }
   }
 
+  /**
+   * This method processes the commands.
+   *
+   * @param parts the parts of the command
+   * @throws IOException if the input is invalid
+   */
   @Override
   public void processCommands(String[] parts) throws IOException {
     if (parts.length == 0) {
@@ -290,6 +296,12 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
     }
   }
 
+  /**
+   * This method returns the image with the given name.
+   *
+   * @param name of the image
+   * @return the Image
+   */
   @Override
   public ImageInterface getImage(String name) {
     return images.get(name);

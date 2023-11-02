@@ -1,6 +1,5 @@
 package model.operations.filters;
 
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessor;

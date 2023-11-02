@@ -4,12 +4,15 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
 import commonlabels.ImageFormats;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,12 +38,12 @@ public class PPMFileAdapterTest {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         redPixels[i][j] = i * width + j;
-        greenPixels[i][j] = i * width + j+1;
-        bluePixels[i][j] = i * width + j+2;
+        greenPixels[i][j] = i * width + j + 1;
+        bluePixels[i][j] = i * width + j + 2;
       }
     }
     ImageInterface image = ImageFactory
-        .createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
+            .createImage(Arrays.asList(redPixels, greenPixels, bluePixels));
 
     // Encoding and saving image
     String outputFileName = "test_output.ppm";
@@ -72,10 +75,10 @@ public class PPMFileAdapterTest {
     String testFileName = "test_image.ppm";
 
     String ppmContent = "P3" + System.lineSeparator()
-        + width + " " + height + System.lineSeparator()
-        + maxValue + System.lineSeparator()
-        + "0 255 0 20 5 0" + System.lineSeparator()
-        + "255 0 10 0 255 0" + System.lineSeparator();
+            + width + " " + height + System.lineSeparator()
+            + maxValue + System.lineSeparator()
+            + "0 255 0 20 5 0" + System.lineSeparator()
+            + "255 0 10 0 255 0" + System.lineSeparator();
     Files.write(new File(testFileName).toPath(), ppmContent.getBytes());
 
     // Decoding the test image

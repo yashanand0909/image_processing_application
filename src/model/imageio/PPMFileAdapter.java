@@ -51,7 +51,7 @@ public class PPMFileAdapter implements IOFileByFormat {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         builder.append(redPixels[i][j]).append(" ").append(greenPixels[i][j]).append(" ")
-            .append(bluePixels[i][j]).append(" ");
+                .append(bluePixels[i][j]).append(" ");
       }
       builder.append(System.lineSeparator());
     }
