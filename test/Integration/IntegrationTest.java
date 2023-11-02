@@ -78,6 +78,36 @@ public class IntegrationTest {
     cleanupImages(Arrays.asList(imagePath, newImagePath));
   }
 
+  @Test
+  public void testBrightenFlowAfterIncorrectCommand() throws IOException {
+    String newImagePath = "test_image_bright.jpg";
+    int[][] newChannelAfterIncreaseBrightnessRed = {{245, 245, 245}, {245, 245, 245},
+            {245, 245, 245}};
+    int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 76, 0}};
+    int[][] newChannelAfterIncreaseBrightnessBlue = {{244, 244, 230}, {230, 0, 80},
+            {73, 245, 34}};
+    List<int[][]> newChannleList = Arrays
+            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+                    newChannelAfterIncreaseBrightnessBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String wrongCommand = "bright -10 test test_bright\n";
+    String brightenCommand = "brighten -10 test test_bright\n";
+    String saveCommand = "save " + newImagePath + " test_bright\n";
+    imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
+            new StringReader(loadCommand + wrongCommand + brightenCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < image.getHeight(); j++) {
+        for (int w = 0; w < image.getWidth(); w++) {
+          assertEquals(image.getChannel().get(i)[j][w], newChannleList.get(i)[j][w]);
+        }
+      }
+    }
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
   @Test()
   public void testIncorrectImageName() throws IOException {
     String newImagePath = "test_image_bright.jpg";
@@ -89,6 +119,18 @@ public class IntegrationTest {
             new StringReader(loadCommand + brightenCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Can't read input file"));
+  }
+
+  @Test()
+  public void testIncorrectImageExtension() throws IOException {
+    String newImagePath = "test_image_bright.xtf";
+    String loadCommand = "load " + newImagePath + " test\n";
+    String brightenCommand = "brighten -10 test test_bright\n";
+    String saveCommand = "save " + newImagePath + " test_bright\n";
+    imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
+            new StringReader(loadCommand + brightenCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Invalid file extension"));
   }
 
   @Test
