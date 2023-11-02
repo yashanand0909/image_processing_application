@@ -26,7 +26,8 @@ import model.operations.split.SplitImageOperation;
 /**
  * This class represents a factory for image operations.
  */
-public class ImageProcessorModel implements ImageProcessorModelInterface {
+public class ImageProcessorModel implements
+    model.ImageProcessingModel.ImageProcessorModelInterface {
 
   private final Map<String, ImageInterface> images;
 
