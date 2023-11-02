@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import logger.ViewLogger;
-import model.ImageProcessingModel.ImageProcessorModel;
+import model.imageprocessingmodel.ImageProcessorModel;
 import model.ImageProcessingModel.ImageProcessorModelInterface;
 
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class ImageProcessorControllerTest {
   public void testHandleExitCommand() {
     controller = new ImageProcessorController(logger, model, new StringReader("exit"), out);
     controller.startImageProcessingController();
-    assertEquals("Enter a command: \n", out.toString());
+    assertEquals("Enter a command:", out.toString());
   }
 
   @Test
@@ -56,7 +56,7 @@ public class ImageProcessorControllerTest {
     ImageProcessorController controller = new ImageProcessorController(logger, model,
         new StringReader("exit"), out);
     controller.startImageProcessingController();
-    assertEquals("Enter a command: \n", out.toString());
+    assertEquals("Enter a command:", out.toString());
   }
 
   @Test

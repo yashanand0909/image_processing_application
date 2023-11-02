@@ -1,7 +1,7 @@
 package model.image;
 
 import commonlabels.ImageOperations;
-import model.ImageProcessingModel.ImageProcessorModel;
+import model.imageprocessingmodel.ImageProcessorModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
