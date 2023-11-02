@@ -1,9 +1,13 @@
 package controller;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
-import model.operations.ImageProcessingModel.ImageProcessorModelInterface;
+import java.io.PrintWriter;
+import model.ImageProcessingModel.ImageProcessorModelInterface;
 
+import model.image.ImageInterface;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +16,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import logger.ViewLogger;
-import model.operations.ImageProcessingModel.ImageProcessorModel;
+import model.ImageProcessingModel.ImageProcessorModel;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -39,6 +43,11 @@ public class ImageProcessorControllerTest {
       for (String s : parts)
         log.append(s);
     }
+
+    @Override
+    public ImageInterface getImage(String name) {
+      return null;
+    }
   }
 
   @Before
@@ -46,7 +55,6 @@ public class ImageProcessorControllerTest {
     out = new StringWriter();
     logger = new ViewLogger(out);
     model = new ImageProcessorModel();
-
   }
 
   @Test
@@ -81,6 +89,23 @@ public class ImageProcessorControllerTest {
     StringBuilder s = new StringBuilder();
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock, new StringReader(scriptContent), out);
+    controller.startImageProcessingController();
+    assertEquals("loadpath/to/image.jpgimage1brighten10image1image2", s.toString());
+  }
+
+  @Test
+  public void testHandleScriptCommands() throws IOException {
+    String scriptContent = "load path/to/image.jpg image1\n"
+        + "brighten 10 image1 image2\n"
+        + "exit\n";
+    File tempFile = File.createTempFile("temp", ".txt");
+    PrintWriter writer = new PrintWriter(new FileWriter(tempFile));
+    writer.println(scriptContent);
+    writer.close();
+    String runString = "run temp.txt";
+    StringBuilder s = new StringBuilder();
+    MockModel modelMock = new MockModel(s);
+    controller = new ImageProcessorController(logger, modelMock, new StringReader(runString), out);
     controller.startImageProcessingController();
     assertEquals("loadpath/to/image.jpgimage1brighten10image1image2", s.toString());
   }

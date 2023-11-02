@@ -48,8 +48,9 @@ public class CommonImage implements ImageInterface {
      *
      * @param channel the channel to be added
      */
-    public void addChannel(int[][] channel) {
+    public ImageBuilder addChannel(int[][] channel) {
       this.channles.add(channel);
+      return this;
     }
 
     /**

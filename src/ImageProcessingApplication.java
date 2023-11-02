@@ -2,7 +2,7 @@ import controller.ImageProcessorController;
 
 import java.io.InputStreamReader;
 import logger.ViewLogger;
-import model.operations.ImageProcessingModel.ImageProcessorModel;
+import model.ImageProcessingModel.ImageProcessorModel;
 
 public class ImageProcessingApplication {
   public static void main(String[] args) {

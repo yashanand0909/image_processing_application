@@ -1,4 +1,4 @@
-package model.operations.ImageProcessingModel;
+package model.ImageProcessingModel;
 
 import commonlabels.ImageOperations;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
    * @return new processed image
    * @throws IllegalArgumentException if the process not possible
    */
-  private ImageInterface performOperation(List<ImageInterface> images,
+  public ImageInterface performOperation(List<ImageInterface> images,
       ImageOperations operation,
       Object operator) throws IllegalArgumentException {
     if (images.isEmpty()) {
@@ -63,6 +63,9 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
       case SEPIA:
         return new Sepia().apply(images.get(0));
       case SPLIT_IMAGE:
+      case SPLIT_IMAGE_BY_RED_CHANNEL:
+      case SPLIT_IMAGE_BY_BLUE_CHANNEL:
+      case SPLIT_IMAGE_BY_GREEN_CHANNEL:
         return new SplitImageOperation().apply(images.get(0), operator);
       case BRIGHTNESS:
         return new BrightnessOperation().apply(images.get(0), operator);
@@ -105,7 +108,7 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
         case "brighten":
           if (parts.length != 4) {
             throw new IllegalArgumentException(
-                "Invalid save command. Usage: save <brightness-factor> <current-image-name> <new-image-name>");
+                "Invalid save command. Usage: brighten <brightness-factor> <current-image-name> <new-image-name>");
           } else {
             if (!images.containsKey(parts[2])) {
               throw new IllegalArgumentException(
@@ -123,8 +126,65 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
           }
           break;
         case "red-component":
+          if (parts.length != 3) {
+            throw new IllegalArgumentException(
+                "Invalid green-component command. Usage: command <image-name> <dest-image-name>");
+          } else {
+            if (!images.containsKey(parts[1])) {
+              throw new IllegalArgumentException(
+                  "Invalid request : No image exist with the name " + parts[1]);
+            }
+            if (images.containsKey(parts[2])) {
+              throw new IllegalArgumentException(
+                  "Invalid request : An Image exist with the name " + parts[2]);
+            }
+            // Add call to module factory
+            List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
+            ImageInterface newImage = performOperation(imageList,
+                ImageOperations.fromString(parts[0]), 0);
+            images.put(parts[2], newImage);
+          }
+          break;
         case "green-component":
+          if (parts.length != 3) {
+            throw new IllegalArgumentException(
+                "Invalid green-component command. Usage: command <image-name> <dest-image-name>");
+          } else {
+            if (!images.containsKey(parts[1])) {
+              throw new IllegalArgumentException(
+                  "Invalid request : No image exist with the name " + parts[1]);
+            }
+            if (images.containsKey(parts[2])) {
+              throw new IllegalArgumentException(
+                  "Invalid request : An Image exist with the name " + parts[2]);
+            }
+            // Add call to module factory
+            List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
+            ImageInterface newImage = performOperation(imageList,
+                ImageOperations.fromString(parts[0]), 1);
+            images.put(parts[2], newImage);
+          }
+          break;
         case "blue-component":
+          if (parts.length != 3) {
+            throw new IllegalArgumentException(
+                "Invalid green-component command. Usage: command <image-name> <dest-image-name>");
+          } else {
+            if (!images.containsKey(parts[1])) {
+              throw new IllegalArgumentException(
+                  "Invalid request : No image exist with the name " + parts[1]);
+            }
+            if (images.containsKey(parts[2])) {
+              throw new IllegalArgumentException(
+                  "Invalid request : An Image exist with the name " + parts[2]);
+            }
+            // Add call to module factory
+            List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
+            ImageInterface newImage = performOperation(imageList,
+                ImageOperations.fromString(parts[0]), 2);
+            images.put(parts[2], newImage);
+          }
+          break;
         case "value-component":
         case "luma-component":
         case "intensity-component":
@@ -136,7 +196,7 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
         case "sepia":
           if (parts.length != 3) {
             throw new IllegalArgumentException(
-                "Invalid green-component command. Usage: red-component <image-name> <dest-image-name>");
+                "Invalid green-component command. Usage: command <image-name> <dest-image-name>");
           } else {
             if (!images.containsKey(parts[1])) {
               throw new IllegalArgumentException(
@@ -223,5 +283,10 @@ public class ImageProcessorModel implements ImageProcessorModelInterface {
           throw new IllegalArgumentException(
               "Unknown command. Try again or type 'exit' to quit.");
       }
+  }
+
+  @Override
+  public ImageInterface getImage(String name) {
+    return images.get(name);
   }
 }

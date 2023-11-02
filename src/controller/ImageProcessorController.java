@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import logger.ViewLogger;
-import model.operations.ImageProcessingModel.ImageProcessorModelInterface;
+import model.ImageProcessingModel.ImageProcessorModelInterface;
 
 public class ImageProcessorController implements ControllerInterface {
 
@@ -49,7 +49,7 @@ public class ImageProcessorController implements ControllerInterface {
       input = scanner.nextLine();
       String[] parts = input.split(" ");
 
-      if (parts.length == 1) {
+      if (parts.length == 1 && !parts[0].equals("exit")) {
         throw new IllegalArgumentException("Invalid command. Try again.");
       }
       if (parts[0].equals("exit")) {
@@ -87,6 +87,9 @@ public class ImageProcessorController implements ControllerInterface {
             imageProcessorModel.processCommands(parts);
           }
         }
+      }
+      else {
+        throw new IllegalArgumentException("Invalid command : File does not exist with name "+commandInput[1]);
       }
     }
   }
