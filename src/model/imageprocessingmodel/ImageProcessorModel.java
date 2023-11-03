@@ -44,7 +44,7 @@ public class ImageProcessorModel implements
    * @return new processed image
    * @throws IllegalArgumentException if the process not possible
    */
-  public ImageInterface performOperation(List<ImageInterface> images,
+  private ImageInterface performOperation(List<ImageInterface> images,
                                          ImageOperations operation,
                                          Object operator) throws IllegalArgumentException {
     if (images.isEmpty()) {
@@ -295,6 +295,11 @@ public class ImageProcessorModel implements
         throw new IllegalArgumentException(
                 "Unknown command. Try again or type 'exit' to quit.");
     }
+  }
+
+  @Override
+  public ImageInterface getImage(String imageName) {
+    return this.images.get(imageName);
   }
 
 }

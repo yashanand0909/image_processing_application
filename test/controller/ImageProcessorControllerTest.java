@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import logger.ViewLogger;
+import model.image.ImageInterface;
 import model.imageprocessingmodel.ImageProcessorModel;
 import model.imageprocessingmodel.ImageProcessorModelInterface;
 
@@ -150,6 +151,11 @@ public class ImageProcessorControllerTest {
       for (String s : parts) {
         log.append(s);
       }
+    }
+
+    @Override
+    public ImageInterface getImage(String imageName) {
+      return null;
     }
   }
 
