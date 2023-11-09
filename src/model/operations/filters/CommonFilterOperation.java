@@ -1,8 +1,8 @@
 package model.operations.filters;
 
-
 import java.util.ArrayList;
 import java.util.List;
+
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessor;
@@ -62,7 +62,7 @@ public abstract class CommonFilterOperation implements SingleImageProcessor {
   }
 
   private ImageInterface addPadding(ImageInterface image,
-      int kernalHeight, int kernalWidth) {
+                                    int kernalHeight, int kernalWidth) {
     int height = image.getHeight();
     int width = image.getWidth();
     List<int[][]> imageChannel = image.getChannel();
@@ -82,7 +82,7 @@ public abstract class CommonFilterOperation implements SingleImageProcessor {
   }
 
   /**
-   * This method returns the filter to be applied to the image.
+   * Filter to be applied to the image is returned by this.
    *
    * @return the filter to be applied to the image
    */

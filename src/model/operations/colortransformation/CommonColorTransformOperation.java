@@ -35,28 +35,29 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        int R = imageChannel.get(0)[i][j];
-        int G = imageChannel.get(1)[i][j];
-        int B = imageChannel.get(2)[i][j];
+        int r = imageChannel.get(0)[i][j];
+        int g = imageChannel.get(1)[i][j];
+        int b = imageChannel.get(2)[i][j];
 
-        int newRed = (int)(coffeicient[0][0] * R + coffeicient[0][1] * G
-            + coffeicient[0][2] * B);
-        int newGreen = (int)(coffeicient[1][0] * R + coffeicient[1][1] * G
-            + coffeicient[1][2] * B);
-        int newBlue = (int)(coffeicient[2][0] * R + coffeicient[2][1] * G
-            + coffeicient[2][2] * B);
+        int newRed = (int)(coffeicient[0][0] * r + coffeicient[0][1] * g
+            + coffeicient[0][2] * b);
+        int newGreen = (int)(coffeicient[1][0] * r + coffeicient[1][1] * g
+            + coffeicient[1][2] * b);
+        int newBlue = (int)(coffeicient[2][0] * r + coffeicient[2][1] * g
+            + coffeicient[2][2] * b);
 
         newRedChannel[i][j] = Math.min(newRed, 255);
         newGreenChannel[i][j] = Math.min(newGreen, 255);
         newBlueChannel[i][j] = Math.min(newBlue, 255);
       }
     }
-    List<int[][]> newImageChannelList = new ArrayList<>(Arrays.asList(newRedChannel, newGreenChannel, newBlueChannel));
+    List<int[][]> newImageChannelList = new ArrayList<>(Arrays.asList(newRedChannel,
+            newGreenChannel, newBlueChannel));
     return ImageFactory.createImage(newImageChannelList);
   }
 
   /**
-   * This method returns the transform coefficient.
+   * Transform coefficient is returned by the method.
    *
    * @return the transform coefficient
    */

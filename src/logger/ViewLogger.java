@@ -27,7 +27,7 @@ public class ViewLogger {
     try {
       this.out.append(e.getMessage());
     } catch (IOException ex) {
-      System.out.println(ex.getMessage());
+      System.out.println(ex.getMessage() + "\n");
     }
   }
 
@@ -36,11 +36,11 @@ public class ViewLogger {
    *
    * @param s the String
    */
-  public void LogString(String s){
+  public void logString(String s) {
     try {
       this.out.append(s);
     } catch (IOException ex) {
-      System.out.println(ex.getMessage());
+      System.out.println(ex.getMessage() + "\n");
     }
   }
 

@@ -31,7 +31,7 @@ public class CommonImage implements ImageInterface {
   }
 
   /**
-   * This method returns the builder of the image.
+   * This class helps to make builder of the image.
    */
   public static class ImageBuilder {
     private List<int[][]> channles;
@@ -65,7 +65,7 @@ public class CommonImage implements ImageInterface {
   }
 
   /**
-   * This method returns the channels of the image.
+   * The channels of the image is returned by this method.
    *
    * @return the channels of the image
    */
@@ -75,7 +75,7 @@ public class CommonImage implements ImageInterface {
   }
 
   /**
-   * This method returns the height of the image.
+   * The height of the image is returned by this method.
    *
    * @return the height of the image
    */
@@ -85,7 +85,7 @@ public class CommonImage implements ImageInterface {
   }
 
   /**
-   * This method returns the width of the image.
+   * The width of the image is returned by this method.
    *
    * @return the width of the image
    */

@@ -1,26 +1,29 @@
-package model.image;
+package model.operations;
 
 import static org.junit.Assert.assertEquals;
 
-import commonlabels.ImageOperations;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import model.ImageProcessingModel.ImageProcessorModel;
-import org.junit.Before;
+import model.image.ImageFactory;
+import model.image.ImageInterface;
+import model.operations.colorrepresentation.Intensity;
+import model.operations.colorrepresentation.Value;
+import model.operations.colortransformation.Greyscale;
+import model.operations.colortransformation.Sepia;
+import model.operations.filters.BlurFilter;
+import model.operations.filters.SharpenFilter;
+import model.operations.merge.MergeSingleChannelImages;
+import model.operations.pixeloffset.BrightnessOperation;
+import model.operations.rotation.HorizontalFlipOperation;
+import model.operations.rotation.VerticalFlipOperation;
+import model.operations.split.SplitImageOperation;
 import org.junit.Test;
 
 /**
  * This class tests the operations on an image.
  */
 public class OperationsTest {
-
-  ImageProcessorModel imageProcessorModel;
-
-  @Before
-  public void setup() {
-    imageProcessorModel = new ImageProcessorModel();
-  }
 
   @Test
   public void testIntensity() {
@@ -34,8 +37,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.INTENSITY, null);
+    ImageInterface newImage = new Intensity().apply(image);
     assertEqualImages(imageAfterIntensity, newImage);
 
   }
@@ -52,8 +54,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.VALUE, null);
+    ImageInterface newImage = new Value().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -69,8 +70,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.GREYSCALE, null);
+    ImageInterface newImage = new Greyscale().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -79,8 +79,7 @@ public class OperationsTest {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
-    imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.GREYSCALE, null);
+    new Greyscale().apply(image);
   }
 
   @Test
@@ -95,18 +94,14 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.LUMA, null);
-    assertEqualImages(imageAfterValue, newImage);
+    ImageInterface newImage = new Greyscale().apply(image);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidLuma() {
-    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
-    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
-    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
-    imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.LUMA, null);
+    int[][] channel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new Greyscale().apply(image);
   }
 
   @Test
@@ -123,8 +118,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.BLUR, null);
+    ImageInterface newImage = new BlurFilter().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -143,8 +137,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.SHARPEN, null);
+    ImageInterface newImage = new SharpenFilter().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -162,8 +155,26 @@ public class OperationsTest {
         .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
             newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.BRIGHTNESS, "10");
+    ImageInterface newImage = new BrightnessOperation().apply(image, "10");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testIncreaseBrightnessClamp() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] blueChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
+        {255, 255, 255}};
+    int[][] newChannelAfterIncreaseBrightnessGreen = {{255, 255, 255}, {255, 255, 255},
+        {255, 255, 255}};
+    int[][] newChannelAfterIncreaseBrightnessBlue = {{255, 255, 255}, {255, 255, 255},
+        {255, 255, 255}};
+    ImageInterface imageAfterValue = ImageFactory
+        .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
+            newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+    ImageInterface newImage = new BrightnessOperation().apply(image, "10");
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -181,8 +192,23 @@ public class OperationsTest {
         .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
             newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.BRIGHTNESS, "-10");
+    ImageInterface newImage = new BrightnessOperation().apply(image, "-10");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testDecreaseBrightnessClamp() {
+    int[][] redChannel = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    int[][] blueChannel = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    ImageInterface imageAfterValue = ImageFactory
+        .createImage(List.of(newChannelAfterIncreaseBrightnessRed,
+            newChannelAfterIncreaseBrightnessGreen, newChannelAfterIncreaseBrightnessBlue));
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+    ImageInterface newImage = new BrightnessOperation().apply(image, "-10");
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -200,8 +226,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.SEPIA, null);
+    ImageInterface newImage = new Sepia().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -219,8 +244,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.SEPIA, null);
+    ImageInterface newImage = new Sepia().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -240,8 +264,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.VERTICAL_FLIP, null);
+    ImageInterface newImage = new VerticalFlipOperation().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -262,8 +285,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.HORIZONTAL_FLIP, null);
+    ImageInterface newImage = new HorizontalFlipOperation().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -281,8 +303,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.SPLIT_IMAGE, 0);
+    ImageInterface newImage = new SplitImageOperation().apply(image, 0);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -291,8 +312,7 @@ public class OperationsTest {
     int[][] redChannel = {{255, 0}, {0, 255}};
 
     ImageInterface image = ImageFactory.createImage(Collections.singletonList(redChannel));
-    imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.SPLIT_IMAGE, 0);
+    new SplitImageOperation().apply(image, 0);
   }
 
   @Test
@@ -309,8 +329,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.SPLIT_IMAGE, 1);
+    ImageInterface newImage = new SplitImageOperation().apply(image, 1);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -328,8 +347,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-        ImageOperations.SPLIT_IMAGE, 2);
+    ImageInterface newImage = new SplitImageOperation().apply(image, 2);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -367,8 +385,7 @@ public class OperationsTest {
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
     for (int i = 0; i < 3; i++) {
-      ImageInterface newImage = imageProcessorModel.performOperation(List.of(image),
-          ImageOperations.SPLIT_IMAGE, i);
+      ImageInterface newImage = new SplitImageOperation().apply(image, i);
       assertEqualImages(newChannels.get(i), newImage);
     }
   }
@@ -403,9 +420,8 @@ public class OperationsTest {
         List.of(newChannelAfterValueRed, newChannelAfterValueGreen,
             newChannelAfterValueBlue));
 
-    ImageInterface newImage = imageProcessorModel.performOperation(List.of(imageAfterValue1,
-        imageAfterValue2, imageAfterValue3),
-        ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
+    ImageInterface newImage = new MergeSingleChannelImages().apply(List.of(imageAfterValue1,
+        imageAfterValue2, imageAfterValue3));
     assertEqualImages(imageAfterValue, newImage);
 
   }
@@ -426,9 +442,8 @@ public class OperationsTest {
         List.of(redChannel2, greenChannel2,
             blueChannel2));
 
-    imageProcessorModel.performOperation(List.of(imageAfterValue1,
-        imageAfterValue2),
-        ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
+    new MergeSingleChannelImages().apply(List.of(imageAfterValue1,
+        imageAfterValue2));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -447,9 +462,8 @@ public class OperationsTest {
         List.of(redChannel2, greenChannel2,
             blueChannel2));
 
-    imageProcessorModel.performOperation(List.of(imageAfterValue1,
-        imageAfterValue2),
-        ImageOperations.MERGE_SINGLE_CHANNEL_IMAGES, null);
+    new MergeSingleChannelImages().apply(List.of(imageAfterValue1,
+        imageAfterValue2));
   }
 
   private void assertEqualImages(ImageInterface imageAfterIntensity, ImageInterface newImage) {

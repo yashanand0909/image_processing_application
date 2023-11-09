@@ -1,6 +1,7 @@
 package model.image;
 
 import java.util.List;
+
 import model.image.CommonImage.ImageBuilder;
 
 /**
@@ -14,7 +15,7 @@ public class ImageFactory {
    * @return the image
    * @throws IllegalArgumentException if the number of channels is not 1 or 3
    */
-  public static ImageInterface createImage( List<int[][]> channelList) {
+  public static ImageInterface createImage(List<int[][]> channelList) {
     if (channelList.size() == 1 || channelList.size() == 3) {
       ImageBuilder imageBuilder = new CommonImage.ImageBuilder();
       for (int[][] ints : channelList) {
