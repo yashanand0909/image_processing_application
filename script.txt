@@ -1,0 +1,27 @@
+load res/images/open-source-image-original.png open-source
+rgb-split open-source open-source-small-red open-source-small-green open-source-small-blue
+greyscale open-source open-source-grey
+sharpen open-source open-source-sharp
+sepia open-source open-source-sepia
+brighten 20 open-source open-source-brighten
+blur open-source open-source-blur
+horizontal-flip open-source open-source-horizontal-flip
+vertical-flip open-source open-source-vertical-flip
+intensity-component open-source open-source-intensity
+value-component open-source open-source-value
+luma-component open-source open-source-luma
+rgb-combine open-source-combine open-source-small-red open-source-small-green open-source-small-blue
+save res/images/open-source-small-red.png open-source-small-red
+save res/images/open-source-small-green.png open-source-small-green
+save res/images/open-source-small-blue.png open-source-small-blue
+save res/images/open-source-sharp.png open-source-sharp
+save res/images/open-source-grey.png open-source-grey
+save res/images/open-source-sepia.png open-source-sepia
+save res/images/open-source-brighten.png open-source-brighten
+save res/images/open-source-blur.png open-source-blur
+save res/images/open-source-horizontal-flip.png open-source-horizontal-flip
+save res/images/open-source-vertical-flip.png open-source-vertical-flip
+save res/images/open-source-intensity.png open-source-intensity
+save res/images/open-source-value.png open-source-value
+save res/images/open-source-luma.png open-source-luma
+save res/images/open-source-combine-2.png open-source-combine
