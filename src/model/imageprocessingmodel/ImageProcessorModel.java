@@ -54,18 +54,18 @@ public class ImageProcessorModel implements
 
     switch (operation) {
       case BLUR:
-        return new BlurFilter().apply(images.get(0));
+        return new BlurFilter().apply(images.get(0),operator);
       case SHARPEN:
-        return new SharpenFilter().apply(images.get(0));
+        return new SharpenFilter().apply(images.get(0),operator);
       case HORIZONTAL_FLIP:
         return new HorizontalFlipOperation().apply(images.get(0));
       case VERTICAL_FLIP:
         return new VerticalFlipOperation().apply(images.get(0));
       case GREYSCALE:
       case LUMA:
-        return new Greyscale().apply(images.get(0));
+        return new Greyscale().apply(images.get(0), operator);
       case SEPIA:
-        return new Sepia().apply(images.get(0));
+        return new Sepia().apply(images.get(0), operator);
       case SPLIT_IMAGE:
       case SPLIT_IMAGE_BY_RED_CHANNEL:
       case SPLIT_IMAGE_BY_BLUE_CHANNEL:
@@ -204,10 +204,6 @@ public class ImageProcessorModel implements
       case "intensity-component":
       case "horizontal-flip":
       case "vertical-flip":
-      case "blur":
-      case "sharpen":
-      case "greyscale":
-      case "sepia":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
               "Invalid component command. Usage: command <image-name> <dest-image-name>");
@@ -220,10 +216,38 @@ public class ImageProcessorModel implements
             throw new IllegalArgumentException(
                     "Invalid request : An Image exist with the name " + parts[2]);
           }
-          // Add call to module factory
           List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
           ImageInterface newImage = performOperation(imageList,
                   ImageOperations.fromString(parts[0]), null);
+          images.put(parts[2], newImage);
+        }
+        break;
+      case "blur":
+      case "sepia":
+      case "sharpen":
+      case "greyscale":
+        if (parts.length != 3 && parts.length != 4) {
+          throw new IllegalArgumentException(
+              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+        }
+        else {
+          if (!images.containsKey(parts[1])) {
+            throw new IllegalArgumentException(
+                "Invalid request : No image exist with the name " + parts[1]);
+          }
+          if (images.containsKey(parts[2])) {
+            throw new IllegalArgumentException(
+                "Invalid request : An Image exist with the name " + parts[2]);
+          }
+          List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
+          ImageInterface newImage;
+          if (parts.length == 3) {
+            newImage = performOperation(imageList,
+                ImageOperations.fromString(parts[0]), "100");
+          } else {
+            newImage = performOperation(imageList,
+                ImageOperations.fromString(parts[0]), parts[3]);
+          }
           images.put(parts[2], newImage);
         }
         break;
