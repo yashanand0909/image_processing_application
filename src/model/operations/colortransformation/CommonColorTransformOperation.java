@@ -8,11 +8,12 @@ import java.util.Arrays;
 import model.operations.operationinterfaces.SingleImageProcessor;
 
 import java.util.List;
+import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 /**
  * This interface represents a color transformation operation on an image.
  */
-public abstract class CommonColorTransformOperation implements SingleImageProcessor {
+public abstract class CommonColorTransformOperation implements SingleImageProcessorWithOffset {
   /**
    * This method applies the color transformation operation on the given image.
    *
@@ -21,10 +22,12 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
    * @throws IllegalArgumentException if the image doesn't have 3 channels
    */
   @Override
-  public ImageInterface apply(ImageInterface image) throws IllegalArgumentException {
+  public ImageInterface apply(ImageInterface image, Object operator) throws IllegalArgumentException {
+    int percentage = Integer.parseInt((String) operator);
     double[][] coffeicient = getTransformCoefficient();
     int height = image.getHeight();
     int width = image.getWidth();
+    int perWidth = width * percentage/100;
     List<int[][]> imageChannel = image.getChannel();
     if (imageChannel.size() != 3) {
       throw new IllegalArgumentException("Image must have 3 channels");
@@ -39,11 +42,11 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
         int g = imageChannel.get(1)[i][j];
         int b = imageChannel.get(2)[i][j];
 
-        int newRed = (int)(coffeicient[0][0] * r + coffeicient[0][1] * g
+        int newRed = j>perWidth?r:(int)(coffeicient[0][0] * r + coffeicient[0][1] * g
             + coffeicient[0][2] * b);
-        int newGreen = (int)(coffeicient[1][0] * r + coffeicient[1][1] * g
+        int newGreen = j>perWidth?g:(int)(coffeicient[1][0] * r + coffeicient[1][1] * g
             + coffeicient[1][2] * b);
-        int newBlue = (int)(coffeicient[2][0] * r + coffeicient[2][1] * g
+        int newBlue = j>perWidth?b:(int)(coffeicient[2][0] * r + coffeicient[2][1] * g
             + coffeicient[2][2] * b);
 
         newRedChannel[i][j] = Math.min(newRed, 255);

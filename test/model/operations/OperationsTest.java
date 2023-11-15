@@ -15,6 +15,7 @@ import model.operations.filters.BlurFilter;
 import model.operations.filters.SharpenFilter;
 import model.operations.merge.MergeSingleChannelImages;
 import model.operations.pixeloffset.BrightnessOperation;
+import model.operations.pixeloffset.CompressionOperation;
 import model.operations.rotation.HorizontalFlipOperation;
 import model.operations.rotation.VerticalFlipOperation;
 import model.operations.split.SplitImageOperation;
@@ -70,7 +71,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Greyscale().apply(image);
+    ImageInterface newImage = new Greyscale().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -79,7 +80,7 @@ public class OperationsTest {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
-    new Greyscale().apply(image);
+    new Greyscale().apply(image,"100");
   }
 
   @Test
@@ -94,14 +95,14 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Greyscale().apply(image);
+    ImageInterface newImage = new Greyscale().apply(image,"100");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidLuma() {
     int[][] channel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
-    new Greyscale().apply(image);
+    new Greyscale().apply(image,"100");
   }
 
   @Test
@@ -118,8 +119,18 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new BlurFilter().apply(image);
+    ImageInterface newImage = new BlurFilter().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testCompression() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    ImageInterface expectedImage = ImageFactory.createImage(Collections.singletonList(newChannel));
+    ImageInterface newImage = new CompressionOperation().apply(image,"80");
+    assertEqualImages(expectedImage, newImage);
   }
 
   @Test
@@ -137,7 +148,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new SharpenFilter().apply(image);
+    ImageInterface newImage = new SharpenFilter().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -226,7 +237,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Sepia().apply(image);
+    ImageInterface newImage = new Sepia().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -244,7 +255,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Sepia().apply(image);
+    ImageInterface newImage = new Sepia().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
   }
 

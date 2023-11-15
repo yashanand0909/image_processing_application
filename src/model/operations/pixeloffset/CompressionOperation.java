@@ -80,7 +80,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
   }
 
 
-  public double[][] transform2D(double[][] matrix) {
+  private double[][] transform2D(double[][] matrix) {
     int len = matrix.length;
     int c = len;
     while (c > 1) {
@@ -102,7 +102,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
     return matrix;
   }
 
-  public double[][] inverseTransform2D(double[][] matrix) {
+  private double[][] inverseTransform2D(double[][] matrix) {
     int len = matrix.length;
     int c = 2;
     while (c <= len) {
@@ -126,8 +126,8 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
 
   private List<double[][]> getPaddedImage(List<int[][]> channels){
     List<double[][]> paddedList = new ArrayList<>();
-    int width = channels.get(0).length;
-    int height = channels.get(0)[0].length;
+    int height = channels.get(0).length;
+    int width = channels.get(0)[0].length;
     int pow = 2;
     while (pow < height || pow < width) {
       pow = pow * 2;
@@ -145,10 +145,10 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
   }
 
   private void resetValues(List<double[][]> channels, Double factor){
-    Set<Double> uniqueValues = new TreeSet<>(Comparator.naturalOrder());
+    Set<Double> uniqueValues = new TreeSet<>(Double::compareTo);
     for (double[][] channel: channels){
       for (double[] row : channel){
-        Arrays.stream(row).map(Math::abs).map(Math::round).forEach(uniqueValues::add);
+        Arrays.stream(row).map(Math::abs).forEach(uniqueValues::add);
       }
     }
     uniqueValues.remove(0.0);
