@@ -19,6 +19,7 @@ import model.operations.filters.BlurFilter;
 import model.operations.filters.SharpenFilter;
 import model.operations.merge.MergeSingleChannelImages;
 import model.operations.pixeloffset.BrightnessOperation;
+import model.operations.pixeloffset.CompressionOperation;
 import model.operations.rotation.HorizontalFlipOperation;
 import model.operations.rotation.VerticalFlipOperation;
 import model.operations.split.SplitImageOperation;
@@ -72,6 +73,8 @@ public class ImageProcessorModel implements
         return new SplitImageOperation().apply(images.get(0), operator);
       case BRIGHTNESS:
         return new BrightnessOperation().apply(images.get(0), operator);
+      case COMPRESSION:
+        return new CompressionOperation().apply(images.get(0),operator);
       case INTENSITY:
         return new Intensity().apply(images.get(0));
       case VALUE:
@@ -114,6 +117,7 @@ public class ImageProcessorModel implements
           }
         }
         break;
+      case "compression":
       case "brighten":
         if (parts.length != 4) {
           throw new IllegalArgumentException(

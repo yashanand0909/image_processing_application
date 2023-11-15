@@ -18,7 +18,8 @@ public enum ImageOperations {
   SPLIT_IMAGE("rgb-split"),
   SPLIT_IMAGE_BY_RED_CHANNEL("red-component"),
   SPLIT_IMAGE_BY_GREEN_CHANNEL("green-component"),
-  SPLIT_IMAGE_BY_BLUE_CHANNEL("blue-component");
+  SPLIT_IMAGE_BY_BLUE_CHANNEL("blue-component"),
+  COMPRESSION("compression");
 
   private final String stringValue;
 

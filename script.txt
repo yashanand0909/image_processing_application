@@ -1,4 +1,5 @@
 load res/images/open-source-image-original.png open-source
+compression 50 open-source open-source-compress
 rgb-split open-source open-source-small-red open-source-small-green open-source-small-blue
 greyscale open-source open-source-grey
 sharpen open-source open-source-sharp
