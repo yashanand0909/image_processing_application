@@ -27,10 +27,6 @@ public class MergeSingleChannelImages implements MultipleToSingleImageProcessor 
     List<int[][]> imageChannel = new ArrayList<>();
     int imageNumber = 0;
     for (ImageInterface image : images) {
-      if (image.getChannel().size() != images.size()) {
-        throw new IllegalArgumentException("Number of images and " +
-            "number of channels should be same");
-      }
       if (previousHeight != -1 && image.getHeight() != previousHeight) {
         throw new IllegalArgumentException("Images should have the same height");
       }

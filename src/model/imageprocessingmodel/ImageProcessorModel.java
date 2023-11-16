@@ -89,7 +89,7 @@ public class ImageProcessorModel implements
       case LEVEL_ADJUST:
         return new LevelAdjustment().apply(images.get(0),operator);
       case COLOR_CORRECT:
-        return new ColorCorrection().apply(images.get(0));
+        return new ColorCorrection().apply(images.get(0),operation);
       default:
         throw new IllegalArgumentException("Invalid operation");
     }
@@ -213,7 +213,6 @@ public class ImageProcessorModel implements
       case "intensity-component":
       case "horizontal-flip":
       case "vertical-flip":
-      case "color-correct":
       case "histogram":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
@@ -237,6 +236,7 @@ public class ImageProcessorModel implements
       case "sepia":
       case "sharpen":
       case "greyscale":
+      case "color-correct":
         if (parts.length != 3 && parts.length != 4) {
           throw new IllegalArgumentException(
               "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");

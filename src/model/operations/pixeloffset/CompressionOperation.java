@@ -2,7 +2,6 @@ package model.operations.pixeloffset;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,7 +14,16 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
       throws IllegalArgumentException {
-    Double compressionFactor = (double) Integer.parseInt((String) operator);
+    Double compressionFactor;
+    try {
+      compressionFactor = Double.parseDouble((String) operator);
+    }
+    catch (Exception e){
+      throw new IllegalArgumentException("Percentage should be double value");
+    }
+    if (compressionFactor < 0 || compressionFactor > 100){
+      throw new IllegalArgumentException("Percentage should be between 0 and 100");
+    }
     List<double[][]> paddedChannel = getPaddedImage(image.getChannel());
     for (double[][] channel : paddedChannel){
       transform2D(channel);
@@ -151,7 +159,6 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
         Arrays.stream(row).map(Math::abs).forEach(uniqueValues::add);
       }
     }
-    uniqueValues.remove(0.0);
     int thresholdIndex = (int) Math.abs(factor * uniqueValues.size());
     List<Double> uniqueList = new ArrayList<>(uniqueValues);
     Double value = uniqueList.get(thresholdIndex);

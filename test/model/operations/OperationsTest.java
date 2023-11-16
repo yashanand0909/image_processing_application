@@ -75,6 +75,40 @@ public class OperationsTest {
     assertEqualImages(imageAfterValue, newImage);
   }
 
+  @Test
+  public void testGreyscale50Percent() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+
+    int[][] newRedChannel = {{72, 255, 255}, {71, 255, 255}, {60, 255, 255}};
+    int[][] newGreenChannel = {{72, 0, 0}, {71, 0, 0}, {60, 86, 0}};
+    int[][] newBlueChannel = {{72, 254, 240}, {71, 0, 90}, {60, 255, 44}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+        List.of(newRedChannel, newGreenChannel, newBlueChannel));
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new Greyscale().apply(image,"50");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGreyscaleInvalidPercentage() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new Greyscale().apply(image,"500");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGreyscaleInvalidPercentageType() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new Greyscale().apply(image,"T");
+  }
+
   @Test(expected = IllegalArgumentException.class)
   public void testInvalidGreyscale() {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
@@ -96,6 +130,7 @@ public class OperationsTest {
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
     ImageInterface newImage = new Greyscale().apply(image,"100");
+    assertEqualImages(imageAfterValue, newImage);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -123,14 +158,76 @@ public class OperationsTest {
     assertEqualImages(imageAfterValue, newImage);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testBlurInvalidPercentage() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new BlurFilter().apply(image,"500");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testBlurInvalidPercentageType() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new BlurFilter().apply(image,"T");
+  }
+
   @Test
-  public void testCompression() {
+  public void testBlurFilter50Percent() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+
+    int[][] newChannelAfterBlurRed = {{140, 255, 255}, {186, 255, 255}, {140, 255, 255}};
+    int[][] newChannelAfterBlurGreen = {{0, 0, 0}, {5, 0, 0}, {10, 86, 0}};
+    int[][] newChannelAfterBlurBlue = {{124, 254, 240}, {131,  0, 90}, {81, 255, 44}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+        List.of(newChannelAfterBlurRed, newChannelAfterBlurGreen, newChannelAfterBlurBlue));
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new BlurFilter().apply(image,"50");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testCompressionOperator() {
     int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
     int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
     ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
     ImageInterface expectedImage = ImageFactory.createImage(Collections.singletonList(newChannel));
     ImageInterface newImage = new CompressionOperation().apply(image,"80");
     assertEqualImages(expectedImage, newImage);
+  }
+
+  @Test
+  public void testCompressionOperatorFor0Percent() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+    ImageInterface newImage = new CompressionOperation().apply(image,"0");
+    assertEqualImages(image, newImage);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testCompressionInvalidPercentage() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    ImageInterface expectedImage = ImageFactory.createImage(Collections.singletonList(newChannel));
+    new CompressionOperation().apply(image,"120");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testCompressionInvalidPercentageType() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    ImageInterface expectedImage = ImageFactory.createImage(Collections.singletonList(newChannel));
+    new CompressionOperation().apply(image,"T");
   }
 
   @Test
@@ -150,6 +247,41 @@ public class OperationsTest {
 
     ImageInterface newImage = new SharpenFilter().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testSharpenFilter50Percent() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+
+    int[][] newChannelAfterSharpenRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSharpenGreen = {{0, 0, 0}, {21, 0, 0}, {21, 86, 0}};
+    int[][] newChannelAfterSharpenBlue = {{255, 254, 240}, {255, 0, 90}, {97, 255, 44}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+        List.of(newChannelAfterSharpenRed, newChannelAfterSharpenGreen,
+            newChannelAfterSharpenBlue));
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new SharpenFilter().apply(image,"50");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSharpenFilterInvalidPercentage() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new SharpenFilter().apply(image,"500");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSharpenFilterInvalidPercentageType() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new SharpenFilter().apply(image,"T");
   }
 
   @Test
@@ -239,6 +371,40 @@ public class OperationsTest {
 
     ImageInterface newImage = new Sepia().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testSepia50Percent() {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+
+    int[][] newChannelAfterSepiaRed = {{148, 255, 255}, {145, 255, 255}, {115, 255, 255}};
+    int[][] newChannelAfterSepiaGreen = {{131, 0, 0}, {129, 0, 0}, {102, 86, 0}};
+    int[][] newChannelAfterSepiaBlue = {{102, 254, 240}, {100, 0, 90}, {80, 255, 44}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+        List.of(newChannelAfterSepiaRed, newChannelAfterSepiaGreen, newChannelAfterSepiaBlue));
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new Sepia().apply(image,"50");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSepiaFilterInvalidPercentage() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new Sepia().apply(image,"150");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSepiaFilterInvalidPercentageType() {
+    int[][] channel = {{100, 50, 60, 150}, {20, 60, 40, 30}, {50, 90, 70, 82},{74, 66, 90, 58}};
+    int[][] newChannel = {{68, 68, 58, 148}, {68, 68, 33, 33}, {68, 68, 68, 68},{68, 68, 68, 68}};
+    ImageInterface image = ImageFactory.createImage(Collections.singletonList(channel));
+    new Sepia().apply(image,"T");
   }
 
   @Test

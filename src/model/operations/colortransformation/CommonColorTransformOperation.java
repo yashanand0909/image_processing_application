@@ -1,5 +1,7 @@
 package model.operations.colortransformation;
 
+import static model.operations.operatorutil.OperatorUtil.castOperatorToDouble;
+
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 
@@ -23,11 +25,11 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
    */
   @Override
   public ImageInterface apply(ImageInterface image, Object operator) throws IllegalArgumentException {
-    int percentage = Integer.parseInt((String) operator);
+    double percentage = castOperatorToDouble((String) operator);
     double[][] coffeicient = getTransformCoefficient();
     int height = image.getHeight();
     int width = image.getWidth();
-    int perWidth = width * percentage/100;
+    int perWidth = (int) (width * percentage/100);
     List<int[][]> imageChannel = image.getChannel();
     if (imageChannel.size() != 3) {
       throw new IllegalArgumentException("Image must have 3 channels");
@@ -42,11 +44,11 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
         int g = imageChannel.get(1)[i][j];
         int b = imageChannel.get(2)[i][j];
 
-        int newRed = j>perWidth?r:(int)(coffeicient[0][0] * r + coffeicient[0][1] * g
+        int newRed = j>=perWidth?r:(int)(coffeicient[0][0] * r + coffeicient[0][1] * g
             + coffeicient[0][2] * b);
-        int newGreen = j>perWidth?g:(int)(coffeicient[1][0] * r + coffeicient[1][1] * g
+        int newGreen = j>=perWidth?g:(int)(coffeicient[1][0] * r + coffeicient[1][1] * g
             + coffeicient[1][2] * b);
-        int newBlue = j>perWidth?b:(int)(coffeicient[2][0] * r + coffeicient[2][1] * g
+        int newBlue = j>=perWidth?b:(int)(coffeicient[2][0] * r + coffeicient[2][1] * g
             + coffeicient[2][2] * b);
 
         newRedChannel[i][j] = Math.min(newRed, 255);
@@ -58,6 +60,10 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
             newGreenChannel, newBlueChannel));
     return ImageFactory.createImage(newImageChannelList);
   }
+
+
+
+
 
   /**
    * Transform coefficient is returned by the method.

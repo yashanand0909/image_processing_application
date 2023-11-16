@@ -1,10 +1,13 @@
 package model.operations.filters;
 
+import static model.operations.operatorutil.OperatorUtil.castOperatorToDouble;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+import model.operations.colortransformation.CommonColorTransformOperation;
 import model.operations.operationinterfaces.SingleImageProcessor;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
@@ -23,11 +26,11 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
    */
   @Override
   public ImageInterface apply(ImageInterface image, Object operator) throws IllegalArgumentException {
-    int percentage = Integer.parseInt((String) operator);
+    double percentage = castOperatorToDouble((String) operator);
     double[][] kernel = getFilter();
     int height = image.getHeight();
     int width = image.getWidth();
-    int perWidth = width * percentage/100;
+    int perWidth = (int) (width * percentage/100);
     ImageInterface newImage = image;
     if (kernel.length > height || kernel[0].length > width) {
       newImage = addPadding(image, kernel.length, kernel[0].length);
@@ -40,7 +43,7 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
 
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-          if (j > perWidth) {
+          if (j >= perWidth) {
             filteredPixels[i][j] = channel[i][j];
           } else {
             int sum = 0;
