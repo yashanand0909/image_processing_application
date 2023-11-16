@@ -23,6 +23,9 @@ import model.operations.pixeloffset.CompressionOperation;
 import model.operations.rotation.HorizontalFlipOperation;
 import model.operations.rotation.VerticalFlipOperation;
 import model.operations.split.SplitImageOperation;
+import model.operations.visualization.ColorCorrection;
+import model.operations.visualization.HistogramVisualization;
+import model.operations.visualization.LevelAdjustment;
 
 /**
  * This class represents a factory for image operations.
@@ -73,7 +76,7 @@ public class ImageProcessorModel implements
         return new SplitImageOperation().apply(images.get(0), operator);
       case BRIGHTNESS:
         return new BrightnessOperation().apply(images.get(0), operator);
-      case COMPRESSION:
+      case COMPRESS:
         return new CompressionOperation().apply(images.get(0),operator);
       case INTENSITY:
         return new Intensity().apply(images.get(0));
@@ -81,6 +84,12 @@ public class ImageProcessorModel implements
         return new Value().apply(images.get(0));
       case MERGE_SINGLE_CHANNEL_IMAGES:
         return new MergeSingleChannelImages().apply(images);
+      case HISTOGRAM:
+        return new HistogramVisualization().apply(images.get(0));
+      case LEVEL_ADJUST:
+        return new LevelAdjustment().apply(images.get(0),operator);
+      case COLOR_CORRECT:
+        return new ColorCorrection().apply(images.get(0));
       default:
         throw new IllegalArgumentException("Invalid operation");
     }
@@ -117,7 +126,7 @@ public class ImageProcessorModel implements
           }
         }
         break;
-      case "compression":
+      case "compress":
       case "brighten":
         if (parts.length != 4) {
           throw new IllegalArgumentException(
@@ -204,6 +213,8 @@ public class ImageProcessorModel implements
       case "intensity-component":
       case "horizontal-flip":
       case "vertical-flip":
+      case "color-correct":
+      case "histogram":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
               "Invalid component command. Usage: command <image-name> <dest-image-name>");
@@ -319,6 +330,26 @@ public class ImageProcessorModel implements
         }
         break;
 
+      case "levels-adjust":
+        if (parts.length != 6) {
+          throw new IllegalArgumentException(
+              "Invalid levels-adjust command. Usage: levels-adjust <b> <m> <w> " +
+                  "<image-name> <dest-image-name>");
+        }
+        else {
+          if (!images.containsKey(parts[4])) {
+            throw new IllegalArgumentException(
+                "Invalid request : No image exist with the name " + parts[1]);
+          }
+          if (images.containsKey(parts[5])) {
+            throw new IllegalArgumentException(
+                "Invalid request : An Image exist with the name " + parts[2]);
+          }
+          List<ImageInterface> imageList = Collections.singletonList(images.get(parts[4]));
+          ImageInterface newImage = performOperation(imageList,
+              ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3]);
+          images.put(parts[5], newImage);
+        }
       default:
         throw new IllegalArgumentException(
                 "Unknown command. Try again or type 'exit' to quit.");

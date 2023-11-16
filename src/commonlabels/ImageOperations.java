@@ -19,7 +19,12 @@ public enum ImageOperations {
   SPLIT_IMAGE_BY_RED_CHANNEL("red-component"),
   SPLIT_IMAGE_BY_GREEN_CHANNEL("green-component"),
   SPLIT_IMAGE_BY_BLUE_CHANNEL("blue-component"),
-  COMPRESSION("compression");
+  COMPRESS("compress"),
+  HISTOGRAM("histogram"),
+  COLOR_CORRECT("color-correct"),
+  LEVEL_ADJUST("levels-adjust");
+
+
 
   private final String stringValue;
 
