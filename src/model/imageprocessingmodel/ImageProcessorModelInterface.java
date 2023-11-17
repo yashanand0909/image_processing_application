@@ -106,9 +106,6 @@ public interface ImageProcessorModelInterface {
    */
   void brightenImage(String imageName, String destImageName, Object operator);
 
-<<<<<<< Updated upstream
-  void compressImage(String imageName, String destImageName, Object operator);
-=======
   /**
    * Applies a compression operation to the specified image and stores the result with the given
    * destination name.
@@ -117,8 +114,7 @@ public interface ImageProcessorModelInterface {
    * @param destImageName The name for the destination image.
    * @param operator      The compression operation operator.
    */
-  void CompressImage(String imageName, String destImageName, Object operator);
->>>>>>> Stashed changes
+  void compressImage(String imageName, String destImageName, Object operator);
 
   /**
    * Applies a value operation to the specified image and stores the result with the given

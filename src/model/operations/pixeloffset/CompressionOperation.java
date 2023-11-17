@@ -32,13 +32,8 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
     } catch (Exception e) {
       throw new IllegalArgumentException("Percentage should be double value");
     }
-<<<<<<< Updated upstream
     if (compressionFactor < 0 || compressionFactor > 99){
       throw new IllegalArgumentException("Percentage should be between 0 and 99");
-=======
-    if (compressionFactor < 0 || compressionFactor > 100) {
-      throw new IllegalArgumentException("Percentage should be between 0 and 100");
->>>>>>> Stashed changes
     }
     List<double[][]> paddedChannel = getPaddedImage(image.getChannel());
     for (double[][] channel : paddedChannel) {
