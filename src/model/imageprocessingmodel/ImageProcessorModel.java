@@ -339,17 +339,17 @@ public class ImageProcessorModel implements
         else {
           if (!images.containsKey(parts[4])) {
             throw new IllegalArgumentException(
-                "Invalid request : No image exist with the name " + parts[1]);
+                "Invalid request : No image exist with the name " + parts[4]);
           }
           if (images.containsKey(parts[5])) {
             throw new IllegalArgumentException(
-                "Invalid request : An Image exist with the name " + parts[2]);
+                "Invalid request : An Image exist with the name " + parts[5]);
           }
           List<ImageInterface> imageList = Collections.singletonList(images.get(parts[4]));
           ImageInterface newImage;
           if (parts.length == 6) {
             newImage = performOperation(imageList,
-                ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3]);
+                ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3] + " " + "100");
           } else {
             newImage = performOperation(imageList,
                 ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3] + " " + parts[7]);
