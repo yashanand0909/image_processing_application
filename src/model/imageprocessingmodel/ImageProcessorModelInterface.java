@@ -29,7 +29,7 @@ public interface ImageProcessorModelInterface {
 
   void brightenImage(String imageName, String destImageName, Object operator);
 
-  void CompressImage(String imageName, String destImageName, Object operator);
+  void compressImage(String imageName, String destImageName, Object operator);
 
   void valueImage(String imageName, String destImageName);
 
