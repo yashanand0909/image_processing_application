@@ -601,7 +601,7 @@ public class IntegrationTest {
     int[][] newChannelAfterSepiaRed = {{72, 255, 255}, {71, 255, 255}, {60, 255, 255}};
     int[][] newChannelAfterSepiaGreen = {{72, 0, 0}, {71, 0, 0}, {60, 86, 0}};
     int[][] newChannelAfterSepiaBlue = {{72, 254, 240}, {71, 0, 90}, {60, 255, 44}};
-    List<int[][]> newChannleList = Collections.singletonList(newChannelAfterSepiaRed);
+    List<int[][]> newChannleList = List.of(newChannelAfterSepiaRed, newChannelAfterSepiaGreen, newChannelAfterSepiaBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String sepiaCommand = "greyscale test test_grey split 50\n";
     String saveCommand = "save " + newImagePath + " test_grey\n";

@@ -42,7 +42,7 @@ public class ImageProcessorControllerTest {
     controller = new ImageProcessorController(logger, modelMock,
         new StringReader("load path/to/image.jpg image1 \nexit"), out);
     controller.startImageProcessingController();
-    assertEquals("loadpath/to/image.jpgimage1", s.toString());
+    assertEquals("path/to/image.jpgimage1", s.toString());
     assertTrue(out.toString().contains("Command ran successfully"));
   }
 
@@ -70,7 +70,7 @@ public class ImageProcessorControllerTest {
     controller = new ImageProcessorController(logger, modelMock, new StringReader(scriptContent),
         out);
     controller.startImageProcessingController();
-    assertEquals("loadpath/to/image.jpgimage1brighten10image1image2", s.toString());
+    assertEquals("path/to/image.jpgimage1image1image210", s.toString());
   }
 
   @Test
@@ -85,7 +85,7 @@ public class ImageProcessorControllerTest {
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock, new StringReader(runString), out);
     controller.startImageProcessingController();
-    assertTrue(s.toString().contains("loadpath/to/image.jpgimage1brighten10image1image2"));
+    assertTrue(s.toString().contains("path/to/image.jpgimage1image1image210"));
   }
 
   @Test
@@ -128,7 +128,7 @@ public class ImageProcessorControllerTest {
     controller = new ImageProcessorController(logger, modelMock, new StringReader(runString), out);
     controller.startImageProcessingController();
     assertTrue(s.toString()
-        .contains("loadpath/to/image.jpgimage1brighten10image1image2brighten10image1image3"));
+        .contains("path/to/image.jpgimage1image1image210image1image310"));
   }
 
   private File createTempScriptFile(String scriptContent) {
@@ -200,11 +200,11 @@ public class ImageProcessorControllerTest {
 
     @Override
     public void brightenImage(String imageName, String destImageName, Object operator) {
-
+      log.append(imageName).append(destImageName).append(operator.toString());
     }
 
     @Override
-    public void CompressImage(String imageName, String destImageName, Object operator) {
+    public void compressImage(String imageName, String destImageName, Object operator) {
 
     }
 

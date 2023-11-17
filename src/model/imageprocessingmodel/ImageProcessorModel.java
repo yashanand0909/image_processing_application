@@ -72,7 +72,7 @@ public class ImageProcessorModel implements
   public void greyScaleImage(String imageName, String destImageName, Object operator) {
     checkImageNames(Collections.singletonList(imageName));
     checkDestinationImageNames(Collections.singletonList(destImageName));
-    ImageInterface newImage = new BlurFilter().apply(images.get(imageName), operator);
+    ImageInterface newImage = new Greyscale().apply(images.get(imageName), operator);
     images.put(destImageName, newImage);
   }
 
@@ -119,7 +119,7 @@ public class ImageProcessorModel implements
   }
 
   @Override
-  public void CompressImage(String imageName, String destImageName, Object operator) {
+  public void compressImage(String imageName, String destImageName, Object operator) {
     checkImageNames(Collections.singletonList(imageName));
     checkDestinationImageNames(Collections.singletonList(destImageName));
     ImageInterface newImage = new CompressionOperation().apply(images.get(imageName), operator);
