@@ -2,7 +2,6 @@ package model.operations.colorrepresentation;
 
 import java.util.Collections;
 import java.util.List;
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessor;
@@ -11,6 +10,7 @@ import model.operations.operationinterfaces.SingleImageProcessor;
  * This class represents a color representation operation that can be applied to an image.
  */
 public abstract class AbstractColorRepresentation implements SingleImageProcessor {
+
   /**
    * This method applies the color representation operation on the given image.
    *
@@ -21,7 +21,7 @@ public abstract class AbstractColorRepresentation implements SingleImageProcesso
   @Override
   public ImageInterface apply(ImageInterface image) throws IllegalArgumentException {
     if (image == null || image.getHeight() == 0
-            || image.getWidth() == 0) {
+        || image.getWidth() == 0) {
       throw new IllegalArgumentException("Image is not valid");
     }
     if (image.getChannel().size() == 1) {
@@ -48,5 +48,5 @@ public abstract class AbstractColorRepresentation implements SingleImageProcesso
    * @param j            the column index
    */
   public abstract void performOperation(ImageInterface image,
-                                        int[][] valueChannel, int i, int j);
+      int[][] valueChannel, int i, int j);
 }

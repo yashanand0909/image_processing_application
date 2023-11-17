@@ -2,13 +2,13 @@ package model.operations.visualization;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import model.image.ImageInterface;
 
 /**
  * Util class to help perform different conversions for operations related to visualisation.
  */
 public class VisualizeImageUtil {
+
   private static final double MAX_COLOR = 255.0;
 
   /**
@@ -18,7 +18,8 @@ public class VisualizeImageUtil {
    * @return the list of frequencies of each pixel in each channel of the image
    * @throws IllegalArgumentException if the image does not have 3 channels
    */
-  public static List<int[]> calculateFrequencyPerChannel(ImageInterface image) throws IllegalArgumentException {
+  public static List<int[]> calculateFrequencyPerChannel(ImageInterface image)
+      throws IllegalArgumentException {
     if (image.getChannel().size() != 3) {
       throw new IllegalArgumentException("Image must have 3 channels");
     }
@@ -27,7 +28,7 @@ public class VisualizeImageUtil {
     int maxElement = findMaxElementInTheChannel(image.getChannel());
     for (int i = 0; i < image.getChannel().size(); i++) {
       int[][] normalizedChannel = createNormalizedChannel(image.getChannel().get(i),
-              maxElement);
+          maxElement);
       int[] frequenciesInChannel = createFrequencyList(normalizedChannel);
       frequencies.add(frequenciesInChannel);
     }

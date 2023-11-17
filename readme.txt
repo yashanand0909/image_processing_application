@@ -21,30 +21,6 @@ JPG: Represents the JPG image format.
 PNG: Represents the PNG image format.
 PPM: Represents the PPM image format.
 
-ImageOperations Enum
-Purpose: The ImageOperations enum represents different image operations that the application can perform, such as intensity adjustment, blurring, sharpening, grayscale conversion, and more. It is used to identify and execute specific operations based on user commands.
-INTENSITY: Represents the operation for adjusting image intensity.
-VALUE: Represents the operation for adjusting image value.
-BLUR: Represents the operation for blurring an image.
-LUMA: Represents the operation for adjusting image luma.
-SHARPEN: Represents the operation for sharpening an image.
-GREYSCALE: Represents the operation for converting an image to grayscale.
-SEPIA: Represents the operation for applying a sepia filter to an image.
-BRIGHTNESS: Represents the operation for adjusting image brightness.
-VERTICAL_FLIP: Represents the operation for flipping an image vertically.
-HORIZONTAL_FLIP: Represents the operation for flipping an image horizontally.
-MERGE_SINGLE_CHANNEL_IMAGES: Represents the operation for merging single-channel images into a multi-channel image.
-SPLIT_IMAGE: Represents the operation for splitting an image into its RGB channels.
-SPLIT_IMAGE_BY_RED_CHANNEL: Represents the operation for extracting the red channel of an image.
-SPLIT_IMAGE_BY_GREEN_CHANNEL: Represents the operation for extracting the green channel of an image.
-SPLIT_IMAGE_BY_BLUE_CHANNEL: Represents the operation for extracting the blue channel of an image.
-
-fromString(String text): A static method for obtaining an ImageOperations enum based on a given string value. It is used to parse user commands.
-
-InputType Enum
-Purpose: The InputType enum represents the type of input provided by the user, whether it is a file or command-line interface (CLI).
-FILE: Represents input from a file.
-CLI: Represents input from the command-line interface.
 
 View Logger Package
 
@@ -148,6 +124,9 @@ pixeloffset package
 BrightnessOperation
 purpose: The purpose of the BrightnessOperation class is to perform a simple offset operation on an input image to adjust its brightness. It brightens or darkens every pixel in the image by a specified factor, where a positive factor brightens the image, and a negative factor darkens it. The resulting image is created with the adjusted brightness.
 
+CompressionOperation
+purpose: The purpose of the CompressionOperation class is to perform haar transformation and pixel manipulation to compress image. It compresses the image according to the factor passed int he arugument. The resulting image is created with the compressed size.
+
 rotation package
 
 HorizontalFlipOperation
@@ -163,34 +142,60 @@ SplitImageOperation
 purpose: This class serves to split an input image by isolating a specific component or channel. It takes both an image and an operator as inputs, where the operator designates the desired component to keep while setting all other channels to zero. The result is multiple images, each containing only one component.
 
 
-## Getting Started
-Simply run the following program to get started:
+visualization package
 
-ImageProcessingApplication - Contains the main method which calls the controller and initiates the application
-``` Once application is running following commands are supported:
-load <file-name> <img-var-name> --- loads the image from the file and assigns it to the variable
-save <new-file-name> <img-var-name> --- saves the image to the file
-blur <img-var-name> <new-img-var-name> --- blurs the image
-sharpen <img-var-name> <new-img-var-name> --- sharpens the image
-greyscale <img-var-name> <new-img-var-name> --- converts the image to greyscale
-sepia <img-var-name> <new-img-var-name> --- converts the image to sepia
-intensity-component <img-var-name> <new-img-var-name> --- color representation to find average intensity for each pixel among all channels
-value-component <img-var-name> <new-img-var-name> --- color representation to find max value for each pixel among all channel
-luma-component <img-var-name> <new-img-var-name> --- color representation to find weighted average of each pixel among all channels
-red-component <img-var-name> <new-img-var-name> --- color representation to find red-component of an image
-green-component <img-var-name> <new-img-var-name> --- color representation to find green-component of an image
-blue-component <img-var-name> <new-img-var-name> --- color representation to find blue-component of an image
-horizontal-flip <img-var-name> <new-img-var-name> --- flips the image horizontally
-vertical-flip <img-var-name> <new-img-var-name> --- flips the image vertically
-rgb-combine <new-img-var-name> <img-var-name1> <img-var-name2> <img-var-name3> --- combines three images into one
-rgb-split <img-var-name> <new-img-var-name1> <new-img-var-name2> <new-img-var-name3> --- splits the image into three images
+ColorCorrection
+purpose : The purpose of this class is to adjust the color balance of an image by analyzing the frequency distribution of colors in each channel. It identifies the peak values in the frequency distribution of each color channel, calculates an average peak value, and then applies color correction to each channel based on the difference between the average peak value and the peak value of each channel.
 
-To load the plug and play script file use the following command:
-run script.txt
-exit
+HistogramVisualization
+purpose : The purpose of this class is to generate a histogram that visualizes the intensity distribution of an image across its color channels. It creates a histogram image with intensity information displayed in red, green, and blue, helping users to understand the distribution of pixel intensities in different color channels.
 
-
-Image used for testing is provided in the resources folder and is named as open-source-image-original.png image is open source (https://www.istockphoto.com/vector/open-source-icon-open-source-symbol-design-from-vector-stock-illustration-gm1208176833-349123511) and is credited to Oleksandr Hruts and can be freely used as per the license.
+LevelAdjustment
+purpose : The purpose of this class is to apply a level adjustment transformation to an image, altering the distribution of pixel intensities to achieve a desired visual effect. Level adjustment is a common image processing technique used to enhance the contrast and brightness of an image.
 
 ### Design
 MVC design pattern is used to design the application. The model contains the image class which contains the image data and the methods to manipulate the image. The view contains the viewlogger class which is responsible for displaying the success and error messages. The controller contains the controller class which is responsible for taking the input from the user and calling the appropriate methods in the model and view.
+
+### Offering
+Image used for testing is provided in the resources folder and is named as open-source-image-original.png image is open source (https://www.istockphoto.com/vector/open-source-icon-open-source-symbol-design-from-vector-stock-illustration-gm1208176833-349123511) and is credited to Oleksandr Hruts and can be freely used as per the license.
+
+### Complete Program parts
+We completed every part of the assignment which were asked for till current part of the assignment.
+Controller is complete as it is able to handle all the commands asked for.
+Model is complete as it will server every request that comes in from controller.
+View is complete as it will log every thing given to it by controller.
+
+List of features supported :
+load
+save
+blur
+blur split
+sharpen
+sharpen split
+greyscale
+greyscale split
+sepia
+sepia split
+intensity-component
+value-component
+luma-component
+red-component
+green-component
+blue-component
+horizontal-flip
+vertical-flip
+rgb-combine
+rgb-split
+compress
+histogram
+levels-adjust
+color-correct
+color-correct split
+run script_file
+-file name-of-script
+
+### change in design
+We made couple of changes in design in this assignment:
+ 1 - Implemented MultipleToSingleImageProcessorWithOffset in operations which needed support for split view. This change allowed us to add feature of split view without making any changes to our previous features implementation and hence nothing breaks. As we had MultipleToSingleImageProcessorWithOffset interface we just implemented this as well which did not require much change on the code side.
+ 2 - We moved handleCommand method from model to controller as suggested in our previous assignment review. Now modelInterface offers different methods for all the operations it offers to the controller so that the controller know what all operations it can request.
+

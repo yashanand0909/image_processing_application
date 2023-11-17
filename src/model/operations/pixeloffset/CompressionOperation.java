@@ -9,35 +9,46 @@ import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
+/**
+ * A class representing a compression operation for image processing.
+ */
 public class CompressionOperation implements SingleImageProcessorWithOffset {
 
+  /**
+   * Applies the compression operation to the specified image.
+   *
+   * @param image    The source image.
+   * @param operator The compression factor as a percentage (0 to 99).
+   * @return The processed image.
+   * @throws IllegalArgumentException If the compression factor is invalid.
+   */
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
       throws IllegalArgumentException {
     Double compressionFactor;
     try {
       compressionFactor = Double.parseDouble((String) operator);
-    }
-    catch (Exception e){
+    } catch (Exception e) {
       throw new IllegalArgumentException("Percentage should be double value");
     }
-    if (compressionFactor < 0 || compressionFactor > 99){
+    if (compressionFactor < 0 || compressionFactor > 99) {
       throw new IllegalArgumentException("Percentage should be between 0 and 99");
     }
     List<double[][]> paddedChannel = getPaddedImage(image.getChannel());
-    for (double[][] channel : paddedChannel){
+    for (double[][] channel : paddedChannel) {
       transform2D(channel);
     }
-    resetValues(paddedChannel,compressionFactor/100);
-    for (double[][] channel : paddedChannel){
+    resetValues(paddedChannel, compressionFactor / 100);
+    for (double[][] channel : paddedChannel) {
       inverseTransform2D(channel);
     }
     List<int[][]> newChannelList = new ArrayList<>();
-    for (double[][] channel : paddedChannel){
+    for (double[][] channel : paddedChannel) {
       int[][] newChannel = new int[image.getHeight()][image.getWidth()];
-      for (int i=0;i<image.getHeight();i++){
-        for (int j=0;j<image.getWidth();j++){
-          newChannel[i][j] = (int) Math.round(channel[i][j]<0.0?0: Math.min(channel[i][j], 255.0));
+      for (int i = 0; i < image.getHeight(); i++) {
+        for (int j = 0; j < image.getWidth(); j++) {
+          newChannel[i][j] = (int) Math
+              .round(channel[i][j] < 0.0 ? 0 : Math.min(channel[i][j], 255.0));
         }
       }
       newChannelList.add(newChannel);
@@ -45,33 +56,33 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
     return ImageFactory.createImage(newChannelList);
   }
 
-  private double[] inverseTransform1D(double[] s, int len){
+  private double[] inverseTransform1D(double[] s, int len) {
     List<Double> avgList = new ArrayList<>();
     List<Double> diffList = new ArrayList<>();
-    for (int i=0;i<len/2;i++){
+    for (int i = 0; i < len / 2; i++) {
       Double a = s[i];
-      Double b = s[i+len/2];
-      Double avg = (a + b)/Math.sqrt(2);
-      Double diff = (a - b)/Math.sqrt(2);
+      Double b = s[i + len / 2];
+      Double avg = (a + b) / Math.sqrt(2);
+      Double diff = (a - b) / Math.sqrt(2);
       avgList.add(avg);
       diffList.add(diff);
     }
     int index = 0;
-    for (int i=0;i<avgList.size();i+=1){
+    for (int i = 0; i < avgList.size(); i += 1) {
       s[index++] = avgList.get(i);
       s[index++] = diffList.get(i);
     }
     return s;
   }
 
-  private double[] transform1D(double[] s, int len){
+  private double[] transform1D(double[] s, int len) {
     List<Double> avgList = new ArrayList<>();
     List<Double> diffList = new ArrayList<>();
-    for (int i=0;i<len-1;i+=2){
+    for (int i = 0; i < len - 1; i += 2) {
       Double a = s[i];
-      Double b = s[i+1];
-      Double avg = (a + b)/Math.sqrt(2);
-      Double diff = (a - b)/Math.sqrt(2);
+      Double b = s[i + 1];
+      Double avg = (a + b) / Math.sqrt(2);
+      Double diff = (a - b) / Math.sqrt(2);
       avgList.add(avg);
       diffList.add(diff);
     }
@@ -95,7 +106,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
       for (int i = 0; i < c; i++) {
         matrix[i] = transform1D(matrix[i], c);
       }
-      for (int j = 0; j < c/2; j++) {
+      for (int j = 0; j < c / 2; j++) {
         double[] column = new double[len];
         for (int i = 0; i < len; i++) {
           column[i] = matrix[i][j];
@@ -114,7 +125,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
     int len = matrix.length;
     int c = 2;
     while (c <= len) {
-      for (int j = 0; j < c/2; j++) {
+      for (int j = 0; j < c / 2; j++) {
         double[] column = new double[len];
         for (int i = 0; i < len; i++) {
           column[i] = matrix[i][j];
@@ -132,7 +143,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
     return matrix;
   }
 
-  private List<double[][]> getPaddedImage(List<int[][]> channels){
+  private List<double[][]> getPaddedImage(List<int[][]> channels) {
     List<double[][]> paddedList = new ArrayList<>();
     int height = channels.get(0).length;
     int width = channels.get(0)[0].length;
@@ -152,20 +163,21 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
     return paddedList;
   }
 
-  private void resetValues(List<double[][]> channels, Double factor){
+  private void resetValues(List<double[][]> channels, Double factor) {
     Set<Double> uniqueValues = new TreeSet<>(Double::compareTo);
-    for (double[][] channel: channels){
-      for (double[] row : channel){
+    for (double[][] channel : channels) {
+      for (double[] row : channel) {
         Arrays.stream(row).map(Math::abs).forEach(uniqueValues::add);
       }
     }
-    int thresholdIndex = (int) Math.abs(factor * uniqueValues.size());
+    int thresholdIndex = Math
+        .min(uniqueValues.size() - 1, (int) Math.abs(factor * uniqueValues.size()));
     List<Double> uniqueList = new ArrayList<>(uniqueValues);
     Double value = uniqueList.get(thresholdIndex);
-    for (double[][] channel: channels){
-      for (int i=0;i<channel.length;i++){
-        for (int j=0;j<channel[0].length;j++){
-          if (Math.abs(channel[i][j]) < value){
+    for (double[][] channel : channels) {
+      for (int i = 0; i < channel.length; i++) {
+        for (int j = 0; j < channel[0].length; j++) {
+          if (Math.abs(channel[i][j]) < value) {
             channel[i][j] = 0;
           }
         }

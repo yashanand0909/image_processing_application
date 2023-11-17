@@ -14,7 +14,6 @@ import logger.ViewLogger;
 import model.image.ImageInterface;
 import model.imageprocessingmodel.ImageProcessorModel;
 import model.imageprocessingmodel.ImageProcessorModelInterface;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +35,7 @@ public class ImageProcessorControllerTest {
   }
 
   @Test
-  public void testHandleValidCommands() {
+  public void testHandleValidCommands() throws IOException {
     StringBuilder s = new StringBuilder();
     MockModel modelMock = new MockModel(s);
     controller = new ImageProcessorController(logger, modelMock,
@@ -47,21 +46,21 @@ public class ImageProcessorControllerTest {
   }
 
   @Test
-  public void testHandleExitCommand() {
+  public void testHandleExitCommand() throws IOException {
     controller = new ImageProcessorController(logger, model, new StringReader("exit"), out);
     controller.startImageProcessingController();
     assertEquals("", out.toString());
   }
 
   @Test
-  public void testHandleInvalidCommands() {
+  public void testHandleInvalidCommands() throws IOException {
     controller = new ImageProcessorController(logger, model, new StringReader("\nexi1"), out);
     controller.startImageProcessingController();
     assertTrue(out.toString().contains("Invalid command. Try again."));
   }
 
   @Test
-  public void testHandleMultipleCommands() {
+  public void testHandleMultipleCommands() throws IOException {
     String scriptContent = "load path/to/image.jpg image1\n"
         + "brighten 10 image1 image2\n"
         + "exit\n";
@@ -89,7 +88,7 @@ public class ImageProcessorControllerTest {
   }
 
   @Test
-  public void testInvalidScriptFile() {
+  public void testInvalidScriptFile() throws IOException {
     String scriptContent = "invalid_command\nexit";
     File tempFile = createTempScriptFile(scriptContent);
     assert tempFile != null;
@@ -101,7 +100,7 @@ public class ImageProcessorControllerTest {
   }
 
   @Test
-  public void testScriptFileViaArgument() {
+  public void testScriptFileViaArgument() throws IOException {
     String scriptContent = "load path/to/image.jpg image1\n"
         + "brighten 10 image1 image2\n";
     File tempFile = createTempScriptFile(scriptContent);
@@ -159,7 +158,17 @@ public class ImageProcessorControllerTest {
     }
 
     @Override
+    public void blurImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
     public void sharpenImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void sharpenImage(String imageName, String destImageName) {
 
     }
 
@@ -179,12 +188,22 @@ public class ImageProcessorControllerTest {
     }
 
     @Override
-    public void lumaImage(String imageName, String destImageName, Object operator) {
+    public void greyScaleImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
+    public void lumaImage(String imageName, String destImageName) {
 
     }
 
     @Override
     public void sepiaImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void sepiaImage(String imageName, String destImageName) {
 
     }
 
@@ -235,6 +254,11 @@ public class ImageProcessorControllerTest {
 
     @Override
     public void colorCorrectImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void colorCorrectImage(String imageName, String destImageName) {
 
     }
 

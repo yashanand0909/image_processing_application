@@ -6,13 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+import model.operations.operationinterfaces.SingleImageProcessor;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 /**
  * This class represents a common filter operation that implements the FilterOperation interface. It
  * contains a method that applies a filter to an image.
  */
-public abstract class CommonFilterOperation implements SingleImageProcessorWithOffset {
+public abstract class CommonFilterOperation implements SingleImageProcessorWithOffset,
+    SingleImageProcessor {
+
+  /**
+   * This method applies a filter to an image.
+   *
+   * @param image    the image to be filtered
+   * @param operator the operator object for the filter
+   * @return the filtered image
+   * @throws IllegalArgumentException if the kernel is larger than the image
+   */
+  @Override
+  public ImageInterface apply(ImageInterface image, Object operator)
+      throws IllegalArgumentException {
+    return getImage(image, operator);
+  }
 
   /**
    * This method applies a filter to an image.
@@ -22,13 +38,17 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
    * @throws IllegalArgumentException if the kernel is larger than the image
    */
   @Override
-  public ImageInterface apply(ImageInterface image, Object operator)
-      throws IllegalArgumentException {
+  public ImageInterface apply(ImageInterface image) {
+    String fullImageOperator = "100";
+    return getImage(image, fullImageOperator);
+  }
+
+  private ImageInterface getImage(ImageInterface image, Object operator) {
     int percentage = castOperatorToDouble((String) operator);
     double[][] kernel = getFilter();
     int height = image.getHeight();
     int width = image.getWidth();
-    int perWidth = (int) (width * percentage / 100);
+    int perWidth = width * percentage / 100;
     ImageInterface newImage = image;
     if (kernel.length > height || kernel[0].length > width) {
       newImage = addPadding(image, kernel.length, kernel[0].length);

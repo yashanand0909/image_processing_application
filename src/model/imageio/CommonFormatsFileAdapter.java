@@ -1,15 +1,12 @@
 package model.imageio;
 
 import commonlabels.ImageFormats;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-
 import javax.imageio.ImageIO;
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 
@@ -28,7 +25,7 @@ public class CommonFormatsFileAdapter implements IOFileByFormat {
    */
   @Override
   public void encodeAndSaveImage(String filename, ImageInterface image,
-                                 ImageFormats format) throws IOException {
+      ImageFormats format) throws IOException {
     int height = image.getHeight();
     int width = image.getWidth();
     int[][] redPixels;
@@ -80,7 +77,7 @@ public class CommonFormatsFileAdapter implements IOFileByFormat {
         greenPixels[i][j] = (pixel >> 8) & 0xff;
         bluePixels[i][j] = (pixel) & 0xff;
         if (redPixels[i][j] == greenPixels[i][j]
-                && redPixels[i][j] == bluePixels[i][j] && isGrayscale) {
+            && redPixels[i][j] == bluePixels[i][j] && isGrayscale) {
           continue;
         } else {
           isGrayscale = false;

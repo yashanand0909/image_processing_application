@@ -22,20 +22,20 @@ public class ViewLoggerTest {
   }
 
   @Test
-  public void testLogException() {
+  public void testLogException() throws IOException {
     Exception exception = new Exception("Test Exception Message");
     viewLogger.logException(exception);
     assertEquals("Test Exception Message", stringWriter.toString());
   }
 
   @Test
-  public void testLogString() {
+  public void testLogString() throws IOException {
     viewLogger.logString("Test Log String");
     assertEquals("Test Log String", stringWriter.toString());
   }
 
-  @Test
-  public void testLogExceptionWithIOException() {
+  @Test(expected = IOException.class)
+  public void testLogExceptionWithIOException() throws IOException {
     ViewLogger loggerWithException = new ViewLogger(new Appendable() {
       @Override
       public Appendable append(CharSequence csq) throws IOException {
@@ -55,11 +55,10 @@ public class ViewLoggerTest {
 
     Exception exception = new Exception("Test Exception Message");
     loggerWithException.logException(exception);
-    assertEquals("", stringWriter.toString());
   }
 
-  @Test
-  public void testLogStringWithIOException() {
+  @Test(expected = IOException.class)
+  public void testLogStringWithIOException() throws IOException {
     ViewLogger loggerWithException = new ViewLogger(new Appendable() {
       @Override
       public Appendable append(CharSequence csq) throws IOException {
@@ -78,6 +77,5 @@ public class ViewLoggerTest {
     });
 
     loggerWithException.logString("Test Log String");
-    assertEquals("", stringWriter.toString());
   }
 }
