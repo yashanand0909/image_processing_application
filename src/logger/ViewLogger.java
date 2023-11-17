@@ -27,7 +27,7 @@ public class ViewLogger {
     try {
       this.out.append(e.getMessage());
     } catch (IOException ex) {
-      this.out.append(ex.getMessage() + "\n");
+      this.out.append(ex.getMessage()).append("\n");
     }
   }
 
@@ -40,7 +40,7 @@ public class ViewLogger {
     try {
       this.out.append(s);
     } catch (IOException ex) {
-      this.out.append(ex.getMessage() + "\n");
+      this.out.append(ex.getMessage()).append("\n");
     }
   }
 

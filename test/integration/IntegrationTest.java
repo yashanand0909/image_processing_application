@@ -351,7 +351,7 @@ public class IntegrationTest {
   }
 
   @Test
-  public void testUnknownCommand() {
+  public void testUnknownCommand() throws IOException {
     String loadCommand = "load " + imagePath + " test\n";
     String unknownCommand = "unknown test test_unknown\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),

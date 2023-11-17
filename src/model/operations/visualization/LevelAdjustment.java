@@ -36,7 +36,7 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
     } else {
       splitOperation = "100";
     }
-    if (levelAdjustmentParameters.get(3) < 0 || levelAdjustmentParameters.get(3) > 255
+    if (levelAdjustmentParameters.get(2) < 0 || levelAdjustmentParameters.get(2) > 255
         || levelAdjustmentParameters.get(0) < 0 || levelAdjustmentParameters.get(0) > 255
         || levelAdjustmentParameters.get(1) < 0 || levelAdjustmentParameters.get(1) > 255) {
       throw new IllegalArgumentException("Invalid value for constant");

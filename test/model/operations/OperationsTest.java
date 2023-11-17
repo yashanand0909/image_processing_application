@@ -267,7 +267,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new SharpenFilter().apply(image);
+    ImageInterface newImage = new SharpenFilter().apply(image,"50");
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -776,7 +776,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new LevelAdjustment().apply(image, "10 50 100");
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 50 100 50 100");
 
   }
 

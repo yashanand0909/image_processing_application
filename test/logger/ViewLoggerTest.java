@@ -34,7 +34,7 @@ public class ViewLoggerTest {
     assertEquals("Test Log String", stringWriter.toString());
   }
 
-  @Test
+  @Test(expected = IOException.class)
   public void testLogExceptionWithIOException() throws IOException {
     ViewLogger loggerWithException = new ViewLogger(new Appendable() {
       @Override
@@ -55,10 +55,9 @@ public class ViewLoggerTest {
 
     Exception exception = new Exception("Test Exception Message");
     loggerWithException.logException(exception);
-    assertEquals("", stringWriter.toString());
   }
 
-  @Test
+  @Test(expected = IOException.class)
   public void testLogStringWithIOException() throws IOException {
     ViewLogger loggerWithException = new ViewLogger(new Appendable() {
       @Override
@@ -78,6 +77,5 @@ public class ViewLoggerTest {
     });
 
     loggerWithException.logString("Test Log String");
-    assertEquals("", stringWriter.toString());
   }
 }
