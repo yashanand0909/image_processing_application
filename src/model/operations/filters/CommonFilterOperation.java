@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+import model.operations.operationinterfaces.SingleImageProcessor;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 /**
  * This class represents a common filter operation that implements the FilterOperation interface. It
  * contains a method that applies a filter to an image.
  */
-public abstract class CommonFilterOperation implements SingleImageProcessorWithOffset {
+public abstract class CommonFilterOperation implements SingleImageProcessorWithOffset,
+    SingleImageProcessor {
 
   /**
    * This method applies a filter to an image.
@@ -25,6 +27,23 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
       throws IllegalArgumentException {
+    return getImage(image, operator);
+  }
+
+  /**
+   * This method applies a filter to an image.
+   *
+   * @param image the image to be filtered
+   * @return the filtered image
+   * @throws IllegalArgumentException if the kernel is larger than the image
+   */
+  @Override
+  public ImageInterface apply(ImageInterface image) {
+    String fullImageOperator = "100";
+    return getImage(image, fullImageOperator);
+  }
+
+  private ImageInterface getImage(ImageInterface image, Object operator) {
     int percentage = castOperatorToDouble((String) operator);
     double[][] kernel = getFilter();
     int height = image.getHeight();

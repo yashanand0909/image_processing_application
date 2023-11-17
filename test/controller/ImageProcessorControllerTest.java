@@ -158,7 +158,17 @@ public class ImageProcessorControllerTest {
     }
 
     @Override
+    public void blurImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
     public void sharpenImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void sharpenImage(String imageName, String destImageName) {
 
     }
 
@@ -178,12 +188,22 @@ public class ImageProcessorControllerTest {
     }
 
     @Override
-    public void lumaImage(String imageName, String destImageName, Object operator) {
+    public void greyScaleImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
+    public void lumaImage(String imageName, String destImageName) {
 
     }
 
     @Override
     public void sepiaImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void sepiaImage(String imageName, String destImageName) {
 
     }
 
@@ -234,6 +254,11 @@ public class ImageProcessorControllerTest {
 
     @Override
     public void colorCorrectImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void colorCorrectImage(String imageName, String destImageName) {
 
     }
 

@@ -191,15 +191,11 @@ public class ImageProcessorController implements ControllerInterface {
         }
         break;
       case "luma-component":
-        if (parts.length != 3 && parts.length != 5) {
+        if (parts.length != 3) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name>");
         } else {
-          if (parts.length == 3) {
-            imageProcessorModel.lumaImage(parts[1], parts[2], "100");
-          } else {
-            imageProcessorModel.lumaImage(parts[1], parts[2], parts[4]);
-          }
+          imageProcessorModel.lumaImage(parts[1], parts[2]);
         }
         break;
       case "intensity-component":
@@ -240,7 +236,7 @@ public class ImageProcessorController implements ControllerInterface {
               "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
-            imageProcessorModel.blurImage(parts[1], parts[2], "100");
+            imageProcessorModel.blurImage(parts[1], parts[2]);
           } else {
             imageProcessorModel.blurImage(parts[1], parts[2], parts[4]);
           }
@@ -252,7 +248,7 @@ public class ImageProcessorController implements ControllerInterface {
               "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
-            imageProcessorModel.sepiaImage(parts[1], parts[2], "100");
+            imageProcessorModel.sepiaImage(parts[1], parts[2]);
           } else {
             imageProcessorModel.sepiaImage(parts[1], parts[2], parts[4]);
           }
@@ -264,7 +260,7 @@ public class ImageProcessorController implements ControllerInterface {
               "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
-            imageProcessorModel.sharpenImage(parts[1], parts[2], "100");
+            imageProcessorModel.sharpenImage(parts[1], parts[2]);
           } else {
             imageProcessorModel.sharpenImage(parts[1], parts[2], parts[4]);
           }
@@ -276,7 +272,7 @@ public class ImageProcessorController implements ControllerInterface {
               "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
-            imageProcessorModel.greyScaleImage(parts[1], parts[2], "100");
+            imageProcessorModel.greyScaleImage(parts[1], parts[2]);
           } else {
             imageProcessorModel.greyScaleImage(parts[1], parts[2], parts[4]);
           }
@@ -288,7 +284,7 @@ public class ImageProcessorController implements ControllerInterface {
               "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
-            imageProcessorModel.colorCorrectImage(parts[1], parts[2], "100");
+            imageProcessorModel.colorCorrectImage(parts[1], parts[2]);
           } else {
             imageProcessorModel.colorCorrectImage(parts[1], parts[2], parts[4]);
           }

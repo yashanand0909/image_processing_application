@@ -2,7 +2,6 @@ package model.imageprocessingmodel;
 
 import java.io.IOException;
 import java.util.List;
-
 import model.image.ImageInterface;
 
 /**
@@ -21,6 +20,15 @@ public interface ImageProcessorModelInterface {
   void blurImage(String imageName, String destImageName, Object operator);
 
   /**
+   * Applies a blur filter to the specified image and stores the result with the given destination
+   * name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  void blurImage(String imageName, String destImageName);
+
+  /**
    * Applies a sharpen filter to the specified image and stores the result with the given
    * destination name.
    *
@@ -29,6 +37,15 @@ public interface ImageProcessorModelInterface {
    * @param operator      The sharpen filter operator.
    */
   void sharpenImage(String imageName, String destImageName, Object operator);
+
+  /**
+   * Applies a sharpen filter to the specified image and stores the result with the given
+   * destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  void sharpenImage(String imageName, String destImageName);
 
   /**
    * Applies a horizontal flip operation to the specified image and stores the result with the given
@@ -59,14 +76,22 @@ public interface ImageProcessorModelInterface {
   void greyScaleImage(String imageName, String destImageName, Object operator);
 
   /**
-   * Applies a luma operation to the specified image and stores the result with the given
+   * Applies a grayscale operation to the specified image and stores the result with the given
    * destination name.
    *
    * @param imageName     The name of the source image.
    * @param destImageName The name for the destination image.
-   * @param operator      The luma operation operator.
    */
-  void lumaImage(String imageName, String destImageName, Object operator);
+  void greyScaleImage(String imageName, String destImageName);
+
+  /**
+   * Applies a luma operation to the specified image and stores the result with the given
+   * destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.x
+   */
+  void lumaImage(String imageName, String destImageName);
 
   /**
    * Applies a sepia operation to the specified image and stores the result with the given
@@ -77,6 +102,15 @@ public interface ImageProcessorModelInterface {
    * @param operator      The sepia operation operator.
    */
   void sepiaImage(String imageName, String destImageName, Object operator);
+
+  /**
+   * Applies a sepia operation to the specified image and stores the result with the given
+   * destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  void sepiaImage(String imageName, String destImageName);
 
   /**
    * Applies a split image operation to the specified image and stores the result with the given
@@ -172,6 +206,15 @@ public interface ImageProcessorModelInterface {
    * @param operator      The color correction operation operator.
    */
   void colorCorrectImage(String imageName, String destImageName, Object operator);
+
+  /**
+   * Applies a color correction operation to the specified image and stores the result with the
+   * given destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  void colorCorrectImage(String imageName, String destImageName);
 
   /**
    * Loads an image from the specified file path and stores it with the given destination name.

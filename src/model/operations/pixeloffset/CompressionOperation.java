@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
@@ -14,7 +13,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
 
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     Double compressionFactor;
     try {
       compressionFactor = Double.parseDouble((String) operator);
@@ -37,7 +36,8 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
       int[][] newChannel = new int[image.getHeight()][image.getWidth()];
       for (int i = 0; i < image.getHeight(); i++) {
         for (int j = 0; j < image.getWidth(); j++) {
-          newChannel[i][j] = (int) Math.round(channel[i][j] < 0.0 ? 0 : Math.min(channel[i][j], 255.0));
+          newChannel[i][j] = (int) Math
+              .round(channel[i][j] < 0.0 ? 0 : Math.min(channel[i][j], 255.0));
         }
       }
       newChannelList.add(newChannel);

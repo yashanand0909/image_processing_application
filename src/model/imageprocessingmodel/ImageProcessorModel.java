@@ -57,6 +57,21 @@ public class ImageProcessorModel implements
   }
 
   /**
+   * Applies the blur filter to the specified image and stores the result with the given destination
+   * name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  @Override
+  public void blurImage(String imageName, String destImageName) {
+    checkImageNames(Collections.singletonList(imageName));
+    checkDestinationImageNames(Collections.singletonList(destImageName));
+    ImageInterface newImage = new BlurFilter().apply(images.get(imageName));
+    images.put(destImageName, newImage);
+  }
+
+  /**
    * Applies the sharpen filter to the specified image and stores the result with the given
    * destination name.
    *
@@ -69,6 +84,21 @@ public class ImageProcessorModel implements
     checkImageNames(Collections.singletonList(imageName));
     checkDestinationImageNames(Collections.singletonList(destImageName));
     ImageInterface newImage = new SharpenFilter().apply(images.get(imageName), operator);
+    images.put(destImageName, newImage);
+  }
+
+  /**
+   * Applies the sharpen filter to the specified image and stores the result with the given
+   * destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  @Override
+  public void sharpenImage(String imageName, String destImageName) {
+    checkImageNames(Collections.singletonList(imageName));
+    checkDestinationImageNames(Collections.singletonList(destImageName));
+    ImageInterface newImage = new SharpenFilter().apply(images.get(imageName));
     images.put(destImageName, newImage);
   }
 
@@ -119,18 +149,32 @@ public class ImageProcessorModel implements
   }
 
   /**
+   * Applies a grayscale operation to the specified image and stores the result with the given
+   * destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  @Override
+  public void greyScaleImage(String imageName, String destImageName) {
+    checkImageNames(Collections.singletonList(imageName));
+    checkDestinationImageNames(Collections.singletonList(destImageName));
+    ImageInterface newImage = new Greyscale().apply(images.get(imageName));
+    images.put(destImageName, newImage);
+  }
+
+  /**
    * Applies a luma operation to the specified image and stores the result with the given
    * destination name.
    *
    * @param imageName     The name of the source image.
    * @param destImageName The name for the destination image.
-   * @param operator      The luma operation operator.
    */
   @Override
-  public void lumaImage(String imageName, String destImageName, Object operator) {
+  public void lumaImage(String imageName, String destImageName) {
     checkImageNames(Collections.singletonList(imageName));
     checkDestinationImageNames(Collections.singletonList(destImageName));
-    ImageInterface newImage = new Greyscale().apply(images.get(imageName), operator);
+    ImageInterface newImage = new Greyscale().apply(images.get(imageName));
     images.put(destImageName, newImage);
   }
 
@@ -147,6 +191,21 @@ public class ImageProcessorModel implements
     checkImageNames(Collections.singletonList(imageName));
     checkDestinationImageNames(Collections.singletonList(destImageName));
     ImageInterface newImage = new Sepia().apply(images.get(imageName), operator);
+    images.put(destImageName, newImage);
+  }
+
+  /**
+   * Applies a sepia operation to the specified image and stores the result with the given
+   * destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  @Override
+  public void sepiaImage(String imageName, String destImageName) {
+    checkImageNames(Collections.singletonList(imageName));
+    checkDestinationImageNames(Collections.singletonList(destImageName));
+    ImageInterface newImage = new Sepia().apply(images.get(imageName));
     images.put(destImageName, newImage);
   }
 
@@ -308,6 +367,21 @@ public class ImageProcessorModel implements
     checkImageNames(Collections.singletonList(imageName));
     checkDestinationImageNames(Collections.singletonList(destImageName));
     ImageInterface newImage = new ColorCorrection().apply(images.get(imageName), operator);
+    images.put(destImageName, newImage);
+  }
+
+  /**
+   * Applies a color correction operation to the specified image and stores the result with the
+   * given destination name.
+   *
+   * @param imageName     The name of the source image.
+   * @param destImageName The name for the destination image.
+   */
+  @Override
+  public void colorCorrectImage(String imageName, String destImageName) {
+    checkImageNames(Collections.singletonList(imageName));
+    checkDestinationImageNames(Collections.singletonList(destImageName));
+    ImageInterface newImage = new ColorCorrection().apply(images.get(imageName));
     images.put(destImageName, newImage);
   }
 

@@ -1,12 +1,11 @@
 package model.operations.visualization;
 
-import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessor;
@@ -15,6 +14,7 @@ import model.operations.operationinterfaces.SingleImageProcessor;
  * This class represents a histogram visualization operation on an image.
  */
 public class HistogramVisualization implements SingleImageProcessor {
+
   private static final double MAX_COLOR = 255.0;
   private static final int MAX_SIZE = 256;
 
@@ -31,7 +31,8 @@ public class HistogramVisualization implements SingleImageProcessor {
     List<int[][]> processedNormalizedChannels = new ArrayList<>();
     // Normalize the frequencies and create the histogram
     for (int x = 0; x < image.getChannel().size(); x++) {
-      int[] normalizedFrequencyChannel = normalizeFrequency(frequencyChannels.get(x), maxFrequencyValue);
+      int[] normalizedFrequencyChannel = normalizeFrequency(frequencyChannels.get(x),
+          maxFrequencyValue);
       processedNormalizedChannels.add(processNormalizedImages(normalizedFrequencyChannel));
     }
     // Delete common pixels in the histogram across multiple channels to avoid overlapping
@@ -100,7 +101,8 @@ public class HistogramVisualization implements SingleImageProcessor {
   }
 
   private BufferedImage createBufferHistogram(int[] normalizedFrequencyChannel) {
-    BufferedImage bufferedImage = new BufferedImage(MAX_SIZE, MAX_SIZE, BufferedImage.TYPE_BYTE_GRAY);
+    BufferedImage bufferedImage = new BufferedImage(MAX_SIZE, MAX_SIZE,
+        BufferedImage.TYPE_BYTE_GRAY);
     Graphics2D g2d = bufferedImage.createGraphics();
     g2d.translate(0, MAX_SIZE);
     g2d.scale(1.0, -1.0);

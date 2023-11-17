@@ -7,12 +7,14 @@ import java.util.Arrays;
 import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+import model.operations.operationinterfaces.SingleImageProcessor;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 /**
  * This interface represents a color transformation operation on an image.
  */
-public abstract class CommonColorTransformOperation implements SingleImageProcessorWithOffset {
+public abstract class CommonColorTransformOperation implements SingleImageProcessorWithOffset,
+    SingleImageProcessor {
 
   /**
    * This method applies the color transformation operation on the given image.
@@ -25,6 +27,23 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
       throws IllegalArgumentException {
+    return getImage(image, operator);
+  }
+
+  /**
+   * This method applies the color transformation operation on the given image.
+   *
+   * @param image the image to be transformed
+   * @return the transformed image
+   * @throws IllegalArgumentException if the image doesn't have 3 channels
+   */
+  @Override
+  public ImageInterface apply(ImageInterface image) {
+    String fullImageOperator = "100";
+    return getImage(image, fullImageOperator);
+  }
+
+  private ImageInterface getImage(ImageInterface image, Object operator) {
     int percentage = castOperatorToDouble((String) operator);
     double[][] coffeicient = getTransformCoefficient();
     int height = image.getHeight();
