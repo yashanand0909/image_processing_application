@@ -237,7 +237,7 @@ public class ImageProcessorModel implements
       case "sharpen":
       case "greyscale":
       case "color-correct":
-        if (parts.length != 3 && parts.length != 4) {
+        if (parts.length != 3 && parts.length != 5) {
           throw new IllegalArgumentException(
               "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
         }
@@ -257,7 +257,7 @@ public class ImageProcessorModel implements
                 ImageOperations.fromString(parts[0]), "100");
           } else {
             newImage = performOperation(imageList,
-                ImageOperations.fromString(parts[0]), parts[3]);
+                ImageOperations.fromString(parts[0]), parts[4]);
           }
           images.put(parts[2], newImage);
         }
@@ -331,10 +331,10 @@ public class ImageProcessorModel implements
         break;
 
       case "levels-adjust":
-        if (parts.length != 6) {
+        if (parts.length != 6 && parts.length != 8) {
           throw new IllegalArgumentException(
               "Invalid levels-adjust command. Usage: levels-adjust <b> <m> <w> " +
-                  "<image-name> <dest-image-name>");
+                  "<image-name> <dest-image-name> split <p>");
         }
         else {
           if (!images.containsKey(parts[4])) {
@@ -346,8 +346,14 @@ public class ImageProcessorModel implements
                 "Invalid request : An Image exist with the name " + parts[2]);
           }
           List<ImageInterface> imageList = Collections.singletonList(images.get(parts[4]));
-          ImageInterface newImage = performOperation(imageList,
-              ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3]);
+          ImageInterface newImage;
+          if (parts.length == 6) {
+            newImage = performOperation(imageList,
+                ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3]);
+          } else {
+            newImage = performOperation(imageList,
+                ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3] + " " + parts[7]);
+          }
           images.put(parts[5], newImage);
         }
       default:
