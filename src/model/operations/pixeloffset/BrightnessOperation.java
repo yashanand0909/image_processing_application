@@ -25,7 +25,7 @@ public class BrightnessOperation implements SingleImageProcessorWithOffset {
   @Override
   public ImageInterface apply(ImageInterface image,
                               Object operator) throws IllegalArgumentException {
-    int factor = Integer.parseInt((String) operator);
+    int factor = Integer.parseInt(operator.toString());
     int height = image.getHeight();
     int width = image.getWidth();
     List<int[][]> imageChannel = image.getChannel();

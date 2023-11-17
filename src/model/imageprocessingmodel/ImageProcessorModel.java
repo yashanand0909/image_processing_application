@@ -36,7 +36,6 @@ public class ImageProcessorModel implements
     this.images = new HashMap<>();
   }
 
-
   @Override
   public void blurImage(String imageName, String destImageName, Object operator) {
     checkImageNames(Collections.singletonList(imageName));
