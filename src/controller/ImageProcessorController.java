@@ -146,7 +146,7 @@ public class ImageProcessorController implements ControllerInterface {
               "Invalid save command. Usage: brighten <brightness-factor> " +
                   "<current-image-name> <new-image-name>");
         } else {
-          imageProcessorModel.CompressImage(parts[2], parts[3], parts[1]);
+          imageProcessorModel.compressImage(parts[2], parts[3], parts[1]);
         }
         break;
       case "brighten":
