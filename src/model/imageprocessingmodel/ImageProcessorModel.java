@@ -356,6 +356,7 @@ public class ImageProcessorModel implements
           }
           images.put(parts[5], newImage);
         }
+        break;
       default:
         throw new IllegalArgumentException(
                 "Unknown command. Try again or type 'exit' to quit.");
