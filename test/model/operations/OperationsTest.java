@@ -2,12 +2,14 @@ package model.operations;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+import model.imageio.IOFileFactory;
 import model.operations.colorrepresentation.Intensity;
 import model.operations.colorrepresentation.Value;
 import model.operations.colortransformation.Greyscale;
@@ -20,6 +22,9 @@ import model.operations.pixeloffset.CompressionOperation;
 import model.operations.rotation.HorizontalFlipOperation;
 import model.operations.rotation.VerticalFlipOperation;
 import model.operations.split.SplitImageOperation;
+import model.operations.visualization.ColorCorrection;
+import model.operations.visualization.HistogramVisualization;
+import model.operations.visualization.LevelAdjustment;
 
 import org.junit.Test;
 
@@ -623,6 +628,183 @@ public class OperationsTest {
 
     new MergeSingleChannelImages().apply(List.of(imageAfterValue1,
             imageAfterValue2));
+  }
+
+  @Test
+  public void testColorCorrection() {
+    int[][] redChannel = {{80, 0}, {0, 255}};
+    int[][] greenChannel = {{0, 87}, {255, 0}};
+    int[][] blueChannel = {{0, 0}, {200, 200}};
+
+    int[][] newChannelAfterSplitRed = {{122, 42}, {42, 255}};
+    int[][] newChannelAfterSplitGreen = {{35, 122}, {255, 35}};
+    int[][] newChannelAfterSplitBlue = {{0, 0}, {122, 122}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+            List.of(newChannelAfterSplitRed, newChannelAfterSplitGreen, newChannelAfterSplitBlue));
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new ColorCorrection().apply(image, "100");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testColorCorrectionWithSplit() {
+    int[][] redChannel = {{80, 0}, {0, 255}};
+    int[][] greenChannel = {{0, 87}, {255, 0}};
+    int[][] blueChannel = {{0, 0}, {200, 200}};
+
+    int[][] newChannelAfterSplitRed = {{122, 0}, {42, 255}};
+    int[][] newChannelAfterSplitGreen = {{35, 87}, {255, 0}};
+    int[][] newChannelAfterSplitBlue = {{0, 0}, {122, 200}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+            List.of(newChannelAfterSplitRed, newChannelAfterSplitGreen, newChannelAfterSplitBlue));
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new ColorCorrection().apply(image, "50");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testColorCorrectionWithSplitInvalidPercentage() {
+    int[][] redChannel = {{80, 0}, {0, 255}};
+    int[][] greenChannel = {{0, 87}, {255, 0}};
+    int[][] blueChannel = {{0, 0}, {200, 200}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new ColorCorrection().apply(image, "-50");
+  }
+
+  @Test
+  public void testHistogram() {
+    int[][] redChannel = {{255, 255}, {255, 255}};
+    int[][] greenChannel = {{0, 0}, {0, 0}};
+    int[][] blueChannel = {{0, 0}, {0, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new HistogramVisualization().apply(image);
+    int[][] redNewChannel = newImage.getChannel().get(0);
+    int[][] greenNewChannel = newImage.getChannel().get(1);
+    int[][] blueNewChannel = newImage.getChannel().get(2);
+
+    assertEquals(255, redNewChannel[4][255]);
+    assertEquals(0, greenNewChannel[1][0]);
+    assertEquals(255, blueNewChannel[2][0]);
+  }
+
+  @Test
+  public void testLevelAdjustmentClamping() {
+    int[][] redChannel = {{255, 255}, {255, 255}};
+    int[][] greenChannel = {{0, 0}, {0, 0}};
+    int[][] blueChannel = {{0, 0}, {0, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    int[][] newChannelAfterSplitRed = {{0, 0}, {0, 0}};
+    int[][] newChannelAfterSplitGreen = {{0, 0}, {0, 0}};
+    int[][] newChannelAfterSplitBlue = {{0, 0}, {0, 0}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+            List.of(newChannelAfterSplitRed, newChannelAfterSplitGreen, newChannelAfterSplitBlue));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 20 50 100");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testLevelAdjustment() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    int[][] newChannelAfterSplitRed = {{255, 0}, {0, 0}};
+    int[][] newChannelAfterSplitGreen = {{255, 0}, {0, 0}};
+    int[][] newChannelAfterSplitBlue = {{0, 0}, {255, 0}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+            List.of(newChannelAfterSplitRed, newChannelAfterSplitGreen, newChannelAfterSplitBlue));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 20 50 100");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testLevelAdjustmentWithSplit() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    int[][] newChannelAfterSplitRed = {{255, 0}, {0, 0}};
+    int[][] newChannelAfterSplitGreen = {{255, 0}, {0, 0}};
+    int[][] newChannelAfterSplitBlue = {{0, 0}, {255, 0}};
+    ImageInterface imageAfterValue = ImageFactory.createImage(
+            List.of(newChannelAfterSplitRed, newChannelAfterSplitGreen, newChannelAfterSplitBlue));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 20 50 95");
+    assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustmentWithSplitIncorrectAmount() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 20 50 -95");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustmentWithIncorrectOrder() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 80 50 100");
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustmentWithIncorrectNumberOfOperants() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 50 100");
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustmentWithIncorrectInput() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 L 90 100");
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustmentWithIncorrectInput2() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 50.5 90 100");
   }
 
   @Test(expected = IllegalArgumentException.class)
