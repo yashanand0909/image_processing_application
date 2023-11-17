@@ -3,17 +3,19 @@ compress 50 open-source open-source-compress
 rgb-split open-source open-source-small-red open-source-small-green open-source-small-blue
 greyscale open-source open-source-grey
 sharpen open-source open-source-sharp
+sharpen open-source open-source-sharp split 50
 sepia open-source open-source-sepia
 brighten 20 open-source open-source-brighten
 brighten -20 open-source open-source-darken
 blur open-source open-source-blur
+blur open-source open-source-blur split 50
 horizontal-flip open-source open-source-horizontal-flip
 vertical-flip open-source open-source-vertical-flip
 intensity-component open-source open-source-intensity
 value-component open-source open-source-value
 luma-component open-source open-source-luma
-sepia open-source open-source-sepia-split split 70
-greyscale open-source open-source-grey-split split 70
+sepia open-source open-source-sepia-split split 50
+greyscale open-source open-source-grey-split split 50
 histogram open-source open-source-histogram
 levels-adjust 50 100 200 open-source open-source-levels
 color-correct open-source open-source-color-correct
