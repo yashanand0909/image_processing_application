@@ -9,8 +9,19 @@ import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
+/**
+ * A class representing a compression operation for image processing.
+ */
 public class CompressionOperation implements SingleImageProcessorWithOffset {
 
+  /**
+   * Applies the compression operation to the specified image.
+   *
+   * @param image    The source image.
+   * @param operator The compression factor as a percentage (0 to 99).
+   * @return The processed image.
+   * @throws IllegalArgumentException If the compression factor is invalid.
+   */
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
       throws IllegalArgumentException {
@@ -159,7 +170,8 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
         Arrays.stream(row).map(Math::abs).forEach(uniqueValues::add);
       }
     }
-    int thresholdIndex = Math.min(uniqueValues.size()-1, (int) Math.abs(factor * uniqueValues.size()));
+    int thresholdIndex = Math
+        .min(uniqueValues.size() - 1, (int) Math.abs(factor * uniqueValues.size()));
     List<Double> uniqueList = new ArrayList<>(uniqueValues);
     Double value = uniqueList.get(thresholdIndex);
     for (double[][] channel : channels) {
