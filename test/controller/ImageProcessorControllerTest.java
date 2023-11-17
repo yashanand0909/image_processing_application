@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 import logger.ViewLogger;
 import model.image.ImageInterface;
 import model.imageprocessingmodel.ImageProcessorModel;
@@ -146,11 +147,100 @@ public class ImageProcessorControllerTest {
       this.log = log;
     }
 
+
     @Override
-    public void processCommands(String[] parts) throws IOException {
-      for (String s : parts) {
-        log.append(s);
-      }
+    public void blurImage(String imageName, String destImageName, Object operator) {
+      log.append(imageName).append(destImageName).append(operator.toString());
+    }
+
+    @Override
+    public void sharpenImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void horizontalFlipImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
+    public void verticalFlipImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
+    public void greyScaleImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void lumaImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void sepiaImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void splitImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void rgbSplitImage(String imageName, List<String> destImageNames) {
+
+    }
+
+    @Override
+    public void brightenImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void CompressImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void valueImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
+    public void intensityImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
+    public void mergeImage(List<String> imagesToMergeName, String destImageName) {
+
+    }
+
+    @Override
+    public void histogramImage(String imageName, String destImageName) {
+
+    }
+
+    @Override
+    public void levelAdjustImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void colorCorrectImage(String imageName, String destImageName, Object operator) {
+
+    }
+
+    @Override
+    public void loadImage(String imagePath, String imageName) throws IOException {
+      log.append(imagePath).append(imageName);
+    }
+
+    @Override
+    public void saveImage(String imagePath, String imageName) throws IOException {
+      log.append(imagePath).append(imageName);
     }
 
     @Override

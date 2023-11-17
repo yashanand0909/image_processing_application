@@ -1,6 +1,7 @@
 package model.imageprocessingmodel;
 
 import java.io.IOException;
+import java.util.List;
 import model.image.ImageInterface;
 
 /**
@@ -8,19 +9,44 @@ import model.image.ImageInterface;
  */
 public interface ImageProcessorModelInterface {
 
-  /**
-   * This method processes the commands.
-   *
-   * @param parts the commands to be processed
-   * @throws IOException if the input is invalid
-   */
-  void processCommands(String[] parts) throws IOException;
+  void blurImage(String imageName, String destImageName, Object operator);
 
-  /**
-   * This method returns the image with the provided name
-   *
-   * @param imageName name of the image
-   */
+  void sharpenImage(String imageName, String destImageName, Object operator);
+
+  void horizontalFlipImage(String imageName, String destImageName);
+
+  void verticalFlipImage(String imageName, String destImageName);
+
+  void greyScaleImage(String imageName, String destImageName, Object operator);
+
+  void lumaImage(String imageName, String destImageName, Object operator);
+
+  void sepiaImage(String imageName, String destImageName, Object operator);
+
+  void splitImage(String imageName, String destImageName, Object operator);
+
+  void rgbSplitImage(String imageName, List<String> destImageNames);
+
+  void brightenImage(String imageName, String destImageName, Object operator);
+
+  void CompressImage(String imageName, String destImageName, Object operator);
+
+  void valueImage(String imageName, String destImageName);
+
+  void intensityImage(String imageName, String destImageName);
+
+  void mergeImage(List<String> imagesToMergeName, String destImageName);
+
+  void histogramImage(String imageName, String destImageName);
+
+  void levelAdjustImage(String imageName, String destImageName, Object operator);
+
+  void colorCorrectImage(String imageName, String destImageName, Object operator);
+
+  void loadImage(String imagePath, String imageName) throws IOException;
+
+  void saveImage(String imagePath, String imageName) throws IOException;
+
   ImageInterface getImage(String imageName);
 
 }
