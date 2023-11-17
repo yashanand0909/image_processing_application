@@ -37,58 +37,64 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
             && levelAdjustmentParameters.get(1) < levelAdjustmentParameters.get(2))) {
       throw new IllegalArgumentException("Invalid ordering of parameters");
     }
-    ImageInterface newImage = ImageFactory.createImage(createLevelAdjustment(image, levelAdjustmentParameters));
-    return new PartialImageOperation().apply(List.of(image, newImage), operator);
+    ImageInterface newImage = ImageFactory
+            .createImage(createLevelAdjustment(image, levelAdjustmentParameters));
+    return new PartialImageOperation()
+            .apply(List.of(image, newImage), operator.toString().split("\\s+")[3]);
   }
 
   private List<int[][]> createLevelAdjustment(ImageInterface image,
                                               List<Integer> levelAdjustmentParameters) {
-    int blackFactor = levelAdjustmentParameters.get(0);
-    int middleFactor = levelAdjustmentParameters.get(1);
-    int whiteFactor = levelAdjustmentParameters.get(2);
-    float commonDivisorForAdjustmentParameter = blackFactor * blackFactor
-            * (middleFactor - whiteFactor)
-            - blackFactor * (middleFactor * middleFactor
-            - whiteFactor * whiteFactor)
-            + whiteFactor * middleFactor * middleFactor
-            - middleFactor * whiteFactor * whiteFactor;
-    float levelAdjustmentForLinearity = (-blackFactor * (128 - 255)
-            + 128 * whiteFactor
-            - 255 * middleFactor);
-    float levelAdjustmentForQuadratic = blackFactor * blackFactor * (128 - 255)
-            + 255 * middleFactor * middleFactor
-            - 128 * whiteFactor * whiteFactor;
-    float levelAdjustmentForConstant = blackFactor * blackFactor
-            * (255 * middleFactor - 128 * whiteFactor)
-            - blackFactor * (255 * middleFactor * middleFactor
-            - 128 * whiteFactor * whiteFactor);
-    int parameterForLinearity = (int) (levelAdjustmentForLinearity
+    // b is black
+    // m is middle
+    // w is white
+    int b = levelAdjustmentParameters.get(0);
+    int m = levelAdjustmentParameters.get(1);
+    int w = levelAdjustmentParameters.get(2);
+    double commonDivisorForAdjustmentParameter = (b * b * (m - w)) - b * ((m * m) - (w * w))
+            + w * m * m
+            - m * w * w;
+    double levelAdjustmentForQuadratic = -b * (128 - 255)
+            + 128 * w
+            - 255 * m;
+    double levelAdjustmentForLinearity = b * b * (128 - 255)
+            + 255 * m * m
+            - 128 * w * w;
+    double levelAdjustmentForConstant = b * b
+            * ((255 * m) - (128 * w))
+            - b * (255 * m * m
+            - 128 * w * w);
+    double parameterForLinearity = (levelAdjustmentForLinearity
             / commonDivisorForAdjustmentParameter);
-    int parameterForQuadratic = (int) (levelAdjustmentForQuadratic
+    double parameterForQuadratic = (levelAdjustmentForQuadratic
             / commonDivisorForAdjustmentParameter);
-    int parameterForConstant = (int) (levelAdjustmentForConstant
+    double parameterForConstant = (levelAdjustmentForConstant
             / commonDivisorForAdjustmentParameter);
     List<int[][]> channels = new ArrayList<>();
     for (int[][] channel : image.getChannel()) {
       channels.add(createLevelAdjustmenPerChannel(channel,
-              parameterForLinearity, parameterForQuadratic,
+              parameterForQuadratic, parameterForLinearity,
               parameterForConstant));
     }
     return channels;
   }
 
   private int[][] createLevelAdjustmenPerChannel(int[][] channel,
-                                                 int parameterForLinearity,
-                                                 int parameterForQuadratic,
-                                                 int parameterForConstant) {
+                                                 double parameterForQuadratic,
+                                                 double parameterForLinearity,
+                                                 double parameterForConstant) {
     for (int i = 0; i < channel.length; i++) {
       for (int j = 0; j < channel[0].length; j++) {
         int pixel = channel[i][j];
-        channel[i][j] = parameterForQuadratic * pixel * pixel
+        channel[i][j] = clamp((int) (parameterForQuadratic * pixel * pixel
                 + parameterForLinearity * pixel
-                + parameterForConstant;
+                + parameterForConstant));
       }
     }
     return channel;
+  }
+
+  private int clamp(int pixel) {
+    return Math.min(255, Math.max(0, pixel));
   }
 }

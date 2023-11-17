@@ -66,13 +66,30 @@ public class IntegrationTest {
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < image.getHeight(); j++) {
-        for (int w = 0; w < image.getWidth(); w++) {
-          assertEquals(image.getChannel().get(i)[j][w], newChannleList.get(i)[j][w]);
-        }
-      }
-    }
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+  @Test
+  public void testCompressionFlow() throws IOException {
+    String newImagePath = "test_image_compression.jpg";
+    int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
+        {223, 223, 255}};
+    int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    int[][] newChannelAfterIncreaseBrightnessBlue = {{254, 254, 202}, {240, 0, 82},
+        {132, 132, 48}};
+    List<int[][]> newChannleList = Arrays
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String compressCommand = "compress 50 test test_compress\n";
+    String saveCommand = "save " + newImagePath + " test_compress\n";
+    imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
     cleanupImages(Arrays.asList(imagePath, newImagePath));
   }
 
@@ -308,6 +325,29 @@ public class IntegrationTest {
   }
 
   @Test
+  public void testBlurFlowWithSplit() throws IOException {
+    // Define your expected image and other necessary variables
+    String newImagePath = "test_image_blur.jpg";
+    int[][] newChannelAfterBlurRed = {{140, 255, 255}, {186, 255, 255}, {140, 255, 255}};
+    int[][] newChannelAfterBlurGreen = {{0, 0, 0}, {5, 0, 0}, {10, 86, 0}};
+    int[][] newChannelAfterBlurBlue = {{124, 254, 240}, {131, 0, 90}, {81, 255, 44}};
+    List<int[][]> newChannleList = Arrays
+        .asList(newChannelAfterBlurRed, newChannelAfterBlurGreen,
+            newChannelAfterBlurBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String blurCommand = "blur test test_blur split 50\n";
+    String saveCommand = "save " + newImagePath + " test_blur\n";
+    imageProcessorController = new ImageProcessorController(logger,
+        new ImageProcessorModel(), new StringReader(loadCommand
+        + blurCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+  @Test
   public void testSharpenFlow() throws IOException {
     String newImagePath = "test_image_sharpen.jpg";
     int[][] newChannelAfterSharpenRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
@@ -318,6 +358,28 @@ public class IntegrationTest {
             newChannelAfterSharpenBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String sharpenCommand = "sharpen test test_sharpen\n";
+    String saveCommand = "save " + newImagePath + " test_sharpen\n";
+    imageProcessorController = new ImageProcessorController(logger,
+        new ImageProcessorModel(), new StringReader(loadCommand
+        + sharpenCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+  @Test
+  public void testSharpenFlowWithSplit() throws IOException {
+    String newImagePath = "test_image_sharpen.jpg";
+    int[][] newChannelAfterSharpenRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSharpenGreen = {{0, 0, 0}, {21, 0, 0}, {21, 86, 0}};
+    int[][] newChannelAfterSharpenBlue = {{255, 254, 240}, {255, 0, 90}, {97, 255, 44}};
+    List<int[][]> newChannleList = Arrays
+        .asList(newChannelAfterSharpenRed, newChannelAfterSharpenGreen,
+            newChannelAfterSharpenBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String sharpenCommand = "sharpen test test_sharpen split 50\n";
     String saveCommand = "save " + newImagePath + " test_sharpen\n";
     imageProcessorController = new ImageProcessorController(logger,
         new ImageProcessorModel(), new StringReader(loadCommand
@@ -494,6 +556,67 @@ public class IntegrationTest {
   }
 
   @Test
+  public void testSepiaFlowWithPercentage() throws IOException {
+    String newImagePath = "test_image_sepia.jpg";
+    int[][] newChannelAfterSepiaRed = {{148, 255, 255}, {145, 255, 255}, {115, 255, 255}};
+    int[][] newChannelAfterSepiaGreen = {{131, 0, 0}, {129, 0, 0}, {102, 86, 0}};
+    int[][] newChannelAfterSepiaBlue = {{102, 254, 240}, {100, 0, 90}, {80, 255, 44}};
+    List<int[][]> newChannleList = Arrays
+        .asList(newChannelAfterSepiaRed, newChannelAfterSepiaGreen,
+            newChannelAfterSepiaBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String sepiaCommand = "sepia test test_sepia split 50\n";
+    String saveCommand = "save " + newImagePath + " test_sepia\n";
+    imageProcessorController = new ImageProcessorController(logger,
+        new ImageProcessorModel(), new StringReader(loadCommand
+        + sepiaCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+  @Test
+  public void testGreyscaleFlow() throws IOException {
+    String newImagePath = "test_image_grey.jpg";
+    int[][] newChannelAfterRed = {{72, 72, 71}, {71, 54, 60}, {60, 134, 57}};
+    List<int[][]> newChannleList = Collections.singletonList(newChannelAfterRed);
+    String loadCommand = "load " + imagePath + " test\n";
+    String sepiaCommand = "greyscale test test_grey\n";
+    String saveCommand = "save " + newImagePath + " test_grey\n";
+    imageProcessorController = new ImageProcessorController(logger,
+        new ImageProcessorModel(), new StringReader(loadCommand
+        + sepiaCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+  @Test
+  public void testGreyscaleFlowWithSplit() throws IOException {
+    String newImagePath = "test_image_grey.jpg";
+    int[][] newChannelAfterSepiaRed = {{72, 255, 255}, {71, 255, 255}, {60, 255, 255}};
+    int[][] newChannelAfterSepiaGreen = {{72, 0, 0}, {71, 0, 0}, {60, 86, 0}};
+    int[][] newChannelAfterSepiaBlue = {{72, 254, 240}, {71, 0, 90}, {60, 255, 44}};
+    List<int[][]> newChannleList = Collections.singletonList(newChannelAfterSepiaRed);
+    String loadCommand = "load " + imagePath + " test\n";
+    String sepiaCommand = "greyscale test test_grey split 50\n";
+    String saveCommand = "save " + newImagePath + " test_grey\n";
+    imageProcessorController = new ImageProcessorController(logger,
+        new ImageProcessorModel(), new StringReader(loadCommand
+        + sepiaCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+
+  @Test
   public void testMultipleOperations() throws IOException {
     String newImagePath = "test_image_sepia.jpg";
     int[][] newChannelAfterSepiaRed = {{148, 148, 145}, {145, 100, 117}, {115, 214, 108}};
@@ -517,7 +640,7 @@ public class IntegrationTest {
   }
 
   private void assertImageEquals(List<int[][]> expectedChannel, ImageInterface image) {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < expectedChannel.size(); i++) {
       for (int j = 0; j < image.getHeight(); j++) {
         for (int w = 0; w < image.getWidth(); w++) {
           assertEquals(image.getChannel().get(i)[j][w], expectedChannel.get(i)[j][w]);

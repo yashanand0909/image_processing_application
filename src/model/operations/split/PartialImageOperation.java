@@ -11,12 +11,12 @@ public class PartialImageOperation implements MultipleToSingleImageProcessorWith
   @Override
   public ImageInterface apply(List<ImageInterface> images, Object operator)
       throws IllegalArgumentException {
-    double percentage = castOperatorToDouble((String) operator);
+    int percentage = castOperatorToDouble((String) operator);
     ImageInterface orignalImage = images.get(0);
     ImageInterface newImage = images.get(1);
     int height = newImage.getHeight();
     int width = newImage.getWidth();
-    int perWidth = (int) (width * percentage/100);
+    int perWidth = width * percentage/100;
     for (int w=0;w<newImage.getChannel().size();w++){
       int[][] origChannel= orignalImage.getChannel().get(w);
       int[][] newChannel= newImage.getChannel().get(w);
