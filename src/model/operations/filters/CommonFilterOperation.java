@@ -17,7 +17,8 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
   /**
    * This method applies a filter to an image.
    *
-   * @param image the image to be filtered
+   * @param image    the image to be filtered
+   * @param operator the operator object for the filter
    * @return the filtered image
    * @throws IllegalArgumentException if the kernel is larger than the image
    */
@@ -28,7 +29,7 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
     double[][] kernel = getFilter();
     int height = image.getHeight();
     int width = image.getWidth();
-    int perWidth = (int) (width * percentage / 100);
+    int perWidth = width * percentage / 100;
     ImageInterface newImage = image;
     if (kernel.length > height || kernel[0].length > width) {
       newImage = addPadding(image, kernel.length, kernel[0].length);

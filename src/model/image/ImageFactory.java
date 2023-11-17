@@ -1,13 +1,13 @@
 package model.image;
 
 import java.util.List;
-
 import model.image.CommonImage.ImageBuilder;
 
 /**
  * This class represents an image factory.
  */
 public class ImageFactory {
+
   /**
    * Creates an image with the given height, width and channels.
    *
@@ -24,7 +24,7 @@ public class ImageFactory {
       return imageBuilder.build();
     } else {
       throw new IllegalArgumentException(channelList.size() +
-              " number of channel is not supported");
+          " number of channel is not supported");
     }
   }
 

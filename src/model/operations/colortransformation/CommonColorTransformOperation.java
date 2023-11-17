@@ -17,7 +17,8 @@ public abstract class CommonColorTransformOperation implements SingleImageProces
   /**
    * This method applies the color transformation operation on the given image.
    *
-   * @param image the image to be transformed
+   * @param image    the image to be transformed
+   * @param operator the operator object for the filter
    * @return the transformed image
    * @throws IllegalArgumentException if the image doesn't have 3 channels
    */

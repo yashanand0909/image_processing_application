@@ -2,7 +2,6 @@ package model.operations.pixeloffset;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
@@ -24,7 +23,7 @@ public class BrightnessOperation implements SingleImageProcessorWithOffset {
    */
   @Override
   public ImageInterface apply(ImageInterface image,
-                              Object operator) throws IllegalArgumentException {
+      Object operator) throws IllegalArgumentException {
     int factor = Integer.parseInt(operator.toString());
     int height = image.getHeight();
     int width = image.getWidth();

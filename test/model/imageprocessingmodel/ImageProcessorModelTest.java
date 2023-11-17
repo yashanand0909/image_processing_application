@@ -132,6 +132,7 @@ public class ImageProcessorModelTest {
     imageProcessorModel.sepiaImage(initialImageName, initialImageName,"100");
   }
 
+<<<<<<< Updated upstream
 
   @Test
   public void testSplitImage() {
@@ -221,6 +222,8 @@ public class ImageProcessorModelTest {
   public void testMergeImageWithExistingDestinationImage() {
     imageProcessorModel.mergeImage(Collections.singletonList(initialImageName), initialImageName);
   }
+=======
+>>>>>>> Stashed changes
 }
 
 
