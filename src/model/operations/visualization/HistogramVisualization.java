@@ -76,7 +76,7 @@ public class HistogramVisualization implements SingleImageProcessor {
           processedNormalizedChannels.get(0)[i][j] = 0;
         } else if (pixelGreen == pixelBlue && pixelBlue != pixelRed) {
           processedNormalizedChannels.get(1)[i][j] = 0;
-        } else if (pixelRed == pixelGreen && pixelGreen == pixelBlue) {
+        } else if (pixelRed == pixelGreen) {
           processedNormalizedChannels.get(0)[i][j] = 0;
           processedNormalizedChannels.get(1)[i][j] = 0;
         }
