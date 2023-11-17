@@ -4,11 +4,8 @@ import static model.operations.operatorutil.OperatorUtil.castOperatorToDouble;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
-import model.operations.colortransformation.CommonColorTransformOperation;
-import model.operations.operationinterfaces.SingleImageProcessor;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 /**
@@ -25,12 +22,13 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
    * @throws IllegalArgumentException if the kernel is larger than the image
    */
   @Override
-  public ImageInterface apply(ImageInterface image, Object operator) throws IllegalArgumentException {
-    double percentage = castOperatorToDouble((String) operator);
+  public ImageInterface apply(ImageInterface image, Object operator)
+      throws IllegalArgumentException {
+    int percentage = castOperatorToDouble((String) operator);
     double[][] kernel = getFilter();
     int height = image.getHeight();
     int width = image.getWidth();
-    int perWidth = (int) (width * percentage/100);
+    int perWidth = (int) (width * percentage / 100);
     ImageInterface newImage = image;
     if (kernel.length > height || kernel[0].length > width) {
       newImage = addPadding(image, kernel.length, kernel[0].length);
@@ -71,7 +69,7 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
   }
 
   private ImageInterface addPadding(ImageInterface image,
-                                    int kernalHeight, int kernalWidth) {
+      int kernalHeight, int kernalWidth) {
     int height = image.getHeight();
     int width = image.getWidth();
     List<int[][]> imageChannel = image.getChannel();
