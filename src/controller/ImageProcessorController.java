@@ -41,7 +41,7 @@ public class ImageProcessorController implements ControllerInterface {
   /**
    * Starts the image processing controller, allowing users to enter and execute commands.
    */
-  public void startImageProcessingController() {
+  public void startImageProcessingController() throws IOException {
     try {
       handleCommands();
     } catch (Exception e) {
