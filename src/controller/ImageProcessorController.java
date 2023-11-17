@@ -17,7 +17,6 @@ import model.imageprocessingmodel.ImageProcessorModelInterface;
 public class ImageProcessorController implements ControllerInterface {
 
   private final Readable in;
-  private final Appendable out;
   private final ViewLogger viewLogger;
   private final ImageProcessorModelInterface imageProcessorModel;
 
@@ -33,7 +32,6 @@ public class ImageProcessorController implements ControllerInterface {
       ImageProcessorModelInterface imageProcessorModel,
       Readable in, Appendable out) {
     this.in = in;
-    this.out = out;
     this.viewLogger = viewLogger;
     this.imageProcessorModel = imageProcessorModel;
   }
@@ -112,8 +110,8 @@ public class ImageProcessorController implements ControllerInterface {
           }
         }
       } else {
-        throw new IllegalArgumentException("Invalid command : " +
-            "File does not exist with name " + commandInput[1]);
+        throw new IllegalArgumentException("Invalid command : "
+            + "File does not exist with name " + commandInput[1]);
       }
     }
   }
@@ -143,8 +141,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "compress":
         if (parts.length != 4) {
           throw new IllegalArgumentException(
-              "Invalid save command. Usage: brighten <brightness-factor> " +
-                  "<current-image-name> <new-image-name>");
+              "Invalid save command. Usage: brighten <brightness-factor> "
+                  + "<current-image-name> <new-image-name>");
         } else {
           imageProcessorModel.compressImage(parts[2], parts[3], parts[1]);
         }
@@ -152,8 +150,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "brighten":
         if (parts.length != 4) {
           throw new IllegalArgumentException(
-              "Invalid save command. Usage: brighten <brightness-factor> " +
-                  "<current-image-name> <new-image-name>");
+              "Invalid save command. Usage: brighten <brightness-factor> "
+                  + "<current-image-name> <new-image-name>");
         } else {
           imageProcessorModel.brightenImage(parts[2], parts[3], parts[1]);
         }
@@ -193,7 +191,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "luma-component":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name> "
+                  + "or command <image-name>");
         } else {
           imageProcessorModel.lumaImage(parts[1], parts[2]);
         }
@@ -233,7 +232,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "blur":
         if (parts.length != 3 && parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name> "
+                  + "or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
             imageProcessorModel.blurImage(parts[1], parts[2]);
@@ -245,7 +245,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "sepia":
         if (parts.length != 3 && parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name> "
+                  + "or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
             imageProcessorModel.sepiaImage(parts[1], parts[2]);
@@ -257,7 +258,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "sharpen":
         if (parts.length != 3 && parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name> "
+                  + "or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
             imageProcessorModel.sharpenImage(parts[1], parts[2]);
@@ -269,7 +271,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "greyscale":
         if (parts.length != 3 && parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name> "
+                  + "or command <image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
             imageProcessorModel.greyScaleImage(parts[1], parts[2]);
@@ -281,7 +284,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "color-correct":
         if (parts.length != 3 && parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+              "Invalid component command. Usage: command <image-name> <dest-image-name> or command "
+                  + "<image-name> <dest-image-name> <percentage>");
         } else {
           if (parts.length == 3) {
             imageProcessorModel.colorCorrectImage(parts[1], parts[2]);
@@ -293,8 +297,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "rgb-split":
         if (parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid rgb-split command. Usage: rgb-split <image-name> " +
-                  "<dest-image-name-red> <dest-image-name-green> <dest-image-name-blue>");
+              "Invalid rgb-split command. Usage: rgb-split <image-name> "
+                  + "<dest-image-name-red> <dest-image-name-green> <dest-image-name-blue>");
         } else {
           List<String> imageNamelist = new ArrayList<>(Arrays.asList(parts).subList(2, 5));
           imageProcessorModel.rgbSplitImage(parts[1], imageNamelist);
@@ -303,8 +307,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "rgb-combine":
         if (parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid rgb-combine command. Usage: rgb-combine <image-name> " +
-                  "<red-image> <green-image> <blue-image>");
+              "Invalid rgb-combine command. Usage: rgb-combine <image-name> "
+                  + "<red-image> <green-image> <blue-image>");
         } else {
           List<String> imageNameList = new ArrayList<>(Arrays.asList(parts).subList(2, 5));
           imageProcessorModel.mergeImage(imageNameList, parts[1]);
@@ -314,8 +318,8 @@ public class ImageProcessorController implements ControllerInterface {
       case "levels-adjust":
         if (parts.length != 6 && parts.length != 8) {
           throw new IllegalArgumentException(
-              "Invalid levels-adjust command. Usage: levels-adjust <b> <m> <w> " +
-                  "<image-name> <dest-image-name> split <p>");
+              "Invalid levels-adjust command. Usage: levels-adjust <b> <m> <w> "
+                  + "<image-name> <dest-image-name> split <p>");
         } else {
           if (parts.length == 6) {
             imageProcessorModel.levelAdjustImage(parts[4], parts[5],

@@ -764,7 +764,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new LevelAdjustment().apply(image, "10 80 50 100");
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 80 50");
 
   }
 

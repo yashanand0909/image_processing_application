@@ -42,9 +42,7 @@ public class IntegrationTest {
         .addChannel(greenChannel)
         .addChannel(blueChannel)
         .build();
-    IOFileFactory.encodeAndSaveImage
-        (imagePath
-            , imageInterface);
+    IOFileFactory.encodeAndSaveImage(imagePath, imageInterface);
   }
 
   @Test
@@ -97,18 +95,18 @@ public class IntegrationTest {
   public void testHistogram() throws IOException {
     String newImagePath = "test_image_histogram.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-            {223, 223, 255}};
+        {223, 223, 255}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{254, 254, 202}, {240, 0, 82},
-            {132, 132, 48}};
+        {132, 132, 48}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "histogram test test_hist\n";
     String saveCommand = "save " + newImagePath + " test_hist\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
@@ -119,18 +117,18 @@ public class IntegrationTest {
   public void testColorCorrection() throws IOException {
     String newImagePath = "test_image_color_correct.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+        {255, 255, 255}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 0}, {0, 0, 0},
-            {0, 0, 0}};
+        {0, 0, 0}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "color-correct test test_colorcorrect\n";
     String saveCommand = "save " + newImagePath + " test_colorcorrect\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
@@ -142,18 +140,18 @@ public class IntegrationTest {
   public void testColorCorrectionWithSplit() throws IOException {
     String newImagePath = "test_image_color_correct.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-            {255, 255, 255}};
+        {255, 255, 255}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 254, 240}, {0, 0, 90},
-            {0, 255, 44}};
+        {0, 255, 44}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "color-correct test test_colorcorrect split 50\n";
     String saveCommand = "save " + newImagePath + " test_colorcorrect\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
@@ -165,18 +163,18 @@ public class IntegrationTest {
   public void testLevelAdjust() throws IOException {
     String newImagePath = "test_image_level_adjust.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-            {0, 0, 0}};
+        {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-            {223, 0, 105}};
+        {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "levels-adjust 20 50 100 test test_levels_adjust\n";
     String saveCommand = "save " + newImagePath + " test_levels_adjust\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
@@ -188,18 +186,18 @@ public class IntegrationTest {
   public void testLevelAdjustErrorIncorrectOrder() throws IOException {
     String newImagePath = "test_image_level_adjust.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-            {0, 0, 0}};
+        {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-            {223, 0, 105}};
+        {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "levels-adjust 20 100 90 test test_levels_adjust\n";
     String saveCommand = "save " + newImagePath + " test_levels_adjust\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Invalid ordering of parameters"));
     cleanupImages(Arrays.asList(imagePath, newImagePath));
@@ -209,18 +207,18 @@ public class IntegrationTest {
   public void testLevelAdjustErrorIncorrectInput() throws IOException {
     String newImagePath = "test_image_level_adjust.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-            {0, 0, 0}};
+        {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-            {223, 0, 105}};
+        {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "levels-adjust -20 100 90 test test_levels_adjust\n";
     String saveCommand = "save " + newImagePath + " test_levels_adjust\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Invalid value for constant"));
     cleanupImages(Arrays.asList(imagePath, newImagePath));
@@ -230,18 +228,18 @@ public class IntegrationTest {
   public void testLevelAdjustErrorIncorrectInput2() throws IOException {
     String newImagePath = "test_image_level_adjust.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-            {0, 0, 0}};
+        {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-            {223, 0, 105}};
+        {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "levels-adjust 20.0 100 90 test test_levels_adjust\n";
     String saveCommand = "save " + newImagePath + " test_levels_adjust\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Invalid request"));
     cleanupImages(Arrays.asList(imagePath, newImagePath));
@@ -251,18 +249,18 @@ public class IntegrationTest {
   public void testLevelAdjustSplit() throws IOException {
     String newImagePath = "test_image_level_adjust.jpg";
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-            {0, 0, 0}};
+        {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-            {223, 0, 105}};
+        {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
-            .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
-                    newChannelAfterIncreaseBrightnessBlue);
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String compressCommand = "levels-adjust 20 50 100 test test_levels_adjust split 50\n";
     String saveCommand = "save " + newImagePath + " test_levels_adjust\n";
     imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
-            new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
+        new StringReader(loadCommand + compressCommand + saveCommand + "exit"), out);
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
@@ -778,7 +776,8 @@ public class IntegrationTest {
     int[][] newChannelAfterSepiaRed = {{72, 255, 255}, {71, 255, 255}, {60, 255, 255}};
     int[][] newChannelAfterSepiaGreen = {{72, 0, 0}, {71, 0, 0}, {60, 86, 0}};
     int[][] newChannelAfterSepiaBlue = {{72, 254, 240}, {71, 0, 90}, {60, 255, 44}};
-    List<int[][]> newChannleList = List.of(newChannelAfterSepiaRed, newChannelAfterSepiaGreen, newChannelAfterSepiaBlue);
+    List<int[][]> newChannleList = List
+        .of(newChannelAfterSepiaRed, newChannelAfterSepiaGreen, newChannelAfterSepiaBlue);
     String loadCommand = "load " + imagePath + " test\n";
     String sepiaCommand = "greyscale test test_grey split 50\n";
     String saveCommand = "save " + newImagePath + " test_grey\n";

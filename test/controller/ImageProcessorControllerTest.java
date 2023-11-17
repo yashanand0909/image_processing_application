@@ -159,62 +159,62 @@ public class ImageProcessorControllerTest {
 
     @Override
     public void blurImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void sharpenImage(String imageName, String destImageName, Object operator) {
-
+      //comment
     }
 
     @Override
     public void sharpenImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void horizontalFlipImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void verticalFlipImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void greyScaleImage(String imageName, String destImageName, Object operator) {
-
+      //comment
     }
 
     @Override
     public void greyScaleImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void lumaImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void sepiaImage(String imageName, String destImageName, Object operator) {
-
+      //comment
     }
 
     @Override
     public void sepiaImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void splitImage(String imageName, String destImageName, Object operator) {
-
+      //comment
     }
 
     @Override
     public void rgbSplitImage(String imageName, List<String> destImageNames) {
-
+      //comment
     }
 
     @Override
@@ -224,42 +224,42 @@ public class ImageProcessorControllerTest {
 
     @Override
     public void compressImage(String imageName, String destImageName, Object operator) {
-
+      //comment
     }
 
     @Override
     public void valueImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void intensityImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void mergeImage(List<String> imagesToMergeName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void histogramImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override
     public void levelAdjustImage(String imageName, String destImageName, Object operator) {
-
+      //comment
     }
 
     @Override
     public void colorCorrectImage(String imageName, String destImageName, Object operator) {
-
+      //comment
     }
 
     @Override
     public void colorCorrectImage(String imageName, String destImageName) {
-
+      //comment
     }
 
     @Override

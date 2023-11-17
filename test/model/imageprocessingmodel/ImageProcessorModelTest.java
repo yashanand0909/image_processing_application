@@ -4,16 +4,14 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Collections;
-
 import model.image.CommonImage;
 import model.image.ImageInterface;
 import model.imageio.IOFileFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This class tests valid and invalid calls to its public function
+ * This class tests valid and invalid calls to its public function.
  */
 public class ImageProcessorModelTest {
 
@@ -28,12 +26,10 @@ public class ImageProcessorModelTest {
     int[][] greenChannel = new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] blueChannel = new int[][]{{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
     ImageInterface imageInterface = new CommonImage.ImageBuilder().addChannel(redChannel)
-            .addChannel(greenChannel)
-            .addChannel(blueChannel)
-            .build();
-    IOFileFactory.encodeAndSaveImage
-            (imagePath
-                    , imageInterface);
+        .addChannel(greenChannel)
+        .addChannel(blueChannel)
+        .build();
+    IOFileFactory.encodeAndSaveImage(imagePath, imageInterface);
     imageProcessorModel.loadImage(imagePath, initialImageName);
   }
 

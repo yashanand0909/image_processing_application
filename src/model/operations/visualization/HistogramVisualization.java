@@ -65,12 +65,13 @@ public class HistogramVisualization implements SingleImageProcessor {
     return normalizedFrequencies;
   }
 
-  public void postProcessingOfChannels(List<int[][]> processedNormalizedChannels) {
+  private void postProcessingOfChannels(List<int[][]> processedNormalizedChannels) {
     for (int i = 0; i < processedNormalizedChannels.get(0).length; i++) {
       for (int j = 0; j < processedNormalizedChannels.get(0)[0].length; j++) {
         int pixelRed = processedNormalizedChannels.get(0)[i][j];
         int pixelGreen = processedNormalizedChannels.get(1)[i][j];
         int pixelBlue = processedNormalizedChannels.get(2)[i][j];
+
         if (pixelRed == pixelGreen && pixelGreen != pixelBlue) {
           processedNormalizedChannels.get(0)[i][j] = 0;
         } else if (pixelRed == pixelBlue && pixelBlue != pixelGreen) {
