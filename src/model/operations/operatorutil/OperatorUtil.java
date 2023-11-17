@@ -2,10 +2,10 @@ package model.operations.operatorutil;
 
 public class OperatorUtil {
 
-  public static double castOperatorToDouble(String operator) {
-    double percentage;
+  public static int castOperatorToDouble(String operator) {
+    int percentage;
     try {
-      percentage = Double.parseDouble(operator);
+      percentage = Integer.parseInt(operator);
     }
     catch (Exception e){
       throw new IllegalArgumentException("Percentage should be double value");

@@ -38,7 +38,7 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
       throw new IllegalArgumentException("Invalid ordering of parameters");
     }
     ImageInterface newImage = ImageFactory.createImage(createLevelAdjustment(image, levelAdjustmentParameters));
-    return new PartialImageOperation().apply(List.of(image,newImage),operator);
+    return new PartialImageOperation().apply(List.of(image,newImage),operator.toString().split("\\s+")[3]);
   }
 
   private List<int[][]> createLevelAdjustment(ImageInterface image,

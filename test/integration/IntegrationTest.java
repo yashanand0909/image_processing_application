@@ -66,6 +66,29 @@ public class IntegrationTest {
     imageProcessorController.startImageProcessingController();
     assertTrue(out.toString().contains("Command ran successfully"));
     ImageInterface image = IOFileFactory.decodeImage(newImagePath);
+    assertImageEquals(newChannleList, image);
+    cleanupImages(Arrays.asList(imagePath, newImagePath));
+  }
+
+  @Test
+  public void testCompressionFlow() throws IOException {
+    String newImagePath = "test_image_bright.jpg";
+    int[][] newChannelAfterIncreaseBrightnessRed = {{245, 245, 245}, {245, 245, 245},
+        {245, 245, 245}};
+    int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 76, 0}};
+    int[][] newChannelAfterIncreaseBrightnessBlue = {{244, 244, 230}, {230, 0, 80},
+        {73, 245, 34}};
+    List<int[][]> newChannleList = Arrays
+        .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
+            newChannelAfterIncreaseBrightnessBlue);
+    String loadCommand = "load " + imagePath + " test\n";
+    String brightenCommand = "brighten 50 test test_compress\n";
+    String saveCommand = "save " + newImagePath + " test_compress\n";
+    imageProcessorController = new ImageProcessorController(logger, new ImageProcessorModel(),
+        new StringReader(loadCommand + brightenCommand + saveCommand + "exit"), out);
+    imageProcessorController.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
+    ImageInterface image = IOFileFactory.decodeImage(newImagePath);
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < image.getHeight(); j++) {
         for (int w = 0; w < image.getWidth(); w++) {
