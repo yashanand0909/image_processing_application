@@ -805,7 +805,6 @@ public class OperationsTest {
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
     ImageInterface newImage = new LevelAdjustment().apply(image, "10 50.5 90 100");
-
   }
 
   @Test(expected = IllegalArgumentException.class)

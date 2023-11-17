@@ -30,7 +30,7 @@ public class ColorCorrection implements SingleImageProcessorWithOffset {
     }
     int avg = (int) peaks.stream().mapToInt(Integer::intValue).average().getAsDouble();
     ImageInterface newImage = colorCorrect(image, peaks, avg, operation);
-    return new PartialImageOperation().apply(List.of(image, newImage),operation);
+    return new PartialImageOperation().apply(List.of(image, newImage), operation);
   }
 
   private ImageInterface colorCorrect(ImageInterface image, List<Integer> peaks, int avg, Object operation) {
