@@ -1,8 +1,6 @@
 package model.imageprocessingmodel;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -17,9 +15,9 @@ import org.junit.Test;
  */
 public class ImageProcessorModelTest {
 
-  private ImageProcessorModel imageProcessorModel;
   private final String imagePath = "test_image.jpg";
   private final String initialImageName = "test_name";
+  private ImageProcessorModel imageProcessorModel;
 
   @Before
   public void setUp() throws IOException {
@@ -41,7 +39,7 @@ public class ImageProcessorModelTest {
   public void testBlurImage() {
     String destImageName = "destImageName";
     imageProcessorModel.blurImage(initialImageName, destImageName, "100");
-      assertNotNull(imageProcessorModel.getImage(destImageName));
+    assertNotNull(imageProcessorModel.getImage(destImageName));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -116,7 +114,7 @@ public class ImageProcessorModelTest {
   @Test
   public void testSepiaImage() {
     String destImageName = "destImageName";
-    imageProcessorModel.sepiaImage(initialImageName, destImageName,"100");
+    imageProcessorModel.sepiaImage(initialImageName, destImageName, "100");
     assertNotNull(imageProcessorModel.getImage(destImageName));
   }
 
@@ -124,19 +122,19 @@ public class ImageProcessorModelTest {
   public void testSepiaImageWithNonexistentImage() {
     String imageName = "nonexistentImage";
     String destImageName = "destImageName";
-    imageProcessorModel.sepiaImage(imageName, destImageName,"100");
+    imageProcessorModel.sepiaImage(imageName, destImageName, "100");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testSepiaImageWithExistingDestinationImage() {
-    imageProcessorModel.sepiaImage(initialImageName, initialImageName,"100");
+    imageProcessorModel.sepiaImage(initialImageName, initialImageName, "100");
   }
 
 
   @Test
   public void testSplitImage() {
     String destImageName = "destImageName";
-    imageProcessorModel.splitImage(initialImageName, destImageName,1);
+    imageProcessorModel.splitImage(initialImageName, destImageName, 1);
     assertNotNull(imageProcessorModel.getImage(destImageName));
   }
 
@@ -144,19 +142,19 @@ public class ImageProcessorModelTest {
   public void testSplitImageWithNonexistentImage() {
     String imageName = "nonexistentImage";
     String destImageName = "destImageName";
-    imageProcessorModel.splitImage(imageName, destImageName,"100");
+    imageProcessorModel.splitImage(imageName, destImageName, "100");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testSplitImageWithExistingDestinationImage() {
-    imageProcessorModel.splitImage(initialImageName, initialImageName,"100");
+    imageProcessorModel.splitImage(initialImageName, initialImageName, "100");
   }
 
 
   @Test
   public void testBrightenImage() {
     String destImageName = "destImageName";
-    imageProcessorModel.brightenImage(initialImageName, destImageName,"100");
+    imageProcessorModel.brightenImage(initialImageName, destImageName, "100");
     assertNotNull(imageProcessorModel.getImage(destImageName));
   }
 
@@ -164,18 +162,18 @@ public class ImageProcessorModelTest {
   public void testBrightenImageWithNonexistentImage() {
     String imageName = "nonexistentImage";
     String destImageName = "destImageName";
-    imageProcessorModel.brightenImage(imageName, destImageName,"100");
+    imageProcessorModel.brightenImage(imageName, destImageName, "100");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testBrightenImageWithExistingDestinationImage() {
-    imageProcessorModel.brightenImage(initialImageName, initialImageName,"100");
+    imageProcessorModel.brightenImage(initialImageName, initialImageName, "100");
   }
 
   @Test
   public void testCompressImage() {
     String destImageName = "destImageName";
-    imageProcessorModel.compressImage(initialImageName, destImageName,"10");
+    imageProcessorModel.compressImage(initialImageName, destImageName, "10");
     assertNotNull(imageProcessorModel.getImage(destImageName));
   }
 
@@ -183,12 +181,12 @@ public class ImageProcessorModelTest {
   public void testCompressImageWithNonexistentImage() {
     String imageName = "nonexistentImage";
     String destImageName = "destImageName";
-    imageProcessorModel.compressImage(imageName, destImageName,"10");
+    imageProcessorModel.compressImage(imageName, destImageName, "10");
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testCompressImageWithExistingDestinationImage() {
-    imageProcessorModel.compressImage(initialImageName, initialImageName,"10");
+    imageProcessorModel.compressImage(initialImageName, initialImageName, "10");
   }
 
   @Test

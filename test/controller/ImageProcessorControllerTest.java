@@ -14,7 +14,6 @@ import logger.ViewLogger;
 import model.image.ImageInterface;
 import model.imageprocessingmodel.ImageProcessorModel;
 import model.imageprocessingmodel.ImageProcessorModelInterface;
-
 import org.junit.Before;
 import org.junit.Test;
 
