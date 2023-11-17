@@ -7,13 +7,14 @@ import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.merge.MergeSingleChannelImages;
-import model.operations.operationinterfaces.SingleImageProcessor;
+import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 import model.operations.pixeloffset.BrightnessOperation;
+import model.operations.split.PartialImageOperation;
 
 /**
  * This class represents a color correction operation on an image.
  */
-public class ColorCorrection implements SingleImageProcessor {
+public class ColorCorrection implements SingleImageProcessorWithOffset {
   /**
    * This method applies a color correction operation on the image.
    *
@@ -21,17 +22,18 @@ public class ColorCorrection implements SingleImageProcessor {
    * @return new image with color correction
    */
   @Override
-  public ImageInterface apply(ImageInterface image) {
+  public ImageInterface apply(ImageInterface image, Object operation) {
     List<int[]> frequencyChannels = VisualizeImageUtil.calculateFrequencyPerChannel(image);
     List<Integer> peaks = new ArrayList<>();
     for (int x = 0; x < image.getChannel().size(); x++) {
       peaks.add(findPeak(frequencyChannels.get(x)));
     }
     int avg = (int) peaks.stream().mapToInt(Integer::intValue).average().getAsDouble();
-    return colorCorrect(image, peaks, avg);
+    ImageInterface newImage = colorCorrect(image, peaks, avg, operation);
+    return new PartialImageOperation().apply(List.of(image, newImage), operation);
   }
 
-  private ImageInterface colorCorrect(ImageInterface image, List<Integer> peaks, int avg) {
+  private ImageInterface colorCorrect(ImageInterface image, List<Integer> peaks, int avg, Object operation) {
     List<ImageInterface> greyscaleImages = new ArrayList<>();
     for (int i = 0; i < image.getChannel().size(); i++) {
       int colorCorrection = avg - peaks.get(i);

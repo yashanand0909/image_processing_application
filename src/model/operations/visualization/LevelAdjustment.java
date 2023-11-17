@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
+import model.operations.split.PartialImageOperation;
 
 /**
  * This class represents a level adjustment operation on an image.
@@ -28,14 +30,15 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
     List<Integer> levelAdjustmentParameters =
             Arrays.stream(operator.toString().trim().split("\\s+"))
                     .map(Integer::parseInt).collect(Collectors.toList());
-    if (levelAdjustmentParameters.size() != 3) {
+    if (levelAdjustmentParameters.size() != 4) {
       throw new IllegalArgumentException("Invalid number of arguments");
     }
     if (!(levelAdjustmentParameters.get(0) < levelAdjustmentParameters.get(1)
             && levelAdjustmentParameters.get(1) < levelAdjustmentParameters.get(2))) {
       throw new IllegalArgumentException("Invalid ordering of parameters");
     }
-    return ImageFactory.createImage(createLevelAdjustment(image, levelAdjustmentParameters));
+    ImageInterface newImage = ImageFactory.createImage(createLevelAdjustment(image, levelAdjustmentParameters));
+    return new PartialImageOperation().apply(List.of(image, newImage), operator);
   }
 
   private List<int[][]> createLevelAdjustment(ImageInterface image,
@@ -81,13 +84,11 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
     for (int i = 0; i < channel.length; i++) {
       for (int j = 0; j < channel[0].length; j++) {
         int pixel = channel[i][j];
-        channel[i][j] = (int) (
-                parameterForQuadratic * pixel * pixel
-                        + parameterForLinearity * pixel
-                        + parameterForConstant);
+        channel[i][j] = parameterForQuadratic * pixel * pixel
+                + parameterForLinearity * pixel
+                + parameterForConstant;
       }
     }
     return channel;
   }
 }
-

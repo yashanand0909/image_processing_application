@@ -31,7 +31,7 @@ import model.operations.visualization.LevelAdjustment;
  * This class represents a factory for image operations.
  */
 public class ImageProcessorModel implements
-    model.imageprocessingmodel.ImageProcessorModelInterface {
+        model.imageprocessingmodel.ImageProcessorModelInterface {
 
   private final Map<String, ImageInterface> images;
 
@@ -49,17 +49,17 @@ public class ImageProcessorModel implements
    * @throws IllegalArgumentException if the process not possible
    */
   private ImageInterface performOperation(List<ImageInterface> images,
-                                         ImageOperations operation,
-                                         Object operator) throws IllegalArgumentException {
+                                          ImageOperations operation,
+                                          Object operator) throws IllegalArgumentException {
     if (images.isEmpty()) {
       throw new IllegalArgumentException("Images cannot be empty");
     }
 
     switch (operation) {
       case BLUR:
-        return new BlurFilter().apply(images.get(0),operator);
+        return new BlurFilter().apply(images.get(0), operator);
       case SHARPEN:
-        return new SharpenFilter().apply(images.get(0),operator);
+        return new SharpenFilter().apply(images.get(0), operator);
       case HORIZONTAL_FLIP:
         return new HorizontalFlipOperation().apply(images.get(0));
       case VERTICAL_FLIP:
@@ -77,7 +77,7 @@ public class ImageProcessorModel implements
       case BRIGHTNESS:
         return new BrightnessOperation().apply(images.get(0), operator);
       case COMPRESS:
-        return new CompressionOperation().apply(images.get(0),operator);
+        return new CompressionOperation().apply(images.get(0), operator);
       case INTENSITY:
         return new Intensity().apply(images.get(0));
       case VALUE:
@@ -87,9 +87,9 @@ public class ImageProcessorModel implements
       case HISTOGRAM:
         return new HistogramVisualization().apply(images.get(0));
       case LEVEL_ADJUST:
-        return new LevelAdjustment().apply(images.get(0),operator);
+        return new LevelAdjustment().apply(images.get(0), operator);
       case COLOR_CORRECT:
-        return new ColorCorrection().apply(images.get(0));
+        return new ColorCorrection().apply(images.get(0), operation);
       default:
         throw new IllegalArgumentException("Invalid operation");
     }
@@ -151,7 +151,7 @@ public class ImageProcessorModel implements
       case "red-component":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
-              "Invalid red-component command. Usage: command <image-name> <dest-image-name>");
+                  "Invalid red-component command. Usage: command <image-name> <dest-image-name>");
         } else {
           if (!images.containsKey(parts[1])) {
             throw new IllegalArgumentException(
@@ -191,7 +191,7 @@ public class ImageProcessorModel implements
       case "blue-component":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
-              "Invalid red-component command. Usage: command <image-name> <dest-image-name>");
+                  "Invalid red-component command. Usage: command <image-name> <dest-image-name>");
         } else {
           if (!images.containsKey(parts[1])) {
             throw new IllegalArgumentException(
@@ -213,11 +213,10 @@ public class ImageProcessorModel implements
       case "intensity-component":
       case "horizontal-flip":
       case "vertical-flip":
-      case "color-correct":
       case "histogram":
         if (parts.length != 3) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name>");
+                  "Invalid component command. Usage: command <image-name> <dest-image-name>");
         } else {
           if (!images.containsKey(parts[1])) {
             throw new IllegalArgumentException(
@@ -237,27 +236,27 @@ public class ImageProcessorModel implements
       case "sepia":
       case "sharpen":
       case "greyscale":
-        if (parts.length != 3 && parts.length != 4) {
+      case "color-correct":
+        if (parts.length != 3 && parts.length != 5) {
           throw new IllegalArgumentException(
-              "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
-        }
-        else {
+                  "Invalid component command. Usage: command <image-name> <dest-image-name> or command <image-name> <dest-image-name> <percentage>");
+        } else {
           if (!images.containsKey(parts[1])) {
             throw new IllegalArgumentException(
-                "Invalid request : No image exist with the name " + parts[1]);
+                    "Invalid request : No image exist with the name " + parts[1]);
           }
           if (images.containsKey(parts[2])) {
             throw new IllegalArgumentException(
-                "Invalid request : An Image exist with the name " + parts[2]);
+                    "Invalid request : An Image exist with the name " + parts[2]);
           }
           List<ImageInterface> imageList = Collections.singletonList(images.get(parts[1]));
           ImageInterface newImage;
           if (parts.length == 3) {
             newImage = performOperation(imageList,
-                ImageOperations.fromString(parts[0]), "100");
+                    ImageOperations.fromString(parts[0]), "100");
           } else {
             newImage = performOperation(imageList,
-                ImageOperations.fromString(parts[0]), parts[3]);
+                    ImageOperations.fromString(parts[0]), parts[4]);
           }
           images.put(parts[2], newImage);
         }
@@ -331,23 +330,28 @@ public class ImageProcessorModel implements
         break;
 
       case "levels-adjust":
-        if (parts.length != 6) {
+        if (parts.length != 6 && parts.length != 8) {
           throw new IllegalArgumentException(
-              "Invalid levels-adjust command. Usage: levels-adjust <b> <m> <w> " +
-                  "<image-name> <dest-image-name>");
-        }
-        else {
+                  "Invalid levels-adjust command. Usage: levels-adjust <b> <m> <w> " +
+                          "<image-name> <dest-image-name> split <p>");
+        } else {
           if (!images.containsKey(parts[4])) {
             throw new IllegalArgumentException(
-                "Invalid request : No image exist with the name " + parts[1]);
+                    "Invalid request : No image exist with the name " + parts[4]);
           }
           if (images.containsKey(parts[5])) {
             throw new IllegalArgumentException(
-                "Invalid request : An Image exist with the name " + parts[2]);
+                    "Invalid request : An Image exist with the name " + parts[5]);
           }
           List<ImageInterface> imageList = Collections.singletonList(images.get(parts[4]));
-          ImageInterface newImage = performOperation(imageList,
-              ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2]  + " " + parts[3]);
+          ImageInterface newImage;
+          if (parts.length == 6) {
+            newImage = performOperation(imageList,
+                    ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2] + " " + parts[3] + " " + "100");
+          } else {
+            newImage = performOperation(imageList,
+                    ImageOperations.fromString(parts[0]), parts[1] + " " + parts[2] + " " + parts[3] + " " + parts[7]);
+          }
           images.put(parts[5], newImage);
         }
       default:
