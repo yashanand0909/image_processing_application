@@ -74,7 +74,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Greyscale().apply(image, "100");
+    ImageInterface newImage = new Greyscale().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -117,7 +117,7 @@ public class OperationsTest {
     int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
     int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel));
-    new Greyscale().apply(image, "100");
+    new Greyscale().apply(image);
   }
 
   @Test
@@ -132,7 +132,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Greyscale().apply(image, "100");
+    ImageInterface newImage = new Greyscale().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -157,7 +157,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new BlurFilter().apply(image, "100");
+    ImageInterface newImage = new BlurFilter().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -248,7 +248,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new SharpenFilter().apply(image, "100");
+    ImageInterface newImage = new SharpenFilter().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -267,7 +267,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new SharpenFilter().apply(image, "50");
+    ImageInterface newImage = new SharpenFilter().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -372,7 +372,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Sepia().apply(image, "100");
+    ImageInterface newImage = new Sepia().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -424,7 +424,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new Sepia().apply(image, "100");
+    ImageInterface newImage = new Sepia().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 
@@ -640,7 +640,7 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    ImageInterface newImage = new ColorCorrection().apply(image, "100");
+    ImageInterface newImage = new ColorCorrection().apply(image);
     assertEqualImages(imageAfterValue, newImage);
   }
 

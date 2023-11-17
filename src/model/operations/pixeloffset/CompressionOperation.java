@@ -159,7 +159,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
         Arrays.stream(row).map(Math::abs).forEach(uniqueValues::add);
       }
     }
-    int thresholdIndex = (int) Math.abs(factor * uniqueValues.size());
+    int thresholdIndex = Math.min(uniqueValues.size()-1, (int) Math.abs(factor * uniqueValues.size()));
     List<Double> uniqueList = new ArrayList<>(uniqueValues);
     Double value = uniqueList.get(thresholdIndex);
     for (double[][] channel : channels) {
