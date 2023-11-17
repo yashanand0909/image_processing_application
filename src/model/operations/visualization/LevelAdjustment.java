@@ -33,6 +33,13 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
     if (levelAdjustmentParameters.size() != 4) {
       throw new IllegalArgumentException("Invalid number of arguments");
     }
+
+    if (levelAdjustmentParameters.get(3) < 0 || levelAdjustmentParameters.get(3) > 255
+            || levelAdjustmentParameters.get(0) < 0 || levelAdjustmentParameters.get(0) > 255
+            || levelAdjustmentParameters.get(1) < 0 || levelAdjustmentParameters.get(1) > 255) {
+      throw new IllegalArgumentException("Invalid value for constant");
+    }
+
     if (!(levelAdjustmentParameters.get(0) < levelAdjustmentParameters.get(1)
             && levelAdjustmentParameters.get(1) < levelAdjustmentParameters.get(2))) {
       throw new IllegalArgumentException("Invalid ordering of parameters");

@@ -5,34 +5,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
-/**
- * CompressionOperation applies compression to the given image. It uses the Haar Wavelet Transform
- * for compression.
- */
 public class CompressionOperation implements SingleImageProcessorWithOffset {
 
-  /**
-   * Applies the compression operation to the given image.
-   *
-   * @param image    The input image.
-   * @param operator The compression factor as a string.
-   * @return The compressed image.
-   * @throws IllegalArgumentException If the compression factor is not a valid double value or is
-   *                                  not between 0 and 100.
-   */
+  @Override
   public ImageInterface apply(ImageInterface image, Object operator)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     Double compressionFactor;
     try {
       compressionFactor = Double.parseDouble((String) operator);
     } catch (Exception e) {
       throw new IllegalArgumentException("Percentage should be double value");
     }
-    if (compressionFactor < 0 || compressionFactor > 99){
+    if (compressionFactor < 0 || compressionFactor > 99) {
       throw new IllegalArgumentException("Percentage should be between 0 and 99");
     }
     List<double[][]> paddedChannel = getPaddedImage(image.getChannel());
@@ -48,8 +37,7 @@ public class CompressionOperation implements SingleImageProcessorWithOffset {
       int[][] newChannel = new int[image.getHeight()][image.getWidth()];
       for (int i = 0; i < image.getHeight(); i++) {
         for (int j = 0; j < image.getWidth(); j++) {
-          newChannel[i][j] = (int) Math
-              .round(channel[i][j] < 0.0 ? 0 : Math.min(channel[i][j], 255.0));
+          newChannel[i][j] = (int) Math.round(channel[i][j] < 0.0 ? 0 : Math.min(channel[i][j], 255.0));
         }
       }
       newChannelList.add(newChannel);

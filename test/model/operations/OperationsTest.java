@@ -808,6 +808,17 @@ public class OperationsTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustmentWithIncorrectInput3() {
+    int[][] redChannel = {{40, 80}, {100, 250}};
+    int[][] greenChannel = {{50, 90}, {100, 230}};
+    int[][] blueChannel = {{80, 0}, {50, 0}};
+
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+
+    ImageInterface newImage = new LevelAdjustment().apply(image, "-10 50 90 100");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
   public void testUnequalHeightForMerge() {
     int[][] redChannel1 = {{255, 0}, {0, 255}, {0, 255}};
     int[][] greenChannel1 = {{255, 0}, {0, 255}, {0, 255}};

@@ -2,6 +2,7 @@ package model.imageprocessingmodel;
 
 import java.io.IOException;
 import java.util.List;
+
 import model.image.ImageInterface;
 
 /**
@@ -199,4 +200,3 @@ public interface ImageProcessorModelInterface {
   ImageInterface getImage(String imageName);
 
 }
-

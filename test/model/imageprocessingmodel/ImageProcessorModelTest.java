@@ -4,9 +4,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import model.image.CommonImage;
 import model.image.ImageInterface;
 import model.imageio.IOFileFactory;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,12 +28,12 @@ public class ImageProcessorModelTest {
     int[][] greenChannel = new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] blueChannel = new int[][]{{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
     ImageInterface imageInterface = new CommonImage.ImageBuilder().addChannel(redChannel)
-        .addChannel(greenChannel)
-        .addChannel(blueChannel)
-        .build();
+            .addChannel(greenChannel)
+            .addChannel(blueChannel)
+            .build();
     IOFileFactory.encodeAndSaveImage
-        (imagePath
-            , imageInterface);
+            (imagePath
+                    , imageInterface);
     imageProcessorModel.loadImage(imagePath, initialImageName);
   }
 
@@ -219,6 +221,5 @@ public class ImageProcessorModelTest {
   public void testMergeImageWithExistingDestinationImage() {
     imageProcessorModel.mergeImage(Collections.singletonList(initialImageName), initialImageName);
   }
+
 }
-
-
