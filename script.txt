@@ -1,16 +1,22 @@
 load res/images/open-source-image-original.png open-source
-compression 50 open-source open-source-compress
+compress 50 open-source open-source-compress
 rgb-split open-source open-source-small-red open-source-small-green open-source-small-blue
 greyscale open-source open-source-grey
 sharpen open-source open-source-sharp
 sepia open-source open-source-sepia
 brighten 20 open-source open-source-brighten
+brighten -20 open-source open-source-darken
 blur open-source open-source-blur
 horizontal-flip open-source open-source-horizontal-flip
 vertical-flip open-source open-source-vertical-flip
 intensity-component open-source open-source-intensity
 value-component open-source open-source-value
 luma-component open-source open-source-luma
+sepia open-source open-source-sepia-split split 70
+greyscale open-source open-source-grey-split split 70
+histogram open-source open-source-histogram
+levels-adjust 50 100 200 open-source open-source-levels
+color-correct open-source open-source-color-correct
 rgb-combine open-source-combine open-source-small-red open-source-small-green open-source-small-blue
 save res/images/open-source-small-red.png open-source-small-red
 save res/images/open-source-small-green.png open-source-small-green
@@ -24,5 +30,12 @@ save res/images/open-source-horizontal-flip.png open-source-horizontal-flip
 save res/images/open-source-vertical-flip.png open-source-vertical-flip
 save res/images/open-source-intensity.png open-source-intensity
 save res/images/open-source-value.png open-source-value
+save res/images/open-source-darken.png open-source-darken
 save res/images/open-source-luma.png open-source-luma
 save res/images/open-source-combine-2.png open-source-combine
+save res/images/open-source-compress.png open-source-compress
+save res/images/open-source-sepia-split.png open-source-sepia-split
+save res/images/open-source-histogram.png open-source-histogram
+save res/images/open-source-levels.png open-source-levels
+save res/images/open-source-color-correct.png open-source-color-correct
+save res/images/open-source-grey-split.png open-source-grey-split
