@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
@@ -82,11 +81,13 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
     for (int i = 0; i < channel.length; i++) {
       for (int j = 0; j < channel[0].length; j++) {
         int pixel = channel[i][j];
-        channel[i][j] = parameterForQuadratic * pixel * pixel
-                + parameterForLinearity * pixel
-                + parameterForConstant;
+        channel[i][j] = (int) (
+                parameterForQuadratic * pixel * pixel
+                        + parameterForLinearity * pixel
+                        + parameterForConstant);
       }
     }
     return channel;
   }
 }
+

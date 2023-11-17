@@ -56,12 +56,13 @@ public class ImageProcessorController implements ControllerInterface {
     Scanner scanner = new Scanner(this.in);
     String input;
 
-    while (true) {
+    while (scanner.hasNext()) {
       try {
-        this.out.append("Enter a command:");
         input = scanner.nextLine();
         String[] parts = input.split(" ");
-
+        if (parts.length == 1 && parts[0].isBlank()) {
+          continue;
+        }
         if (parts.length == 1 && !parts[0].equals("exit")) {
           throw new IllegalArgumentException("Invalid command. Try again.");
         }

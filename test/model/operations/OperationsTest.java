@@ -2,11 +2,13 @@ package model.operations;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
+import model.imageio.IOFileFactory;
 import model.operations.colorrepresentation.Intensity;
 import model.operations.colorrepresentation.Value;
 import model.operations.colortransformation.Greyscale;
@@ -19,6 +21,10 @@ import model.operations.pixeloffset.CompressionOperation;
 import model.operations.rotation.HorizontalFlipOperation;
 import model.operations.rotation.VerticalFlipOperation;
 import model.operations.split.SplitImageOperation;
+import model.operations.visualization.ColorCorrection;
+import model.operations.visualization.HistogramVisualization;
+import model.operations.visualization.LevelAdjustment;
+
 import org.junit.Test;
 
 /**
@@ -150,6 +156,57 @@ public class OperationsTest {
 
     ImageInterface newImage = new SharpenFilter().apply(image,"100");
     assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testHistrogram() throws IOException {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+
+    int[][] newChannelAfterSharpenRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSharpenGreen = {{0, 0, 0}, {21, 21, 21}, {21, 86, 21}};
+    int[][] newChannelAfterSharpenBlue = {{255, 255, 215}, {255, 255, 215}, {97, 255, 0}};
+    ImageInterface imageAfterValue = IOFileFactory.decodeImage("manhattan-small.png");
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+    ImageInterface histogram = new HistogramVisualization().apply(imageAfterValue);
+    IOFileFactory.encodeAndSaveImage("histogram.png", histogram);
+    //ImageInterface newImage = new SharpenFilter().apply(image);
+    //assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testColorCorrection() throws IOException {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+
+    int[][] newChannelAfterSharpenRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSharpenGreen = {{0, 0, 0}, {21, 21, 21}, {21, 86, 21}};
+    int[][] newChannelAfterSharpenBlue = {{255, 255, 215}, {255, 255, 215}, {97, 255, 0}};
+    ImageInterface imageAfterValue = IOFileFactory.decodeImage("manhattan-small.png");
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+    ImageInterface histogram = new ColorCorrection().apply(imageAfterValue);
+    IOFileFactory.encodeAndSaveImage("colorCorrection.png", histogram);
+    //ImageInterface newImage = new SharpenFilter().apply(image);
+    //assertEqualImages(imageAfterValue, newImage);
+  }
+
+  @Test
+  public void testLevelAdjustment() throws IOException {
+    int[][] redChannel = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] greenChannel = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
+    int[][] blueChannel = {{254, 254, 240}, {240, 0, 90}, {83, 255, 44}};
+
+    int[][] newChannelAfterSharpenRed = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
+    int[][] newChannelAfterSharpenGreen = {{0, 0, 0}, {21, 21, 21}, {21, 86, 21}};
+    int[][] newChannelAfterSharpenBlue = {{255, 255, 215}, {255, 255, 215}, {97, 255, 0}};
+    ImageInterface imageAfterValue = IOFileFactory.decodeImage("manhattan-small.png");
+    ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
+    ImageInterface histogram = new LevelAdjustment().apply(imageAfterValue, "100 200 300");
+    IOFileFactory.encodeAndSaveImage("testLevelAdjustment.png", histogram);
+    //ImageInterface newImage = new SharpenFilter().apply(image);
+    //assertEqualImages(imageAfterValue, newImage);
   }
 
   @Test

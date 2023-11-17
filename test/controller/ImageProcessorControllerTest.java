@@ -49,20 +49,12 @@ public class ImageProcessorControllerTest {
   public void testHandleExitCommand() {
     controller = new ImageProcessorController(logger, model, new StringReader("exit"), out);
     controller.startImageProcessingController();
-    assertEquals("Enter a command:", out.toString());
-  }
-
-  @Test
-  public void testExitCommand() {
-    ImageProcessorController controller = new ImageProcessorController(logger, model,
-        new StringReader("exit"), out);
-    controller.startImageProcessingController();
-    assertEquals("Enter a command:", out.toString());
+    assertEquals("", out.toString());
   }
 
   @Test
   public void testHandleInvalidCommands() {
-    controller = new ImageProcessorController(logger, model, new StringReader("\nexit"), out);
+    controller = new ImageProcessorController(logger, model, new StringReader("\nexi1"), out);
     controller.startImageProcessingController();
     assertTrue(out.toString().contains("Invalid command. Try again."));
   }
@@ -105,6 +97,19 @@ public class ImageProcessorControllerTest {
         new StringReader("run " + filePath + "\nexit"), out);
     controller.startImageProcessingController();
     assertTrue(out.toString().contains("Unknown command. Try again or type 'exit' to quit."));
+  }
+
+  @Test
+  public void testScriptFileViaArgument() {
+    String scriptContent = "load path/to/image.jpg image1\n"
+        + "brighten 10 image1 image2\n";
+    File tempFile = createTempScriptFile(scriptContent);
+    assert tempFile != null;
+    String filePath = tempFile.getAbsolutePath();
+    ImageProcessorController controller = new ImageProcessorController(logger, model,
+        new StringReader("run " + filePath + "\nexit"), out);
+    controller.startImageProcessingController();
+    assertTrue(out.toString().contains("Command ran successfully"));
   }
 
   @Test
