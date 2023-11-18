@@ -3,7 +3,7 @@ package model.operations.colortransformation;
 /**
  * This class represents a sepia color transformation operation that can be applied to an image.
  */
-public class Sepia extends CommonColorTransformOperation {
+public class Sepia extends CommonColorTransformOperationExtention {
   private final double[][] sepiamatrix;
 
   /**

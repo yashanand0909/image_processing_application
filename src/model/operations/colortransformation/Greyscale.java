@@ -3,7 +3,7 @@ package model.operations.colortransformation;
 /**
  * This class represents a greyscale color transformation operation that can be applied to an image.
  */
-public class Greyscale extends CommonColorTransformOperation {
+public class Greyscale extends CommonColorTransformOperationExtention {
   private final double[][] greymatrix;
 
   /**

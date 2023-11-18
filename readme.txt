@@ -195,7 +195,11 @@ run script_file
 -file name-of-script
 
 ### change in design
+Our design is still same just for new functionality support new abstract class is created and for new operation new concrete classes are created
+
+### change in code
 We made couple of changes in design in this assignment:
- 1 - Implemented MultipleToSingleImageProcessorWithOffset in operations which needed support for split view. This change allowed us to add feature of split view without making any changes to our previous features implementation and hence nothing breaks. As we had MultipleToSingleImageProcessorWithOffset interface we just implemented this as well which did not require much change on the code side.
- 2 - We moved handleCommand method from model to controller as suggested in our previous assignment review. Now modelInterface offers different methods for all the operations it offers to the controller so that the controller know what all operations it can request.
+ 1 - We moved handleCommand method from model to controller as suggested in our previous assignment review. Now modelInterface offers different methods for all the operations it offers to the controller so that the controller know what all operations it can request.
+ 2 - For sharpen, blur, sepia, greyscale classes extends new abstract class which extends old abstract class and add functions for split operation. Like this old code is untouched and new functionality is also added.
+ Feature wise we added new operations and functionalities by adding new classes which extends either of interfaces already defined.
 

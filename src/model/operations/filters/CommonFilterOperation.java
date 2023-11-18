@@ -1,34 +1,16 @@
 package model.operations.filters;
 
-import static model.operations.operatorutil.OperatorUtil.castOperatorToDouble;
-
 import java.util.ArrayList;
 import java.util.List;
 import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.operations.operationinterfaces.SingleImageProcessor;
-import model.operations.operationinterfaces.SingleImageProcessorWithOffset;
 
 /**
  * This class represents a common filter operation that implements the FilterOperation interface. It
  * contains a method that applies a filter to an image.
  */
-public abstract class CommonFilterOperation implements SingleImageProcessorWithOffset,
-    SingleImageProcessor {
-
-  /**
-   * This method applies a filter to an image.
-   *
-   * @param image    the image to be filtered
-   * @param operator the operator object for the filter
-   * @return the filtered image
-   * @throws IllegalArgumentException if the kernel is larger than the image
-   */
-  @Override
-  public ImageInterface apply(ImageInterface image, Object operator)
-      throws IllegalArgumentException {
-    return getImage(image, operator);
-  }
+public abstract class CommonFilterOperation implements SingleImageProcessor {
 
   /**
    * This method applies a filter to an image.
@@ -39,16 +21,9 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
    */
   @Override
   public ImageInterface apply(ImageInterface image) {
-    String fullImageOperator = "100";
-    return getImage(image, fullImageOperator);
-  }
-
-  private ImageInterface getImage(ImageInterface image, Object operator) {
-    int percentage = castOperatorToDouble((String) operator);
     double[][] kernel = getFilter();
     int height = image.getHeight();
     int width = image.getWidth();
-    int perWidth = width * percentage / 100;
     ImageInterface newImage = image;
     if (kernel.length > height || kernel[0].length > width) {
       newImage = addPadding(image, kernel.length, kernel[0].length);
@@ -61,24 +36,20 @@ public abstract class CommonFilterOperation implements SingleImageProcessorWithO
 
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-          if (j >= perWidth) {
-            filteredPixels[i][j] = channel[i][j];
-          } else {
-            int sum = 0;
-            int kernelSize = kernel.length;
-            for (int k = 0; k < kernelSize; k++) {
-              for (int l = 0; l < kernelSize; l++) {
-                int rowIndex = i - kernelSize / 2 + k;
-                int colIndex = j - kernelSize / 2 + l;
+          int sum = 0;
+          int kernelSize = kernel.length;
+          for (int k = 0; k < kernelSize; k++) {
+            for (int l = 0; l < kernelSize; l++) {
+              int rowIndex = i - kernelSize / 2 + k;
+              int colIndex = j - kernelSize / 2 + l;
 
-                if (rowIndex >= 0 && rowIndex < height && colIndex >= 0 && colIndex < width) {
-                  sum += kernel[k][l] * channel[rowIndex][colIndex];
-                }
+              if (rowIndex >= 0 && rowIndex < height && colIndex >= 0 && colIndex < width) {
+                sum += kernel[k][l] * channel[rowIndex][colIndex];
               }
             }
-            sum = Math.min(Math.max(sum, 0), 255);
-            filteredPixels[i][j] = sum;
           }
+          sum = Math.min(Math.max(sum, 0), 255);
+          filteredPixels[i][j] = sum;
         }
       }
 

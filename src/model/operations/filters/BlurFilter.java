@@ -3,7 +3,7 @@ package model.operations.filters;
 /**
  * Represents a blur filter operation object.
  */
-public class BlurFilter extends CommonFilterOperation {
+public class BlurFilter extends CommonFilterOperationExtention {
 
   double[][] gaussianFilter;
 

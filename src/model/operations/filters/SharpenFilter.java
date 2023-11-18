@@ -3,7 +3,7 @@ package model.operations.filters;
 /**
  * Represents a sharpen filter operation object.
  */
-public class SharpenFilter extends CommonFilterOperation {
+public class SharpenFilter extends CommonFilterOperationExtention {
 
   double[][] sharpenFilter;
 
