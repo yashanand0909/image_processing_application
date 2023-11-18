@@ -735,13 +735,13 @@ public class OperationsTest {
 
     ImageInterface image = ImageFactory.createImage(List.of(redChannel, greenChannel, blueChannel));
 
-    int[][] newChannelAfterSplitRed = {{255, 0}, {0, 0}};
-    int[][] newChannelAfterSplitGreen = {{255, 0}, {0, 0}};
+    int[][] newChannelAfterSplitRed = {{255, 80}, {0, 250}};
+    int[][] newChannelAfterSplitGreen = {{255, 90}, {0, 230}};
     int[][] newChannelAfterSplitBlue = {{0, 0}, {255, 0}};
     ImageInterface imageAfterValue = ImageFactory.createImage(
         List.of(newChannelAfterSplitRed, newChannelAfterSplitGreen, newChannelAfterSplitBlue));
 
-    ImageInterface newImage = new LevelAdjustment().apply(image, "10 20 50 95");
+    ImageInterface newImage = new LevelAdjustment().apply(image, "10 20 50 50");
     assertEqualImages(imageAfterValue, newImage);
   }
 

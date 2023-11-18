@@ -92,15 +92,16 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
       double parameterForQuadratic,
       double parameterForLinearity,
       double parameterForConstant) {
+    int[][] newArr = new int[channel.length][channel[0].length];
     for (int i = 0; i < channel.length; i++) {
       for (int j = 0; j < channel[0].length; j++) {
         int pixel = channel[i][j];
-        channel[i][j] = clamp((int) (parameterForQuadratic * pixel * pixel
+        newArr[i][j] = clamp((int) (parameterForQuadratic * pixel * pixel
             + parameterForLinearity * pixel
             + parameterForConstant));
       }
     }
-    return channel;
+    return newArr;
   }
 
   private int clamp(int pixel) {
