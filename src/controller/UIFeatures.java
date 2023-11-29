@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import model.image.ImageInterface;
 
 /**
@@ -27,13 +29,13 @@ public interface UIFeatures {
 
   void compressImage(String imageName, String destImageName, Object operator);*/
 
-  void loadImage(String imagePath, String destImageName);
+  void loadImage(String imagePath, String destImageName) throws IOException;
 
-  void saveImage(String imagePath, String imageName);
+  void saveImage(String imagePath, String imageName) throws IOException;
 
   ImageInterface getImage(String imageName);
 
-  void histogramImage(String imageName, String destImageName);
+  void loadHistogram(String imageName, String destImageName);
 
   void executeOperation(String imageName, String destImageName,
                         String operationName, Object operator);

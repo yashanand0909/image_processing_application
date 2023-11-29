@@ -1,16 +1,22 @@
 package logger;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
 
 import commonlabels.SupportedUIOperations;
+import controller.UIFeatures;
 import model.image.ImageInterface;
-import model.imageprocessingmodel.ImageProcessorModel;
-import model.imageprocessingmodel.ImageProcessorModelInterface;
 
 public class JFrameView extends JFrame implements JViewInterface {
   private JPanel histogramPanel;
@@ -18,8 +24,6 @@ public class JFrameView extends JFrame implements JViewInterface {
   private JPanel currentImagePanel;
 
   private JPanel operationsPanel;
-
-  private JPanel tasksPanel;
 
   private JButton executeButton;
 
@@ -30,6 +34,16 @@ public class JFrameView extends JFrame implements JViewInterface {
   private JButton loadImageButton;
 
   private JButton saveImageButton;
+
+  private JTextField blackLevelTextBox;
+
+  private JTextField whiteLevelTextBox;
+
+  private JTextField midLevelTextBox;
+
+  private String originalImageName;
+
+  private String currentImageName;
 
   public JFrameView(String caption) throws IOException {
     super(caption);
@@ -70,13 +84,15 @@ public class JFrameView extends JFrame implements JViewInterface {
   }
 
   private void addExecuteButton(JPanel verticalContainerPanel) {
-    JButton executeButton = new JButton("Execute");
+    executeButton = new JButton("Execute");
     executeButton.setActionCommand("Execute");
+    executeButton.setEnabled(false);
     operationsPanel.add(executeButton);
   }
 
   private void addTickBox(JPanel operationsPanel) {
     tickBox = new JCheckBox("Enable split mode");
+    tickBox.setEnabled(false);
     tickBox.setBackground(Color.getColor("#F9EBD2"));
     operationsPanel.add(tickBox);
   }
@@ -85,11 +101,12 @@ public class JFrameView extends JFrame implements JViewInterface {
     String[] operations = SupportedUIOperations.getSupportedUIOperations();
     operationsDropDown = new JComboBox<>(operations);
     operationsDropDown.setSelectedIndex(0);
+    operationsDropDown.setEnabled(false);
     operationsPanel.add(operationsDropDown);
   }
 
   private void addTasksPanel(JPanel verticalContainerPanel) {
-    tasksPanel = new JPanel(new FlowLayout());
+    JPanel tasksPanel = new JPanel(new FlowLayout());
     tasksPanel.setBackground(Color.WHITE);
     tasksPanel.setPreferredSize(new Dimension(100, 50));
     verticalContainerPanel.add(tasksPanel);
@@ -100,6 +117,7 @@ public class JFrameView extends JFrame implements JViewInterface {
 
     saveImageButton = new JButton("Save Image");
     saveImageButton.setActionCommand("Save Image");
+    saveImageButton.setEnabled(false);
     tasksPanel.add(saveImageButton);
   }
 
@@ -108,53 +126,31 @@ public class JFrameView extends JFrame implements JViewInterface {
     JPanel horizontalContainerPanel = new JPanel();
     horizontalContainerPanel.setLayout(new BorderLayout());
 
-    ImageProcessorModelInterface imageProcessorModel = new ImageProcessorModel();
-    setCurrentImagePanel(imageProcessorModel,
-            horizontalContainerPanel);
-    setHistogramPanel(imageProcessorModel, horizontalContainerPanel);
+    setCurrentImagePanel(horizontalContainerPanel);
+    setHistogramPanel(horizontalContainerPanel);
 
     this.add(horizontalContainerPanel, BorderLayout.NORTH);
-
   }
 
-  private void setHistogramPanel(ImageProcessorModelInterface imageProcessorModel,
-                                 JPanel horizontalContainerPanel) {
+  private void setHistogramPanel(JPanel horizontalContainerPanel) {
     histogramPanel = new JPanel(new BorderLayout());
     histogramPanel.setPreferredSize(new Dimension(500, 500));
     histogramPanel.setBackground(Color.GRAY);
-    imageProcessorModel.histogramImage("loadedImage", "histogramImage");
-    JLabel imageLabel = getImageJLabel(imageProcessorModel, "histogramImage");
-    histogramPanel.add(imageLabel, BorderLayout.CENTER);
     horizontalContainerPanel.add(histogramPanel, BorderLayout.WEST);
   }
 
-  private JLabel getImageJLabel(ImageProcessorModelInterface imageProcessorModel,
-                                String histogramImage) {
-    ImageInterface img = imageProcessorModel.getImage(histogramImage);
-    BufferedImage bufferedImage = getBufferedImage(img);
+  private JScrollPane getImageJLabel(BufferedImage bufferedImage) {
     JLabel imageLabel = new JLabel(new ImageIcon(bufferedImage));
     imageLabel.setHorizontalAlignment(JLabel.CENTER);
     imageLabel.setVerticalAlignment(JLabel.CENTER);
-    return imageLabel;
+    return new JScrollPane(imageLabel);
   }
 
-  private void setCurrentImagePanel(ImageProcessorModelInterface imageProcessorModel,
-                                    JPanel horizontalContainerPanel) throws IOException {
+  private void setCurrentImagePanel(JPanel horizontalContainerPanel) throws IOException {
     currentImagePanel = new JPanel(new BorderLayout());
     currentImagePanel.setPreferredSize(new Dimension(800, 500));
     currentImagePanel.setBackground(Color.DARK_GRAY);
-    imageProcessorModel.loadImage("res/images/open-source-levels.png",
-            "loadedImage");
-    JLabel imageLabel = getImageJLabel(imageProcessorModel, "loadedImage");
-    currentImagePanel.add(imageLabel);
-    horizontalContainerPanel.add(getjScrollPane(), BorderLayout.CENTER);
-  }
-
-  private JScrollPane getjScrollPane() {
-    JScrollPane scrollPane = new JScrollPane(currentImagePanel);
-    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-    return scrollPane;
+    horizontalContainerPanel.add(currentImagePanel, BorderLayout.CENTER);
   }
 
   private BufferedImage getBufferedImage(ImageInterface img) {
@@ -178,14 +174,118 @@ public class JFrameView extends JFrame implements JViewInterface {
   }
 
   @Override
-  public void addFeatures(ImageProcessorModelInterface features) {
-    /*JButton loadImageButton = (JButton) tasksPanel.getComponent(0);
-    loadImageButton.addActionListener(evt -> features.loadImage();)
-    JButton saveImageButton = (JButton) tasksPanel.getComponent(1);
-    saveImageButton.addActionListener(evt -> features.saveImage("res/images/open-source-levels.png",
-            "savedImage"));
-    JButton executeButton = (JButton) operationsPanel.getComponent(2);
-    executeButton.addActionListener(evt -> features.executeOperation("loadedImage",
-            "processedImage", "Split", 0));*/
+  public void addFeatures(UIFeatures features) {
+    loadImageButton.addActionListener(evt -> {
+      JFileChooser jFileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+      jFileChooser.setFileFilter(new FileFilter() {
+        public String getDescription() {
+          return "Images file selected (*jpg), (*jpeg), (*png), (*ppm)";
+        }
+
+        public boolean accept(File file) {
+          if (file.isDirectory()) {
+            return true;
+          } else {
+            String filename = file.getName().toLowerCase();
+            return filename.endsWith(".jpg")
+                    || filename.endsWith(".jpeg")
+                    || filename.endsWith(".png")
+                    || filename.endsWith(".ppm");
+          }
+        }
+      });
+      int r = jFileChooser.showOpenDialog(null);
+      jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+      if (r == JFileChooser.APPROVE_OPTION) {
+        try {
+          String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
+          features.loadImage(filePath,
+                  "originalImage_" + getFileNameFromPath(filePath));
+          features.loadHistogram("originalImage_" + getFileNameFromPath(filePath),
+                  "histogramImage_" + getFileNameFromPath(filePath));
+          this.currentImageName = "originalImage_" + originalImageName;
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      } else {
+        System.out.println("No file selected");
+      }
+    });
+
+    saveImageButton.addActionListener(evt -> {
+      JFileChooser fileChooser = new JFileChooser();
+      int userChoice = fileChooser.showSaveDialog(this);
+      if (userChoice == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        try {
+          features.saveImage(fileToSave.getAbsolutePath(), currentImageName);
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+
+    operationsDropDown.addActionListener(evt -> {
+      if(Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")){
+        executeButton.setEnabled(false);
+        addBMWLevelAdjustTextBox();
+      }
+    });
   }
+
+  private void addBMWLevelAdjustTextBox() {
+    JPanel levelAdjustPanel = new JPanel();
+    levelAdjustPanel.setLayout(new FlowLayout());
+    levelAdjustPanel.setBackground(Color.getColor("#F9EBD2"));
+    levelAdjustPanel.setPreferredSize(new Dimension(100, 200));
+    JLabel blackLevelLabel = new JLabel("Black Level");
+    blackLevelTextBox = new JTextField(10);
+    JLabel whiteLevelLabel = new JLabel("White Level");
+    whiteLevelTextBox = new JTextField(10);
+    JLabel midLevelLabel = new JLabel("Mid Level");
+    midLevelTextBox = new JTextField(10);
+    levelAdjustPanel.add(blackLevelLabel);
+    levelAdjustPanel.add(blackLevelTextBox);
+    levelAdjustPanel.add(whiteLevelLabel);
+    levelAdjustPanel.add(whiteLevelTextBox);
+    levelAdjustPanel.add(midLevelLabel);
+    levelAdjustPanel.add(midLevelTextBox);
+    operationsPanel.add(levelAdjustPanel);
+  
+    getRootPane().revalidate();
+    getRootPane().repaint();
+  }
+
+  private String getFileNameFromPath(String filePath) {
+    File file = new File(filePath);
+    this.originalImageName = file.getName();
+    return file.getName();
+  }
+
+  @Override
+  public void setCurrentImage(ImageInterface img) {
+    BufferedImage bufferedImage = getBufferedImage(img);
+    currentImagePanel.removeAll();
+    currentImagePanel.add(getImageJLabel(bufferedImage));
+    currentImagePanel.revalidate();
+    currentImagePanel.repaint();
+  }
+
+  @Override
+  public void setHistogramImage(ImageInterface histogramImage) {
+    BufferedImage bufferedImage = getBufferedImage(histogramImage);
+    histogramPanel.removeAll();
+    histogramPanel.add(getImageJLabel(bufferedImage));
+    histogramPanel.revalidate();
+    histogramPanel.repaint();
+  }
+
+  @Override
+  public void enableOperations() {
+    operationsDropDown.setEnabled(true);
+    tickBox.setEnabled(true);
+    executeButton.setEnabled(true);
+    saveImageButton.setEnabled(true);
+  }
+
 }
