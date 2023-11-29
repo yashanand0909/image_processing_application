@@ -15,5 +15,6 @@ public interface MultipleToSingleImageProcessorWithOffset {
    * @return new processed image
    * @throws IllegalArgumentException if the process not possible
    */
-  ImageInterface apply(List<ImageInterface> images, Object operator) throws IllegalArgumentException;
+  ImageInterface apply(List<ImageInterface> images, Object operator)
+      throws IllegalArgumentException;
 }

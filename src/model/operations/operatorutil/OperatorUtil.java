@@ -11,7 +11,8 @@ public class OperatorUtil {
    * @param operator The string representation of the operator.
    * @return The corresponding integer percentage.
    * @throws IllegalArgumentException If the operator is not a valid integer or
-   *                                  if the parsed percentage is not within the valid range [0, 100].
+   *                                  if the parsed percentage is not within
+   *                                  the valid range [0, 100].
    */
   public static int castOperatorToDouble(String operator) {
     int percentage;
