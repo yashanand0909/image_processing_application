@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +26,8 @@ public class JFrameView extends JFrame implements JViewInterface {
 
   private JPanel operationsPanel;
 
+  private JPanel levelAdjustPanel;
+
   private JButton executeButton;
 
   private JCheckBox tickBox;
@@ -40,11 +43,6 @@ public class JFrameView extends JFrame implements JViewInterface {
   private JTextField whiteLevelTextBox;
 
   private JTextField midLevelTextBox;
-
-  private String originalImageName;
-
-  private String currentImageName;
-
   public JFrameView(String caption) throws IOException {
     super(caption);
     setSize(1500, 1000);
@@ -65,6 +63,7 @@ public class JFrameView extends JFrame implements JViewInterface {
     JPanel verticalContainerPanel = new JPanel();
     verticalContainerPanel.setLayout(new BoxLayout(verticalContainerPanel,
             BoxLayout.Y_AXIS));
+    verticalContainerPanel.setPreferredSize(new Dimension(200, 200));
     addOperationsPanel(verticalContainerPanel);
     addTasksPanel(verticalContainerPanel);
     this.add(verticalContainerPanel, BorderLayout.SOUTH);
@@ -74,13 +73,18 @@ public class JFrameView extends JFrame implements JViewInterface {
     operationsPanel = new JPanel();
     operationsPanel.setLayout(new FlowLayout());
     operationsPanel.setBackground(Color.getColor("#F9EBD2"));
-    operationsPanel.setPreferredSize(new Dimension(100, 200));
-
+    operationsPanel.setPreferredSize(new Dimension(100, 90));
     addDropDown(operationsPanel);
     addExecuteButton(verticalContainerPanel);
     addTickBox(operationsPanel);
     verticalContainerPanel.add(operationsPanel);
 
+    levelAdjustPanel = new JPanel();
+    levelAdjustPanel.setLayout(new FlowLayout());
+    levelAdjustPanel.setBackground(Color.getColor("#F9EBD2"));
+    levelAdjustPanel.setPreferredSize(new Dimension(100, 30));
+    addBMWLevelAdjustTextBox();
+    verticalContainerPanel.add(levelAdjustPanel);
   }
 
   private void addExecuteButton(JPanel verticalContainerPanel) {
@@ -108,7 +112,7 @@ public class JFrameView extends JFrame implements JViewInterface {
   private void addTasksPanel(JPanel verticalContainerPanel) {
     JPanel tasksPanel = new JPanel(new FlowLayout());
     tasksPanel.setBackground(Color.WHITE);
-    tasksPanel.setPreferredSize(new Dimension(100, 50));
+    tasksPanel.setPreferredSize(new Dimension(100, 20));
     verticalContainerPanel.add(tasksPanel);
 
     loadImageButton = new JButton("Load Image");
@@ -199,11 +203,8 @@ public class JFrameView extends JFrame implements JViewInterface {
       if (r == JFileChooser.APPROVE_OPTION) {
         try {
           String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
-          features.loadImage(filePath,
-                  "originalImage_" + getFileNameFromPath(filePath));
-          features.loadHistogram("originalImage_" + getFileNameFromPath(filePath),
-                  "histogramImage_" + getFileNameFromPath(filePath));
-          this.currentImageName = "originalImage_" + originalImageName;
+          features.loadImage(filePath);
+          features.loadHistogram();
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
@@ -218,7 +219,7 @@ public class JFrameView extends JFrame implements JViewInterface {
       if (userChoice == JFileChooser.APPROVE_OPTION) {
         File fileToSave = fileChooser.getSelectedFile();
         try {
-          features.saveImage(fileToSave.getAbsolutePath(), currentImageName);
+          features.saveImage(fileToSave.getAbsolutePath());
         } catch (Exception e) {
           throw new RuntimeException(e);
         }
@@ -226,18 +227,23 @@ public class JFrameView extends JFrame implements JViewInterface {
     });
 
     operationsDropDown.addActionListener(evt -> {
-      if(Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")){
-        executeButton.setEnabled(false);
-        addBMWLevelAdjustTextBox();
-      }
+      features.executeOperation(Objects.requireNonNull(operationsDropDown
+              .getSelectedItem()).toString());
     });
   }
 
+  private List getInputFromBMWLevelAdjustTextBox() {
+    ArrayList<String> bmwInput = new ArrayList<>();
+    bmwInput.add(blackLevelTextBox.getText());
+    bmwInput.add(whiteLevelTextBox.getText());
+    bmwInput.add(midLevelTextBox.getText());
+    return bmwInput;
+  }
+
   private void addBMWLevelAdjustTextBox() {
-    JPanel levelAdjustPanel = new JPanel();
-    levelAdjustPanel.setLayout(new FlowLayout());
-    levelAdjustPanel.setBackground(Color.getColor("#F9EBD2"));
-    levelAdjustPanel.setPreferredSize(new Dimension(100, 200));
+    if (levelAdjustPanel.getComponentCount() > 0) {
+      return;
+    }
     JLabel blackLevelLabel = new JLabel("Black Level");
     blackLevelTextBox = new JTextField(10);
     JLabel whiteLevelLabel = new JLabel("White Level");
@@ -250,16 +256,11 @@ public class JFrameView extends JFrame implements JViewInterface {
     levelAdjustPanel.add(whiteLevelTextBox);
     levelAdjustPanel.add(midLevelLabel);
     levelAdjustPanel.add(midLevelTextBox);
-    operationsPanel.add(levelAdjustPanel);
-  
+
+    levelAdjustPanel.setVisible(false);
+
     getRootPane().revalidate();
     getRootPane().repaint();
-  }
-
-  private String getFileNameFromPath(String filePath) {
-    File file = new File(filePath);
-    this.originalImageName = file.getName();
-    return file.getName();
   }
 
   @Override
@@ -286,6 +287,19 @@ public class JFrameView extends JFrame implements JViewInterface {
     tickBox.setEnabled(true);
     executeButton.setEnabled(true);
     saveImageButton.setEnabled(true);
+  }
+
+  @Override
+  public List getAdjustLevelInputs() {
+    levelAdjustPanel.setVisible(true);
+    getRootPane().revalidate();
+    getRootPane().repaint();
+    return getInputFromBMWLevelAdjustTextBox();
+  }
+
+  @Override
+  public void displayErrorPopup(String message) {
+    JOptionPane.showMessageDialog(this, message);
   }
 
 }

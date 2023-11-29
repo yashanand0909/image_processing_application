@@ -29,16 +29,15 @@ public interface UIFeatures {
 
   void compressImage(String imageName, String destImageName, Object operator);*/
 
-  void loadImage(String imagePath, String destImageName) throws IOException;
+  void loadImage(String imagePath) throws IOException;
 
-  void saveImage(String imagePath, String imageName) throws IOException;
+  void saveImage(String imagePath) throws IOException;
 
   ImageInterface getImage(String imageName);
 
-  void loadHistogram(String imageName, String destImageName);
+  void loadHistogram();
 
-  void executeOperation(String imageName, String destImageName,
-                        String operationName, Object operator);
+  void executeOperation(String operationName);
 
   /*void horizontalFlipImage(String imageName, String destImageName);
 
