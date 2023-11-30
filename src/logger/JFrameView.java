@@ -149,8 +149,14 @@ public class JFrameView extends JFrame implements JViewInterface {
       tickBox.setEnabled(true);
       if (Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")) {
         levelAdjustPanel.setVisible(true);
+        if (tickBox.isSelected()){
+          splitOperationPanel.setVisible(false);
+        }
       } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")) {
         compressImagePanel.setVisible(true);
+        if (tickBox.isSelected()){
+          splitOperationPanel.setVisible(false);
+        }
       } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Horizontal Flip")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Vertical Flip")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Red Component")
@@ -159,6 +165,7 @@ public class JFrameView extends JFrame implements JViewInterface {
         if (tickBox.isSelected()) {
           tickBox.doClick();
         }
+        tickBox.setEnabled(false);
       }
     });
 

@@ -23,8 +23,4 @@ public interface UIFeatures {
 
   boolean checkIfImageIsSaved();
 
-  /*void horizontalFlipImage(String imageName, String destImageName);
-
-  void verticalFlipImage(String imageName, String destImageName);*/
-
 }

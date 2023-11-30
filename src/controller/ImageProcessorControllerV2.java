@@ -52,6 +52,7 @@ public class ImageProcessorControllerV2 implements ControllerInterface,
       }
       view.setCurrentImage(imageProcessorModel.getImage(destImageName));
       originalImageName = destImageName;
+      savedImageName = originalImageName;
       view.setHistogramImage(imageProcessorModel.getImage("histogram_"
               + destImageName));
       view.enableOperations();
