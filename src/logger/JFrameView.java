@@ -8,7 +8,6 @@ import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -273,7 +272,7 @@ public class JFrameView extends JFrame implements JViewInterface {
         String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
         String fileName = getFileNameFromPath(filePath);
         features.loadImage(filePath,
-                  fileName);
+                fileName);
       } else {
         System.out.println("No file selected");
       }
@@ -284,22 +283,24 @@ public class JFrameView extends JFrame implements JViewInterface {
       int userChoice = fileChooser.showSaveDialog(this);
       if (userChoice == JFileChooser.APPROVE_OPTION) {
         File fileToSave = fileChooser.getSelectedFile();
-        try {
-          features.saveImage(fileToSave.getAbsolutePath());
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
+        features.saveImage(fileToSave.getAbsolutePath());
       }
     });
 
     operationsDropDown.addActionListener(evt -> {
       compressImagePanel.setVisible(false);
       levelAdjustPanel.setVisible(false);
-      if(Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")){
+      tickBox.setEnabled(true);
+      if (Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")) {
         levelAdjustPanel.setVisible(true);
-      }
-      else if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")){
+      } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")) {
         compressImagePanel.setVisible(true);
+      } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Horizontal Flip")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Vertical Flip")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Red Component")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Green Component")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Blue Component")) {
+        tickBox.setEnabled(false);
       }
     });
 
@@ -307,14 +308,16 @@ public class JFrameView extends JFrame implements JViewInterface {
       String operationName = (String) operationsDropDown.getSelectedItem();
       String operator = null;
       assert operationName != null;
-      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())){
-        operator = blackLevelTextBox.getText() + " " + midLevelTextBox.getText() + " " +whiteLevelTextBox.getText();
+      saveImageButton.setEnabled(true);
+      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())) {
+        operator = blackLevelTextBox.getText() + " "
+                + midLevelTextBox.getText() + " " + whiteLevelTextBox.getText();
       }
-      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())){
+      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())) {
         operator = compressImageTextBox.getText();
       }
       if (features != null) {
-        features.executeOperation( operationName,operator);
+        features.executeOperation(operationName, operator);
         tickBox.setSelected(false);
       }
     });
@@ -323,15 +326,19 @@ public class JFrameView extends JFrame implements JViewInterface {
       String operationName = (String) operationsDropDown.getSelectedItem();
       String splitOperator = splitOperationTextBox.getText();
       String operator = "";
+      saveImageButton.setEnabled(false);
       assert operationName != null;
-      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())){
-        operator = blackLevelTextBox.getText() + " " + midLevelTextBox.getText() + " " +whiteLevelTextBox.getText();
+      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())) {
+        operator = blackLevelTextBox.getText() + " " + midLevelTextBox.getText()
+                + " " + whiteLevelTextBox.getText();
       }
-      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())){
+      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())) {
         operator = compressImageTextBox.getText();
       }
       if (features != null) {
-        features.executeOperationWithSplit(operationName,  operator + (operator.length()>0?" "+splitOperator:splitOperator));
+        features.executeOperationWithSplit(operationName,
+                operator + (operator.length() > 0 ? " "
+                        + splitOperator : splitOperator));
       }
     });
 
@@ -343,6 +350,7 @@ public class JFrameView extends JFrame implements JViewInterface {
         applyButton.setEnabled(false);
         features.undoSplit();
         splitOperationPanel.setVisible(false);
+        saveImageButton.setEnabled(true);
       }
     });
 
@@ -401,12 +409,6 @@ public class JFrameView extends JFrame implements JViewInterface {
     executeButton.setEnabled(true);
     saveImageButton.setEnabled(true);
   }
-
-//  private void enableAdjustLevelInputs() {
-//    levelAdjustPanel.setVisible(true);
-//    getRootPane().revalidate();
-//    getRootPane().repaint();
-//  }
 
   @Override
   public void displayErrorPopup(String message) {

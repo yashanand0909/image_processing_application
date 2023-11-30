@@ -11,8 +11,7 @@ public interface UIFeatures {
 
   void loadImage(String imagePath, String destImageName);
 
-  void saveImage(String imagePath) throws IOException;
-
+  void saveImage(String imagePath);
 
   void loadHistogram(String imageName, String destImageName);
 
