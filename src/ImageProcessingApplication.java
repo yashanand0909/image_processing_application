@@ -1,9 +1,15 @@
+import controller.ControllerInterface;
 import controller.ImageProcessorController;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import controller.ImageProcessorControllerV2;
+import logger.JFrameView;
+import logger.JViewInterface;
 import logger.ViewLogger;
 import model.imageprocessingmodel.ImageProcessorModel;
+import model.imageprocessingmodel.ImageProcessorModelInterface;
 
 /**
  * This class represents the main class for the image processing application and runs this program.
@@ -24,11 +30,18 @@ public class ImageProcessingApplication {
               new InputStreamReader(new ByteArrayInputStream(("run " + args[1]).getBytes())),
               System.out);
       imageProcessorController.startImageProcessingController();
-      return;
+
     }
-    ImageProcessorController imageProcessorController =
-        new ImageProcessorController(new ViewLogger(System.out),
-            new ImageProcessorModel(), new InputStreamReader(System.in), System.out);
-    imageProcessorController.startImageProcessingController();
+    else if(args.length > 0 && args[0].equals("-text")) {
+      ImageProcessorController imageProcessorController =
+              new ImageProcessorController(new ViewLogger(System.out),
+                      new ImageProcessorModel(), new InputStreamReader(System.in), System.out);
+      imageProcessorController.startImageProcessingController();
+    }
+    else {
+      ImageProcessorModelInterface imageProcessorModel = new ImageProcessorModel();
+      JViewInterface view = new JFrameView("Image Processing Application");
+      ControllerInterface controller = new ImageProcessorControllerV2(view, imageProcessorModel);
+    }
   }
 }
