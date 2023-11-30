@@ -21,6 +21,8 @@ public interface UIFeatures {
 
   void executeOperation(String operationName, Object operator);
 
+  boolean checkIfImageIsSaved();
+
   /*void horizontalFlipImage(String imageName, String destImageName);
 
   void verticalFlipImage(String imageName, String destImageName);*/

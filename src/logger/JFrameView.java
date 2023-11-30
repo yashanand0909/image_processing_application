@@ -11,7 +11,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
@@ -19,6 +30,9 @@ import commonlabels.SupportedUIOperations;
 import controller.UIFeatures;
 import model.image.ImageInterface;
 
+/**
+ * This class represents the JFrame view of the application.
+ */
 public class JFrameView extends JFrame implements JViewInterface {
   private JPanel histogramPanel;
 
@@ -54,7 +68,12 @@ public class JFrameView extends JFrame implements JViewInterface {
 
   private JTextField splitOperationTextBox;
 
-
+  /**
+   * Constructor for JFrameView.
+   *
+   * @param caption caption
+   * @throws IOException Exception
+   */
   public JFrameView(String caption) throws IOException {
     super(caption);
     setSize(1500, 1000);
@@ -69,6 +88,186 @@ public class JFrameView extends JFrame implements JViewInterface {
 
     pack();
     setVisible(true);
+  }
+
+  /**
+   * This method has different actions for different buttons
+   * and calls controller methods.
+   *
+   * @param features the features to be added
+   */
+  @Override
+  public void addFeatures(UIFeatures features) {
+    loadImageButton.addActionListener(evt -> {
+      addPopUpForUnsavedImage(features);
+      JFileChooser jFileChooser = new JFileChooser(FileSystemView
+              .getFileSystemView().getHomeDirectory());
+      jFileChooser.setFileFilter(new FileFilter() {
+        public String getDescription() {
+          return "Images file selected (*jpg), (*jpeg), (*png), (*ppm)";
+        }
+
+        public boolean accept(File file) {
+          if (file.isDirectory()) {
+            return true;
+          } else {
+            String filename = file.getName().toLowerCase();
+            return filename.endsWith(".jpg")
+                    || filename.endsWith(".jpeg")
+                    || filename.endsWith(".png")
+                    || filename.endsWith(".ppm");
+          }
+        }
+      });
+      int r = jFileChooser.showOpenDialog(null);
+      jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+      if (r == JFileChooser.APPROVE_OPTION) {
+        String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
+        String fileName = getFileNameFromPath(filePath);
+        features.loadImage(filePath,
+                fileName);
+      } else {
+        System.out.println("No file selected");
+      }
+    });
+
+    saveImageButton.addActionListener(evt -> {
+      JFileChooser fileChooser = new JFileChooser();
+      int userChoice = fileChooser.showSaveDialog(this);
+      if (userChoice == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        features.saveImage(fileToSave.getAbsolutePath());
+      }
+    });
+
+    operationsDropDown.addActionListener(evt -> {
+      compressImagePanel.setVisible(false);
+      levelAdjustPanel.setVisible(false);
+      splitOperationPanel.setVisible(false);
+      tickBox.setEnabled(true);
+      if (Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")) {
+        levelAdjustPanel.setVisible(true);
+      } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")) {
+        compressImagePanel.setVisible(true);
+      } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Horizontal Flip")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Vertical Flip")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Red Component")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Green Component")
+              || Objects.equals(operationsDropDown.getSelectedItem(), "Blue Component")) {
+        tickBox.setSelected(false);
+        tickBox.setEnabled(false);
+      }
+    });
+
+    executeButton.addActionListener(evt -> {
+      String operationName = (String) operationsDropDown.getSelectedItem();
+      String operator = null;
+      assert operationName != null;
+      saveImageButton.setEnabled(true);
+      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())) {
+        operator = blackLevelTextBox.getText() + " "
+                + midLevelTextBox.getText() + " " + whiteLevelTextBox.getText();
+      }
+      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())) {
+        operator = compressImageTextBox.getText();
+      }
+      if (features != null) {
+        features.executeOperation(operationName, operator);
+        tickBox.setSelected(false);
+      }
+    });
+
+    applyButton.addActionListener(evt -> {
+      String operationName = (String) operationsDropDown.getSelectedItem();
+      String splitOperator = splitOperationTextBox.getText();
+      String operator = "";
+      saveImageButton.setEnabled(false);
+      assert operationName != null;
+      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())) {
+        operator = blackLevelTextBox.getText() + " " + midLevelTextBox.getText()
+                + " " + whiteLevelTextBox.getText();
+      }
+      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())) {
+        operator = compressImageTextBox.getText();
+      }
+      if (features != null) {
+        features.executeOperationWithSplit(operationName,
+                operator + (operator.length() > 0 ? " "
+                        + splitOperator : splitOperator));
+      }
+    });
+
+    tickBox.addItemListener(e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        applyButton.setEnabled(true);
+        splitOperationPanel.setVisible(true);
+      } else {
+        applyButton.setEnabled(false);
+        features.undoSplit();
+        splitOperationPanel.setVisible(false);
+        saveImageButton.setEnabled(true);
+      }
+    });
+  }
+
+  private void addPopUpForUnsavedImage(UIFeatures features) {
+    if (!features.checkIfImageIsSaved()) {
+      int dialogButton = JOptionPane.YES_NO_OPTION;
+      int dialogResult = JOptionPane.showConfirmDialog(this,
+              "Do you want to save the current image?", "Warning", dialogButton);
+      if (dialogResult == 0) {
+        saveImageButton.doClick();
+      }
+    }
+  }
+
+  /**
+   * This method sets the current image.
+   *
+   * @param img the image to be set
+   */
+  @Override
+  public void setCurrentImage(ImageInterface img) {
+    BufferedImage bufferedImage = getBufferedImage(img);
+    currentImagePanel.removeAll();
+    currentImagePanel.add(getImageJLabel(bufferedImage));
+    currentImagePanel.revalidate();
+    currentImagePanel.repaint();
+  }
+
+  /**
+   * This method sets the histogram image.
+   *
+   * @param histogramImage the histogram image to be set
+   */
+  @Override
+  public void setHistogramImage(ImageInterface histogramImage) {
+    BufferedImage bufferedImage = getBufferedImage(histogramImage);
+    histogramPanel.removeAll();
+    histogramPanel.add(getImageJLabel(bufferedImage));
+    histogramPanel.revalidate();
+    histogramPanel.repaint();
+  }
+
+  /**
+   * This method enables the operations.
+   */
+  @Override
+  public void enableOperations() {
+    operationsDropDown.setEnabled(true);
+    tickBox.setEnabled(true);
+    executeButton.setEnabled(true);
+    saveImageButton.setEnabled(true);
+  }
+
+  /**
+   * This method displays the error popup.
+   *
+   * @param message the message to be displayed
+   */
+  @Override
+  public void displayErrorPopup(String message) {
+    JOptionPane.showMessageDialog(this, message);
   }
 
   private void setVerticalContainerPanel() {
@@ -245,117 +444,6 @@ public class JFrameView extends JFrame implements JViewInterface {
     return bufferedImage;
   }
 
-  @Override
-  public void addFeatures(UIFeatures features) {
-    loadImageButton.addActionListener(evt -> {
-      JFileChooser jFileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-      jFileChooser.setFileFilter(new FileFilter() {
-        public String getDescription() {
-          return "Images file selected (*jpg), (*jpeg), (*png), (*ppm)";
-        }
-
-        public boolean accept(File file) {
-          if (file.isDirectory()) {
-            return true;
-          } else {
-            String filename = file.getName().toLowerCase();
-            return filename.endsWith(".jpg")
-                    || filename.endsWith(".jpeg")
-                    || filename.endsWith(".png")
-                    || filename.endsWith(".ppm");
-          }
-        }
-      });
-      int r = jFileChooser.showOpenDialog(null);
-      jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-      if (r == JFileChooser.APPROVE_OPTION) {
-        String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
-        String fileName = getFileNameFromPath(filePath);
-        features.loadImage(filePath,
-                fileName);
-      } else {
-        System.out.println("No file selected");
-      }
-    });
-
-    saveImageButton.addActionListener(evt -> {
-      JFileChooser fileChooser = new JFileChooser();
-      int userChoice = fileChooser.showSaveDialog(this);
-      if (userChoice == JFileChooser.APPROVE_OPTION) {
-        File fileToSave = fileChooser.getSelectedFile();
-        features.saveImage(fileToSave.getAbsolutePath());
-      }
-    });
-
-    operationsDropDown.addActionListener(evt -> {
-      compressImagePanel.setVisible(false);
-      levelAdjustPanel.setVisible(false);
-      tickBox.setEnabled(true);
-      if (Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")) {
-        levelAdjustPanel.setVisible(true);
-      } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")) {
-        compressImagePanel.setVisible(true);
-      } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Horizontal Flip")
-              || Objects.equals(operationsDropDown.getSelectedItem(), "Vertical Flip")
-              || Objects.equals(operationsDropDown.getSelectedItem(), "Red Component")
-              || Objects.equals(operationsDropDown.getSelectedItem(), "Green Component")
-              || Objects.equals(operationsDropDown.getSelectedItem(), "Blue Component")) {
-        tickBox.setEnabled(false);
-      }
-    });
-
-    executeButton.addActionListener(evt -> {
-      String operationName = (String) operationsDropDown.getSelectedItem();
-      String operator = null;
-      assert operationName != null;
-      saveImageButton.setEnabled(true);
-      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())) {
-        operator = blackLevelTextBox.getText() + " "
-                + midLevelTextBox.getText() + " " + whiteLevelTextBox.getText();
-      }
-      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())) {
-        operator = compressImageTextBox.getText();
-      }
-      if (features != null) {
-        features.executeOperation(operationName, operator);
-        tickBox.setSelected(false);
-      }
-    });
-
-    applyButton.addActionListener(evt -> {
-      String operationName = (String) operationsDropDown.getSelectedItem();
-      String splitOperator = splitOperationTextBox.getText();
-      String operator = "";
-      saveImageButton.setEnabled(false);
-      assert operationName != null;
-      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())) {
-        operator = blackLevelTextBox.getText() + " " + midLevelTextBox.getText()
-                + " " + whiteLevelTextBox.getText();
-      }
-      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())) {
-        operator = compressImageTextBox.getText();
-      }
-      if (features != null) {
-        features.executeOperationWithSplit(operationName,
-                operator + (operator.length() > 0 ? " "
-                        + splitOperator : splitOperator));
-      }
-    });
-
-    tickBox.addItemListener(e -> {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        applyButton.setEnabled(true);
-        splitOperationPanel.setVisible(true);
-      } else {
-        applyButton.setEnabled(false);
-        features.undoSplit();
-        splitOperationPanel.setVisible(false);
-        saveImageButton.setEnabled(true);
-      }
-    });
-
-  }
-
   private void addBMWLevelAdjustTextBox() {
     if (levelAdjustPanel.getComponentCount() > 0) {
       return;
@@ -382,37 +470,6 @@ public class JFrameView extends JFrame implements JViewInterface {
   private String getFileNameFromPath(String filePath) {
     File file = new File(filePath);
     return file.getName();
-  }
-
-  @Override
-  public void setCurrentImage(ImageInterface img) {
-    BufferedImage bufferedImage = getBufferedImage(img);
-    currentImagePanel.removeAll();
-    currentImagePanel.add(getImageJLabel(bufferedImage));
-    currentImagePanel.revalidate();
-    currentImagePanel.repaint();
-  }
-
-  @Override
-  public void setHistogramImage(ImageInterface histogramImage) {
-    BufferedImage bufferedImage = getBufferedImage(histogramImage);
-    histogramPanel.removeAll();
-    histogramPanel.add(getImageJLabel(bufferedImage));
-    histogramPanel.revalidate();
-    histogramPanel.repaint();
-  }
-
-  @Override
-  public void enableOperations() {
-    operationsDropDown.setEnabled(true);
-    tickBox.setEnabled(true);
-    executeButton.setEnabled(true);
-    saveImageButton.setEnabled(true);
-  }
-
-  @Override
-  public void displayErrorPopup(String message) {
-    JOptionPane.showMessageDialog(this, message);
   }
 
 }
