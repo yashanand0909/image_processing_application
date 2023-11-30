@@ -150,18 +150,16 @@ public class JFrameView extends JFrame implements JViewInterface {
       if (Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")) {
         levelAdjustPanel.setVisible(true);
         if (tickBox.isSelected()){
-          splitOperationPanel.setVisible(false);
-        }
-      } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")) {
-        compressImagePanel.setVisible(true);
-        if (tickBox.isSelected()){
-          splitOperationPanel.setVisible(false);
+          splitOperationPanel.setVisible(true);
         }
       } else if (Objects.equals(operationsDropDown.getSelectedItem(), "Horizontal Flip")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Vertical Flip")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Red Component")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Green Component")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Blue Component")) {
+        if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")) {
+          compressImagePanel.setVisible(true);
+        }
         if (tickBox.isSelected()) {
           tickBox.doClick();
         }
