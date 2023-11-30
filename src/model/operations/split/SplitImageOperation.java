@@ -23,8 +23,13 @@ public class SplitImageOperation implements SingleImageProcessorWithOffset {
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
       throws IllegalArgumentException {
+    String[] operators = operator.toString().split(" ");
+    String splitPercent = "100";
+    if (operators.length == 2){
+      splitPercent = operators[1];
+    }
     List<int[][]> imageChannel = image.getChannel();
-    int imageComponentNumber = (int) operator;
+    int imageComponentNumber = Integer.parseInt(operators[0]);
     if (imageChannel.size() == 1) {
       throw new IllegalArgumentException("Image must have more than 1 channel");
     }
@@ -36,6 +41,9 @@ public class SplitImageOperation implements SingleImageProcessorWithOffset {
         channelList.add(new int[image.getHeight()][image.getWidth()]);
       }
     }
-    return ImageFactory.createImage(channelList);
+    ImageInterface newImage = ImageFactory
+        .createImage(channelList);
+    return new PartialImageOperation()
+        .apply(List.of(image, newImage), splitPercent);
   }
 }

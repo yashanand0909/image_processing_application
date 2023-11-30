@@ -37,6 +37,11 @@ public interface UIFeatures {
 
   void loadHistogram(String imageName, String destImageName);
 
+  public void undoSplit(String imageName);
+
+  public void executeOperationWithSplit(String imageName, String destImageName,
+      String operationName, Object operator);
+
   void executeOperation(String imageName, String destImageName,
                         String operationName, Object operator);
 
