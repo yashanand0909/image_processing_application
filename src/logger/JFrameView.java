@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -79,7 +81,7 @@ public class JFrameView extends JFrame implements JViewInterface {
     setSize(1500, 1000);
     setMinimumSize(new Dimension(1200, 800));
     setLocation(20, 5);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
     this.setLayout(new BorderLayout());
 
@@ -154,8 +156,9 @@ public class JFrameView extends JFrame implements JViewInterface {
               || Objects.equals(operationsDropDown.getSelectedItem(), "Red Component")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Green Component")
               || Objects.equals(operationsDropDown.getSelectedItem(), "Blue Component")) {
-        tickBox.setSelected(false);
-        tickBox.setEnabled(false);
+        if (tickBox.isSelected()) {
+          tickBox.doClick();
+        }
       }
     });
 
@@ -208,17 +211,19 @@ public class JFrameView extends JFrame implements JViewInterface {
         saveImageButton.setEnabled(true);
       }
     });
-  }
 
-  private void addPopUpForUnsavedImage(UIFeatures features) {
-    if (!features.checkIfImageIsSaved()) {
-      int dialogButton = JOptionPane.YES_NO_OPTION;
-      int dialogResult = JOptionPane.showConfirmDialog(this,
-              "Do you want to save the current image?", "Warning", dialogButton);
-      if (dialogResult == 0) {
-        saveImageButton.doClick();
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        if (!features.checkIfImageIsSaved()
+                && JOptionPane.showConfirmDialog(null,
+                "Do you want to save?", "Save",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+          saveImageButton.doClick();
+        }
+        dispose();
       }
-    }
+    });
   }
 
   /**
@@ -405,7 +410,7 @@ public class JFrameView extends JFrame implements JViewInterface {
 
   private void setHistogramPanel(JPanel horizontalContainerPanel) {
     histogramPanel = new JPanel(new BorderLayout());
-    histogramPanel.setPreferredSize(new Dimension(500, 500));
+    histogramPanel.setPreferredSize(new Dimension(500, 600));
     histogramPanel.setBackground(Color.GRAY);
     horizontalContainerPanel.add(histogramPanel, BorderLayout.WEST);
   }
@@ -419,7 +424,7 @@ public class JFrameView extends JFrame implements JViewInterface {
 
   private void setCurrentImagePanel(JPanel horizontalContainerPanel) throws IOException {
     currentImagePanel = new JPanel(new BorderLayout());
-    currentImagePanel.setPreferredSize(new Dimension(800, 500));
+    currentImagePanel.setPreferredSize(new Dimension(800, 600));
     currentImagePanel.setBackground(Color.DARK_GRAY);
     horizontalContainerPanel.add(currentImagePanel, BorderLayout.CENTER);
   }
@@ -470,6 +475,17 @@ public class JFrameView extends JFrame implements JViewInterface {
   private String getFileNameFromPath(String filePath) {
     File file = new File(filePath);
     return file.getName();
+  }
+
+  private void addPopUpForUnsavedImage(UIFeatures features) {
+    if (!features.checkIfImageIsSaved()) {
+      int dialogButton = JOptionPane.YES_NO_OPTION;
+      int dialogResult = JOptionPane.showConfirmDialog(this,
+              "Do you want to save the current image?", "Warning", dialogButton);
+      if (dialogResult == 0) {
+        saveImageButton.doClick();
+      }
+    }
   }
 
 }
