@@ -31,6 +31,10 @@ public class JFrameView extends JFrame implements JViewInterface {
 
   private JPanel levelAdjustPanel;
 
+  private JPanel compressImagePanel;
+
+  private JPanel splitOperationPanel;
+
   private JButton applyButton;
 
   private JCheckBox tickBox;
@@ -47,14 +51,16 @@ public class JFrameView extends JFrame implements JViewInterface {
 
   private JTextField midLevelTextBox;
 
-  private String originalImageName;
+  private JTextField compressImageTextBox;
+
+  private JTextField splitOperationTextBox;
 
 
   public JFrameView(String caption) throws IOException {
     super(caption);
     setSize(1500, 1000);
     setMinimumSize(new Dimension(1200, 800));
-    setLocation(20, 20);
+    setLocation(20, 5);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     this.setLayout(new BorderLayout());
@@ -86,12 +92,27 @@ public class JFrameView extends JFrame implements JViewInterface {
     addTickBox(operationsPanel);
     addApplyButton(verticalContainerPanel);
     verticalContainerPanel.add(operationsPanel);
+
+    compressImagePanel = new JPanel();
+    compressImagePanel.setLayout(new FlowLayout());
+    compressImagePanel.setBackground(Color.getColor("#F9EBD2"));
+    compressImagePanel.setPreferredSize(new Dimension(100, 30));
+    addCompressImageTextBox();
+
+    splitOperationPanel = new JPanel();
+    splitOperationPanel.setLayout(new FlowLayout());
+    splitOperationPanel.setBackground(Color.getColor("#F9EBD2"));
+    splitOperationPanel.setPreferredSize(new Dimension(100, 30));
+    addSplitOperationTextBox();
+
     levelAdjustPanel = new JPanel();
     levelAdjustPanel.setLayout(new FlowLayout());
     levelAdjustPanel.setBackground(Color.getColor("#F9EBD2"));
     levelAdjustPanel.setPreferredSize(new Dimension(100, 30));
     addBMWLevelAdjustTextBox();
     verticalContainerPanel.add(levelAdjustPanel);
+    verticalContainerPanel.add(compressImagePanel);
+    verticalContainerPanel.add(splitOperationPanel);
   }
 
   private void addExecuteButton(JPanel verticalContainerPanel) {
@@ -126,7 +147,7 @@ public class JFrameView extends JFrame implements JViewInterface {
   private void addTasksPanel(JPanel verticalContainerPanel) {
     JPanel tasksPanel = new JPanel(new FlowLayout());
     tasksPanel.setBackground(Color.WHITE);
-    tasksPanel.setPreferredSize(new Dimension(100, 20));
+    tasksPanel.setPreferredSize(new Dimension(100, 50));
     verticalContainerPanel.add(tasksPanel);
 
     loadImageButton = new JButton("Load Image");
@@ -137,6 +158,40 @@ public class JFrameView extends JFrame implements JViewInterface {
     saveImageButton.setActionCommand("Save Image");
     saveImageButton.setEnabled(false);
     tasksPanel.add(saveImageButton);
+  }
+
+  private void addCompressImageTextBox() {
+    if (compressImagePanel.getComponentCount() > 0) {
+      return;
+    }
+    JLabel compressImageLabel = new JLabel("Compress Image");
+    compressImageTextBox = new JTextField(10);
+    compressImagePanel.add(compressImageLabel);
+    compressImagePanel.add(compressImageTextBox);
+    compressImagePanel.setVisible(false);
+    operationsPanel.add(compressImagePanel);
+
+    compressImagePanel.setVisible(false);
+
+    getRootPane().revalidate();
+    getRootPane().repaint();
+  }
+
+  private void addSplitOperationTextBox() {
+    if (splitOperationPanel.getComponentCount() > 0) {
+      return;
+    }
+    JLabel splitOperationLabel = new JLabel("Split Operation");
+    splitOperationTextBox = new JTextField(10);
+    splitOperationPanel.add(splitOperationLabel);
+    splitOperationPanel.add(splitOperationTextBox);
+    splitOperationPanel.setVisible(false);
+    operationsPanel.add(splitOperationPanel);
+
+    splitOperationPanel.setVisible(false);
+
+    getRootPane().revalidate();
+    getRootPane().repaint();
   }
 
   private void setHorizontalContainerPanel() throws IOException {
@@ -215,15 +270,10 @@ public class JFrameView extends JFrame implements JViewInterface {
       int r = jFileChooser.showOpenDialog(null);
       jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       if (r == JFileChooser.APPROVE_OPTION) {
-        try {
-          String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
-          String fileName = getFileNameFromPath(filePath);
-          features.loadImage(filePath,
-                    fileName);
-          this.originalImageName =  fileName;
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
+        String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
+        String fileName = getFileNameFromPath(filePath);
+        features.loadImage(filePath,
+                  fileName);
       } else {
         System.out.println("No file selected");
       }
@@ -235,7 +285,7 @@ public class JFrameView extends JFrame implements JViewInterface {
       if (userChoice == JFileChooser.APPROVE_OPTION) {
         File fileToSave = fileChooser.getSelectedFile();
         try {
-          features.saveImage(fileToSave.getAbsolutePath(), originalImageName);
+          features.saveImage(fileToSave.getAbsolutePath());
         } catch (Exception e) {
           throw new RuntimeException(e);
         }
@@ -243,49 +293,59 @@ public class JFrameView extends JFrame implements JViewInterface {
     });
 
     operationsDropDown.addActionListener(evt -> {
+      compressImagePanel.setVisible(false);
+      levelAdjustPanel.setVisible(false);
       if(Objects.equals(operationsDropDown.getSelectedItem(), "Level Adjust")){
-        executeButton.setEnabled(false);
-//        addBMWLevelAdjustTextBox();
         levelAdjustPanel.setVisible(true);
-
+      }
+      else if (Objects.equals(operationsDropDown.getSelectedItem(), "Compress")){
+        compressImagePanel.setVisible(true);
       }
     });
 
     executeButton.addActionListener(evt -> {
       String operationName = (String) operationsDropDown.getSelectedItem();
-      String newImageName = originalImageName + operationName;
+      String operator = null;
+      assert operationName != null;
+      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())){
+        operator = blackLevelTextBox.getText() + " " + midLevelTextBox.getText() + " " +whiteLevelTextBox.getText();
+      }
+      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())){
+        operator = compressImageTextBox.getText();
+      }
       if (features != null) {
-        features.executeOperation(originalImageName, newImageName, operationName, null);
-        originalImageName = newImageName;
+        features.executeOperation( operationName,operator);
         tickBox.setSelected(false);
       }
     });
 
     applyButton.addActionListener(evt -> {
       String operationName = (String) operationsDropDown.getSelectedItem();
-      String newImageName = originalImageName + operationName;
+      String splitOperator = splitOperationTextBox.getText();
+      String operator = "";
+      assert operationName != null;
+      if (operationName.equals(SupportedUIOperations.LEVELADJUST.toString())){
+        operator = blackLevelTextBox.getText() + " " + midLevelTextBox.getText() + " " +whiteLevelTextBox.getText();
+      }
+      if (operationName.equals(SupportedUIOperations.COMPRESSION.toString())){
+        operator = compressImageTextBox.getText();
+      }
       if (features != null) {
-        features.executeOperationWithSplit(originalImageName, newImageName, operationName, "50");
+        features.executeOperationWithSplit(operationName,  operator + (operator.length()>0?" "+splitOperator:splitOperator));
       }
     });
 
     tickBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         applyButton.setEnabled(true);
+        splitOperationPanel.setVisible(true);
       } else {
         applyButton.setEnabled(false);
-        features.undoSplit(this.originalImageName);
+        features.undoSplit();
+        splitOperationPanel.setVisible(false);
       }
     });
 
-  }
-
-  private List getInputFromBMWLevelAdjustTextBox() {
-    ArrayList<String> bmwInput = new ArrayList<>();
-    bmwInput.add(blackLevelTextBox.getText());
-    bmwInput.add(whiteLevelTextBox.getText());
-    bmwInput.add(midLevelTextBox.getText());
-    return bmwInput;
   }
 
   private void addBMWLevelAdjustTextBox() {
@@ -300,10 +360,10 @@ public class JFrameView extends JFrame implements JViewInterface {
     midLevelTextBox = new JTextField(10);
     levelAdjustPanel.add(blackLevelLabel);
     levelAdjustPanel.add(blackLevelTextBox);
-    levelAdjustPanel.add(whiteLevelLabel);
-    levelAdjustPanel.add(whiteLevelTextBox);
     levelAdjustPanel.add(midLevelLabel);
     levelAdjustPanel.add(midLevelTextBox);
+    levelAdjustPanel.add(whiteLevelLabel);
+    levelAdjustPanel.add(whiteLevelTextBox);
 
     levelAdjustPanel.setVisible(false);
 
@@ -342,13 +402,11 @@ public class JFrameView extends JFrame implements JViewInterface {
     saveImageButton.setEnabled(true);
   }
 
-  @Override
-  public List getAdjustLevelInputs() {
-    levelAdjustPanel.setVisible(true);
-    getRootPane().revalidate();
-    getRootPane().repaint();
-    return getInputFromBMWLevelAdjustTextBox();
-  }
+//  private void enableAdjustLevelInputs() {
+//    levelAdjustPanel.setVisible(true);
+//    getRootPane().revalidate();
+//    getRootPane().repaint();
+//  }
 
   @Override
   public void displayErrorPopup(String message) {

@@ -25,9 +25,14 @@ public class LevelAdjustment implements SingleImageProcessorWithOffset {
   @Override
   public ImageInterface apply(ImageInterface image, Object operator)
       throws IllegalArgumentException {
-    List<Integer> levelAdjustmentParameters =
-        Arrays.stream(operator.toString().trim().split("\\s+"))
-            .map(Integer::parseInt).collect(Collectors.toList());
+    List<Integer> levelAdjustmentParameters = new ArrayList<>();
+    try {
+      levelAdjustmentParameters =
+          Arrays.stream(operator.toString().trim().split("\\s+"))
+              .map(Integer::parseInt).collect(Collectors.toList());
+    } catch (Exception e){
+      throw new IllegalArgumentException("B M W values should be integer value");
+    }
     String splitOperation;
     if (levelAdjustmentParameters.size() != 4 && levelAdjustmentParameters.size() != 3) {
       throw new IllegalArgumentException("Invalid number of arguments");

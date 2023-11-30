@@ -9,41 +9,18 @@ import model.image.ImageInterface;
  */
 public interface UIFeatures {
 
-  /*void blurImage(String imageName, String destImageName, Object operator);
+  void loadImage(String imagePath, String destImageName);
 
-  void sharpenImage(String imageName, String destImageName, Object operator);
+  void saveImage(String imagePath) throws IOException;
 
-  void greyScaleImage(String imageName, String destImageName, Object operator);
-
-  void sepiaImage(String imageName, String destImageName, Object operator);
-
-  void colorCorrectImage(String imageName, String destImageName, Object operator);
-
-  void levelAdjustImage(String imageName, String destImageName, Object operator);
-
-  void redComponentImage(String imageName, String destImageName);
-
-  void greenComponentImage(String imageName, String destImageName);
-
-  void blueComponentImage(String imageName, String destImageName);
-
-  void compressImage(String imageName, String destImageName, Object operator);*/
-
-  void loadImage(String imagePath, String destImageName) throws IOException;
-
-  void saveImage(String imagePath, String imageName) throws IOException;
-
-  ImageInterface getImage(String imageName);
 
   void loadHistogram(String imageName, String destImageName);
 
-  public void undoSplit(String imageName);
+  public void undoSplit();
 
-  public void executeOperationWithSplit(String imageName, String destImageName,
-      String operationName, Object operator);
+  public void executeOperationWithSplit(String operationName, Object operator);
 
-  void executeOperation(String imageName, String destImageName,
-                        String operationName, Object operator);
+  void executeOperation(String operationName, Object operator);
 
   /*void horizontalFlipImage(String imageName, String destImageName);
 

@@ -29,7 +29,12 @@ public class SplitImageOperation implements SingleImageProcessorWithOffset {
       splitPercent = operators[1];
     }
     List<int[][]> imageChannel = image.getChannel();
-    int imageComponentNumber = Integer.parseInt(operators[0]);
+    int imageComponentNumber;
+    try {
+      imageComponentNumber = Integer.parseInt(operators[0]);
+    } catch (Exception e){
+      throw new IllegalArgumentException("Percentage should be integer value");
+    }
     if (imageChannel.size() == 1) {
       throw new IllegalArgumentException("Image must have more than 1 channel");
     }

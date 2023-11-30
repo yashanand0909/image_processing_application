@@ -10,5 +10,4 @@ public interface JViewInterface {
   void setHistogramImage(ImageInterface histogramImage);
   void enableOperations();
   void displayErrorPopup(String message);
-  List getAdjustLevelInputs();
 }
