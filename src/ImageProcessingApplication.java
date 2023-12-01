@@ -40,7 +40,9 @@ public class ImageProcessingApplication {
     }
     else {
       JViewInterface view = new JFrameView("Image Processing Application");
-      new ImageProcessorControllerV2(view, new ImageProcessorModel());
+      ControllerInterface controllerInterface = new ImageProcessorControllerV2(view, new ImageProcessorModel());
+      controllerInterface.startImageProcessingController();
+
     }
   }
 }

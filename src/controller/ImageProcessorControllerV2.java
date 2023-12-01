@@ -2,6 +2,7 @@ package controller;
 
 import commonlabels.SupportedUIOperations;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import model.imageprocessingmodel.ImageProcessorModelInterface;
 /**
  * This class represents the controller for the image processing application.
  */
-public class ImageProcessorControllerV2 implements
+public class ImageProcessorControllerV2 implements ControllerInterface,
         UIFeatures {
 
   private final JViewInterface view;
@@ -31,6 +32,13 @@ public class ImageProcessorControllerV2 implements
                                     ImageProcessorModelInterface imageProcessorModel) {
     this.view = view;
     this.imageProcessorModel = imageProcessorModel;
+  }
+
+  /**
+   * Method to start the view of application.
+   */
+  @Override
+  public void startImageProcessingController() throws IOException {
     view.addFeatures(this);
   }
 

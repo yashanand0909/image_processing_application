@@ -156,7 +156,7 @@ purpose : The purpose of this class is to apply a level adjustment transformatio
 ### Design
 MVC design pattern is used to design the application. The model contains the image class which contains the image data and the methods to manipulate the image. The view contains the viewlogger class which is responsible for displaying the success and error messages. The controller contains the controller class which is responsible for taking the input from the user and calling the appropriate methods in the model and view.
 
-### Offering
+### Citation
 Image used for testing is provided in the resources folder and is named as open-source-image-original.png image is open source (https://www.istockphoto.com/vector/open-source-icon-open-source-symbol-design-from-vector-stock-illustration-gm1208176833-349123511) and is credited to Oleksandr Hruts and can be freely used as per the license.
 
 ### Complete Program parts
