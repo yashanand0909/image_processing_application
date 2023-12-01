@@ -13,7 +13,7 @@ import model.imageprocessingmodel.ImageProcessorModelInterface;
 /**
  * This class represents the controller for the image processing application.
  */
-public class ImageProcessorControllerV2 implements ControllerInterface,
+public class ImageProcessorControllerV2 implements
         UIFeatures {
 
   private final JViewInterface view;
@@ -34,10 +34,6 @@ public class ImageProcessorControllerV2 implements ControllerInterface,
     view.addFeatures(this);
   }
 
-  @Override
-  public void startImageProcessingController() {
-
-  }
 
   /**
    * This method loads image for the image processing application.
@@ -74,17 +70,6 @@ public class ImageProcessorControllerV2 implements ControllerInterface,
     }
   }
 
-
-  @Override
-  public void loadHistogram(String imageName, String destImageName) {
-    try {
-      imageProcessorModel.histogramImage(imageName, destImageName);
-      view.setHistogramImage(imageProcessorModel.getImage(destImageName));
-      view.enableOperations();
-    } catch (Exception e) {
-      view.displayErrorPopup(e.getMessage());
-    }
-  }
 
   /**
    * This method undos the split operation back to previous image
@@ -210,7 +195,7 @@ public class ImageProcessorControllerV2 implements ControllerInterface,
    */
   @Override
   public boolean checkIfImageIsSaved() {
-    return Objects.equals(originalImageName, savedImageName);
+    return !Objects.equals(originalImageName, savedImageName);
   }
 
   private void executeAndGetImages(String destImageName, String operationName,

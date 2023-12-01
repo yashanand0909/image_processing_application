@@ -9,8 +9,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import logger.ViewLogger;
+import model.image.CommonImage;
+import model.image.ImageFactory;
 import model.image.ImageInterface;
 import model.imageprocessingmodel.ImageProcessorModel;
 import model.imageprocessingmodel.ImageProcessorModelInterface;
@@ -146,9 +152,11 @@ public class ImageProcessorControllerTest {
   static class MockModel implements ImageProcessorModelInterface {
 
     private final StringBuilder log;
+    private final Map<String, ImageInterface> images;
 
     public MockModel(StringBuilder log) {
       this.log = log;
+      images = new HashMap<>();
     }
 
 
@@ -244,7 +252,9 @@ public class ImageProcessorControllerTest {
 
     @Override
     public void histogramImage(String imageName, String destImageName) {
-      //comment
+      log.append(imageName).append(destImageName);
+      List<int[][]> list = Arrays.asList(new int[10][10], new int[10][10], new int[10][10]);
+      images.put(destImageName, ImageFactory.createImage(list));
     }
 
     @Override
@@ -265,16 +275,21 @@ public class ImageProcessorControllerTest {
     @Override
     public void loadImage(String imagePath, String imageName) throws IOException {
       log.append(imagePath).append(imageName);
+      List<int[][]> list = Arrays.asList(new int[10][10], new int[10][10], new int[10][10]);
+      images.put(imageName, ImageFactory.createImage(list));
     }
 
     @Override
     public void saveImage(String imagePath, String imageName) throws IOException {
+      if (!Objects.nonNull(imageName)){
+        throw new IllegalArgumentException("null name");
+      }
       log.append(imagePath).append(imageName);
     }
 
     @Override
     public ImageInterface getImage(String imageName) {
-      return null;
+      return images.get(imageName);
     }
   }
 

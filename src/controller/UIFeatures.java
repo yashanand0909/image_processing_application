@@ -13,11 +13,9 @@ public interface UIFeatures {
 
   void saveImage(String imagePath);
 
-  void loadHistogram(String imageName, String destImageName);
+  void undoSplit();
 
-  public void undoSplit();
-
-  public void executeOperationWithSplit(String operationName, Object operator);
+  void executeOperationWithSplit(String operationName, Object operator);
 
   void executeOperation(String operationName, Object operator);
 

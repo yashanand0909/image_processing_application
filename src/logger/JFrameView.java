@@ -220,7 +220,7 @@ public class JFrameView extends JFrame implements JViewInterface {
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
-        if (!features.checkIfImageIsSaved()
+        if (features.checkIfImageIsSaved()
                 && JOptionPane.showConfirmDialog(null,
                 "Do you want to save?", "Save",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -483,7 +483,7 @@ public class JFrameView extends JFrame implements JViewInterface {
   }
 
   private void addPopUpForUnsavedImage(UIFeatures features) {
-    if (!features.checkIfImageIsSaved()) {
+    if (features.checkIfImageIsSaved()) {
       int dialogButton = JOptionPane.YES_NO_OPTION;
       int dialogResult = JOptionPane.showConfirmDialog(this,
               "Do you want to save the current image?", "Warning", dialogButton);
