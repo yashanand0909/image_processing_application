@@ -492,5 +492,4 @@ public class JFrameView extends JFrame implements JViewInterface {
       }
     }
   }
-
 }

@@ -17,6 +17,9 @@ import model.imageprocessingmodel.ImageProcessorModel;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * This class tests the Integration for the application.
+ */
 public class IntegrationtestV2 {
 
   private final String imagePath = "test_image.jpg";
@@ -50,7 +53,8 @@ public class IntegrationtestV2 {
             newChannelAfterIncreaseBrightnessBlue);
     imageProcessorController = new ImageProcessorControllerV2(mockView, new ImageProcessorModel());
     imageProcessorController.loadImage(imagePath, imageName);
-    imageProcessorController.executeOperation(SupportedUIOperations.COMPRESSION.toString(), "50");
+    imageProcessorController.executeOperation(SupportedUIOperations.COMPRESSION.toString(),
+            "50");
     assertImageEquals(newChannleList, mockView.imageInterface);
   }
 
@@ -60,10 +64,10 @@ public class IntegrationtestV2 {
     StringBuilder vs = new StringBuilder();
     MockView mockView = new MockView(vs);
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-        {255, 255, 255}};
+                                                    {255, 255, 255}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 0}, {0, 0, 0},
-        {0, 0, 0}};
+                                                     {0, 0, 0}};
     List<int[][]> newChannleList = Arrays
         .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
             newChannelAfterIncreaseBrightnessBlue);
@@ -79,10 +83,10 @@ public class IntegrationtestV2 {
     StringBuilder vs = new StringBuilder();
     MockView mockView = new MockView(vs);
     int[][] newChannelAfterIncreaseBrightnessRed = {{255, 255, 255}, {255, 255, 255},
-        {255, 255, 255}};
+                                                    {255, 255, 255}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 86, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 254, 240}, {0, 0, 90},
-        {0, 255, 44}};
+                                                     {0, 255, 44}};
     List<int[][]> newChannleList = Arrays
         .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
             newChannelAfterIncreaseBrightnessBlue);
@@ -98,10 +102,10 @@ public class IntegrationtestV2 {
     StringBuilder vs = new StringBuilder();
     MockView mockView = new MockView(vs);
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-        {0, 0, 0}};
+                                                    {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-        {223, 0, 105}};
+                                                     {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
         .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
             newChannelAfterIncreaseBrightnessBlue);
@@ -117,17 +121,18 @@ public class IntegrationtestV2 {
     StringBuilder vs = new StringBuilder();
     MockView mockView = new MockView(vs);
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-        {0, 0, 0}};
+                                                    {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-        {223, 0, 105}};
+                                                     {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
         .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
             newChannelAfterIncreaseBrightnessBlue);
     imageProcessorController = new ImageProcessorControllerV2(mockView, new ImageProcessorModel());
     imageProcessorController.loadImage(imagePath, imageName);
     imageProcessorController
-        .executeOperationWithSplit(SupportedUIOperations.LEVELADJUST.toString(), "20 100 90");
+        .executeOperationWithSplit(SupportedUIOperations.LEVELADJUST.toString(),
+                "20 100 90");
     assertEquals(vs.toString(), "Invalid ordering of parameters");
   }
 
@@ -136,17 +141,18 @@ public class IntegrationtestV2 {
     StringBuilder vs = new StringBuilder();
     MockView mockView = new MockView(vs);
     int[][] newChannelAfterIncreaseBrightnessRed = {{0, 0, 0}, {0, 0, 0},
-        {0, 0, 0}};
+                                                    {0, 0, 0}};
     int[][] newChannelAfterIncreaseBrightnessGreen = {{0, 0, 0}, {0, 0, 0}, {0, 230, 0}};
     int[][] newChannelAfterIncreaseBrightnessBlue = {{0, 0, 36}, {36, 0, 238},
-        {223, 0, 105}};
+                                                     {223, 0, 105}};
     List<int[][]> newChannleList = Arrays
         .asList(newChannelAfterIncreaseBrightnessRed, newChannelAfterIncreaseBrightnessGreen,
             newChannelAfterIncreaseBrightnessBlue);
     imageProcessorController = new ImageProcessorControllerV2(mockView, new ImageProcessorModel());
     imageProcessorController.loadImage(imagePath, imageName);
     imageProcessorController
-        .executeOperationWithSplit(SupportedUIOperations.LEVELADJUST.toString(), "-20 100 90");
+        .executeOperationWithSplit(SupportedUIOperations.LEVELADJUST.toString(),
+                "-20 100 90");
     assertEquals(vs.toString(), "Invalid value for constant");
   }
 
@@ -162,7 +168,8 @@ public class IntegrationtestV2 {
             newChannelAfterSharpenBlue);
     imageProcessorController = new ImageProcessorControllerV2(mockView, new ImageProcessorModel());
     imageProcessorController.loadImage(imagePath, imageName);
-    imageProcessorController.executeOperation(SupportedUIOperations.SHARPEN.toString(), null);
+    imageProcessorController.executeOperation(SupportedUIOperations.SHARPEN.toString(),
+            null);
     assertImageEquals(newChannleList, mockView.imageInterface);
   }
 
@@ -195,7 +202,8 @@ public class IntegrationtestV2 {
             newChannelAfterSepiaBlue);
     imageProcessorController = new ImageProcessorControllerV2(mockView, new ImageProcessorModel());
     imageProcessorController.loadImage(imagePath, imageName);
-    imageProcessorController.executeOperation(SupportedUIOperations.SEPIA.toString(), null);
+    imageProcessorController.executeOperation(SupportedUIOperations.SEPIA.toString(),
+            null);
     assertImageEquals(newChannleList, mockView.imageInterface);
   }
 

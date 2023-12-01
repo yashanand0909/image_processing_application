@@ -9,6 +9,9 @@ import logger.JViewInterface;
 import model.image.ImageInterface;
 import org.junit.Test;
 
+/**
+ * This class tests the ImageProcessorControllerV2 class.
+ */
 public class ImageProcessorControllerV2Test {
 
   private ImageProcessorControllerV2 controller;
@@ -72,10 +75,12 @@ public class ImageProcessorControllerV2Test {
     controller = new ImageProcessorControllerV2(mockView,mockModel);
     controller.loadImage("path","destination");
     controller.executeOperationWithSplit("Blur","50");
-    assertEquals("pathdestinationdestinationhistogram_destinationdestinationdestinationBlur"
+    assertEquals("pathdestinationdestinationhistogram" +
+            "_destinationdestinationdestinationBlur"
         + "_split5050destinationBlur_split50histogram_destinationBlur_split50",ms.toString());
     assertEquals(mockModel.getImage("destinationBlur_split50"), mockView.imageInterface);
-    assertEquals(mockModel.getImage("histogram_destinationBlur_split50"), mockView.histogramImage);
+    assertEquals(mockModel.getImage("histogram_destinationBlur_split50"),
+            mockView.histogramImage);
   }
 
   @Test
@@ -90,7 +95,8 @@ public class ImageProcessorControllerV2Test {
     assertEquals("pathdestinationdestinationhistogram_destinationdestinationBlurhistogram"
         + "_destinationBlur",ms.toString());
     assertEquals(mockModel.getImage("destinationBlur"), mockView.imageInterface);
-    assertEquals(mockModel.getImage("histogram_destinationBlur"), mockView.histogramImage);
+    assertEquals(mockModel.getImage("histogram_destinationBlur"),
+            mockView.histogramImage);
   }
 
   @Test
@@ -105,7 +111,8 @@ public class ImageProcessorControllerV2Test {
     assertEquals("pathdestinationdestinationhistogram_destinationdestination"
         + "Sepiahistogram_destinationSepia",ms.toString());
     assertEquals(mockModel.getImage("destinationSepia"), mockView.imageInterface);
-    assertEquals(mockModel.getImage("histogram_destinationSepia"), mockView.histogramImage);
+    assertEquals(mockModel.getImage("histogram_destinationSepia"),
+            mockView.histogramImage);
   }
 
   @Test
@@ -120,7 +127,8 @@ public class ImageProcessorControllerV2Test {
     assertEquals("pathdestinationdestinationhistogram_destinationdestinationCompr"
         + "esshistogram_destinationCompress",ms.toString());
     assertEquals(mockModel.getImage("destinationCompress"), mockView.imageInterface);
-    assertEquals(mockModel.getImage("histogram_destinationCompress"), mockView.histogramImage);
+    assertEquals(mockModel.getImage("histogram_destinationCompress"),
+            mockView.histogramImage);
   }
 
   @Test
@@ -135,7 +143,8 @@ public class ImageProcessorControllerV2Test {
     assertEquals("pathdestinationdestinationhistogram_destinationdestinationGrey"
         + "scalehistogram_destinationGreyscale",ms.toString());
     assertEquals(mockModel.getImage("destinationGreyscale"), mockView.imageInterface);
-    assertEquals(mockModel.getImage("histogram_destinationGreyscale"), mockView.histogramImage);
+    assertEquals(mockModel.getImage("histogram_destinationGreyscale"),
+            mockView.histogramImage);
   }
 
   @Test
