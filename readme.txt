@@ -196,11 +196,9 @@ run script_file
 -file name-of-script
 
 ### change in design
-Our design is still same just for new functionality support new abstract class is created and for new operation new concrete classes are created
+Nothing has been changes in design we just added new controller which extends controller interface and also UIfeatures interface for GUI and rest of the calls and flows are as it is.
+We added new controller as we wanted to follow command callback pattern for interaction between controller and view.
 
 ### change in code
-We made couple of changes in design in this assignment:
- 1 - We moved handleCommand method from model to controller as suggested in our previous assignment review. Now modelInterface offers different methods for all the operations it offers to the controller so that the controller know what all operations it can request.
- 2 - For sharpen, blur, sepia, greyscale classes extends new abstract class which extends old abstract class and add functions for split operation. Like this old code is untouched and new functionality is also added.
- Feature wise we added new operations and functionalities by adding new classes which extends either of interfaces already defined.
+Only new controller is added and support of GUI is added in main file.
 
