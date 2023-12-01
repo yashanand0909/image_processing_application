@@ -158,7 +158,7 @@ MVC design pattern is used to design the application. The model contains the ima
 
 ### Citation
 Image used for testing is provided in the res/images folder and is named as open-source-image-original.png image is open source (https://www.istockphoto.com/vector/open-source-icon-open-source-symbol-design-from-vector-stock-illustration-gm1208176833-349123511) and is credited to Oleksandr Hruts and can be freely used as per the license.
-Another image used for testing is provided in the res/images folder and is named as original_image_2.jpeg image was captured by me and I own it.
+All the images shown in screenshots is owned by me(Yash Anand).
 
 ### Complete Program parts
 We completed every part of the assignment which were asked for till current part of the assignment.
